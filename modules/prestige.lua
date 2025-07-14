@@ -579,7 +579,7 @@ function create_UIBox_current_prestige(simple)
   local hands = {
     create_UIBox_current_prestige_row("mult_extra", "c_zero_plasmid", 1, darken(G.C.MULT, 0.1)),
     create_UIBox_current_prestige_row("chips_extra", "c_zero_antiplasmid", 5, darken(G.C.CHIPS, 0.1)),
-    create_UIBox_current_prestige_row("xmult_extra", "c_zero_supercoiledplasmid", 0.2, darken(G.C.MULT, 0.2)),
+    create_UIBox_current_prestige_row("xmult_extra", "c_zero_supercoiledplasmid", 0.1, darken(G.C.MULT, 0.2)),
 
     -- PATCH TARGET: PRESTIGE SCREEN
   }
