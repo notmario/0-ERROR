@@ -1,0 +1,36 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "last_tarot_planet = nil,"
+position = "after"
+payload = """
+Prestiges = {}, 
+PrestigeCooldowns={},
+PrestigeValues = {
+  mult_extra = 0,
+  chips_extra = 0,
+  xmult_extra = 0,
+},"""
+match_indent = true
+
+# from AMM
+# G.UIDEF.run_info
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = """tab_definition_function = create_UIBox_current_hands,
+},"""
+position = "after"
+payload = '''
+{
+	label = localize('b_prestige'),
+	tab_definition_function = create_UIBox_current_prestige,
+},
+'''
+match_indent = true
+overwrite = false
