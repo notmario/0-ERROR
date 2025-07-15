@@ -1,6 +1,15 @@
 local loc_stuff = {
   descriptions = {
     Joker = {
+      j_zero_mad = {
+        name = "Mutual Assured Destruction",
+        text = {
+          {
+            "Creates a {C:attention}Prestige{} card when {C:attention}Blind{}",
+            "is beaten on {C:attention}final {C:attention}hand{} of round"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -254,6 +263,7 @@ local loc_stuff = {
     dictionary = {
       b_prestige = "Prestige",
       k_prestige_pack = "Prestige Pack",
+      k_plus_prestige = "+1 Prestige",
 
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",
