@@ -128,7 +128,7 @@ function scaler_keyword(card, key)
   if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
   G.GAME.Prestiges[key] = base
   
-  return base
+  return base - card.ability.extra.scale_amount -- oops!
 end
 
 function cooldown_keyword(card, key)
