@@ -10,6 +10,18 @@ local loc_stuff = {
           }
         },
       },
+      j_zero_paraquiet = {
+        name = "Paraquiet",
+        text = {
+          {
+            "{C:green}#1# in #2#{} chance to reduce the rank",
+            "of each {C:attention}played card{}, this joker",
+            "gains {C:mult}+#3# Mult{} for each rank lost",
+            "{C:inactive}(Currently {C:mult}+#4#{C:inactive} Mult)",
+            "{C:inactive}(Cannot reduce ranks past 2)",
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -264,6 +276,7 @@ local loc_stuff = {
       b_prestige = "Prestige",
       k_prestige_pack = "Prestige Pack",
       k_plus_prestige = "+1 Prestige",
+      k_poisoned_ex = "Poisoned!",
 
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",
