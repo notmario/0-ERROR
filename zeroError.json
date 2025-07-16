@@ -7,5 +7,7 @@
   "main_file": "main.lua",
 
   "version": "0.0.0",
-  "badge_colour": "4F6367"
+  "badge_colour": "4F6367",
+
+  "allow_redistribution": true
 }
