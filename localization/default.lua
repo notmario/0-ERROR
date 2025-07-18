@@ -22,6 +22,16 @@ local loc_stuff = {
           }
         },
       },
+      j_zero_e_supercharge = {
+        name = "Energy Supercharge",
+        text = {
+          {
+            "Once per round, {C:dark_edition,E:1}use{} this joker",
+            "to add a random {C:red}temporary{} {C:attention}Enhanced",
+            "card of each suit to your hand"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -277,6 +287,7 @@ local loc_stuff = {
       k_prestige_pack = "Prestige Pack",
       k_plus_prestige = "+1 Prestige",
       k_poisoned_ex = "Poisoned!",
+      k_charged_ex = "Charged!",
 
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",

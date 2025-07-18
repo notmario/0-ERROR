@@ -1,0 +1,27 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# from pta again. thanks paya!
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = "elseif card.ability.set == 'Joker' then "
+position = 'before'
+payload = '''
+elseif card.config.center.zero_usable and card.from_area ~= G.shop and card.from_area ~= G.pack_cards then 
+	draw_card(G.hand, G.play, 1, 'up', true, card, nil, mute)
+  G.jokers:unhighlight_all()
+	dont_dissolve = true
+  delay(0.2)
+  zero_error_use_joker(card,area)
+  SMODS.calculate_context({using_consumeable = true, consumeable = card, area = card.from_area})
+  -- G.jokers:emplace(card)
+  -- play_sound('card1', 0.8, 0.6)
+  -- play_sound('generic1')
+  -- dont_dissolve = true
+  -- delay_fac = 0.2
+'''
+match_indent = true
+times = 1
