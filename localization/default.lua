@@ -32,6 +32,16 @@ local loc_stuff = {
           }
         },
       },
+      j_zero_awesome_face = {
+        name = "Awesome Face",
+        text = {
+          {
+            "{C:dark_edition,E:1}Use{} this joker to gain",
+            "{C:attention}four fifths{} of the blind score",
+            "{C:red}self destructs{}"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {

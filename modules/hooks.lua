@@ -150,7 +150,6 @@ function zero_error_use_joker (card, area, copier)
 
 	local obj = card.config.center
 	if obj.use and type(obj.use) == 'function' then
-		obj:use(card, area, copier)
-		return
+		return obj:use(card, area, copier)
 	end
 end

@@ -122,8 +122,6 @@ SMODS.Joker {
   end
 }
 
-
-
 SMODS.Joker {
   key = "e_supercharge",
   name = "Energy Supercharge",
@@ -141,7 +139,7 @@ SMODS.Joker {
   blueprint_compat = true,
   eternal_compat = true,
   perishable_compat = true,
-  demicoloncompat = true,
+  demicoloncompat = false,
   zero_usable = true,
   -- keep_on_use = true,
   can_use = function(self, card)
@@ -187,5 +185,80 @@ SMODS.Joker {
     end
     delay(0.5)
     draw_card(G.play, G.jokers, nil, 'up', nil, card)
+  end,
+}
+
+SMODS.Joker {
+  key = "awesome_face",
+  name = "Awesome Face",
+  config = {
+    extra = {
+      active = true,
+    }
+  },
+  pos = {x = 6, y = 0},
+  atlas = "zero_jokers",
+  rarity = 1,
+  cost = 1,
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+  demicoloncompat = false,
+  zero_usable = true,
+  -- keep_on_use = true,
+  can_use = function(self, card)
+    return G.STATE == G.STATES.SELECTING_HAND and card.ability.extra.active
+  end,
+  loc_vars = function(self, info_queue, center)
+  end,
+  calculate = function(self, card, context)
+  end,
+  use = function(self, card, area, copier)
+    card.ability.extra.active = false
+    for i = 1,8 do
+      G.E_MANAGER:add_event(Event({
+        trigger = 'before',
+        delay = 0.8 / (i + 3),
+        func = function() 
+          play_sound('chips1', 0.8 + i * 0.1)
+          card:juice_up(0.3, 0.5)
+
+          G.GAME.chips = G.GAME.chips + G.GAME.blind.chips / 10
+          return true end }))
+    end
+
+    G.E_MANAGER:add_event(Event({
+      trigger = 'after',
+      delay = 0.7,
+      func = function() 
+        card:start_dissolve()
+        return true end }))
+
+    -- snippet taken from Magic the Jokering
+    if not next(SMODS.find_mod("NotJustYet")) then
+      G.E_MANAGER:add_event(Event({
+      func = (function(t)
+        if G.GAME.chips >= G.GAME.blind.chips then 
+        G.E_MANAGER:add_event(
+          Event({
+            trigger = "immediate",
+            func = function()
+              if G.STATE ~= G.STATES.SELECTING_HAND then
+                return false
+              end
+              G.STATE = G.STATES.HAND_PLAYED
+              G.STATE_COMPLETE = true
+              end_round()
+              return true
+            end,
+          }),
+          "other"
+        )
+      end
+      return true end)
+      }))
+    end
   end,
 }
