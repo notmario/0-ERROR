@@ -11,7 +11,9 @@ pattern = "elseif card.ability.set == 'Joker' then "
 position = 'before'
 payload = '''
 elseif card.config.center.zero_usable and card.from_area ~= G.shop and card.from_area ~= G.pack_cards then 
-	draw_card(G.hand, G.play, 1, 'up', true, card, nil, mute)
+	if not card.config.center.zero_stay_in_area then
+    draw_card(G.hand, G.play, 1, 'up', true, card, nil, mute)
+  end
   G.jokers:unhighlight_all()
 	dont_dissolve = true
   delay(0.2)

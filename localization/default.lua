@@ -42,6 +42,17 @@ local loc_stuff = {
           }
         },
       },
+      j_zero_perma_monster = {
+        name = "Perma-Monster",
+        text = {
+          {
+            "Once per ante, {C:dark_edition,E:1}use{} this joker",
+            "to destroy the {C:attention}leftmost{}",
+            "{C:attention}Joker and permanently copy it",
+            "{C:inactive}(Currently copying #1#)"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {

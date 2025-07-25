@@ -209,7 +209,7 @@ SMODS.Joker {
   zero_usable = true,
   -- keep_on_use = true,
   can_use = function(self, card)
-    return G.STATE == G.STATES.SELECTING_HAND and card.ability.extra.active
+    return card.ability.extra.active
   end,
   loc_vars = function(self, info_queue, center)
   end,
@@ -260,5 +260,137 @@ SMODS.Joker {
       return true end)
       }))
     end
+  end,
+}
+
+local srh = save_run
+save_run = function(self)
+  local perma_monster_jokers = {}
+  for i, card in ipairs(G.jokers.cards) do
+    if card.config.center.key == "j_zero_perma_monster" then
+      -- print("saving wow", i)
+      perma_monster_jokers[i] = {}
+
+      for _, copied_card in ipairs(card.ability.immutable.copied_jokers) do
+        -- print(copied_card.config.center.key)
+        perma_monster_jokers[i][#perma_monster_jokers[i] + 1] = copied_card:save()
+      end
+    end
+  end
+
+  G.GAME.zero_perma_monster_jokers = perma_monster_jokers
+
+  srh(self)
+end
+local strh = Game.start_run
+Game.start_run = function(self, args)
+  strh(self, args)
+
+  if G.GAME.zero_perma_monster_jokers then
+    -- print("reinit")
+    for i, cards in pairs(G.GAME.zero_perma_monster_jokers) do
+      -- print(i)
+      G.jokers.cards[i].ability.immutable.copied_jokers = {}
+      for _, copied_card in pairs(cards) do
+        local card = Card(0, 0, 1, 1, G.P_CENTERS.j_joker, G.P_CENTERS.c_base)
+        card.T.x = math.huge
+        card.T.y = math.huge
+        card.T.H = 4 -- WTF ??
+        card.T.h = 4
+        card.T.w = 4
+        card:load(copied_card)
+        G.jokers.cards[i].ability.immutable.copied_jokers[#G.jokers.cards[i].ability.immutable.copied_jokers + 1] = card
+
+        -- print(card.config.center.key)
+      end
+    end
+
+    G.GAME.zero_perma_monster_jokers = nil
+  end
+end
+
+SMODS.Joker {
+  key = "perma_monster",
+  name = "Perma Monster",
+  config = {
+    extra = {
+      active = true,
+    },
+    immutable = {
+      copied_jokers = {}
+    }
+  },
+  pos = {x = 3, y = 0},
+  atlas = "zero_jokers",
+  rarity = 3,
+  cost = 10,
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = false,
+  eternal_compat = true,
+  perishable_compat = false,
+  demicoloncompat = false,
+  zero_usable = true,
+  zero_stay_in_area = true,
+  -- keep_on_use = true,
+  can_use = function(self, card)
+    return G.STATE == G.STATES.SELECTING_HAND and card.ability.extra.active
+  end,
+  loc_vars = function(self, info_queue, center)
+    return { vars = { #center.ability.immutable.copied_jokers } }
+  end,
+  calculate = function(self, card, context)
+    local returns = {}
+
+    if not context.no_blueprint then
+
+      for _, copied in ipairs(card.ability.immutable.copied_jokers) do
+        context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
+        context.blueprint_card = context.blueprint_card or card
+        local ret = copied:calculate_joker(context)
+        context.blueprint = nil
+        local eff_card = context.blueprint_card or card
+        context.blueprint_card = nil
+        if ret then
+          ret.card = eff_card
+          ret.colour = G.C.YELLOW
+          returns[#returns + 1] = ret
+        end
+      end
+
+    end
+
+    return SMODS.merge_effects(returns)
+  end,
+  use = function(self, card, area, copier)
+    local my_pos = 0
+    -- print("asdf", my_pos)
+    if G.jokers.cards[my_pos+1] and not card.getting_sliced and
+      not SMODS.is_eternal(G.jokers.cards[my_pos+1], card) and not G.jokers.cards[my_pos+1].getting_sliced and
+      not (G.jokers.cards[my_pos+1].config.center.key == "j_zero_perma_monster") then
+
+      local sliced_card = G.jokers.cards[my_pos+1]
+      -- print(sliced_card)
+      sliced_card.getting_sliced = true
+      G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+      G.E_MANAGER:add_event(Event({func = function()
+        G.GAME.joker_buffer = 0
+
+        local copied_card = copy_card(sliced_card)
+        copied_card.T.x = math.huge
+        copied_card.T.y = math.huge
+
+        card.ability.immutable.copied_jokers[#card.ability.immutable.copied_jokers + 1] = copied_card
+        
+        card:juice_up(0.8, 0.8)
+        sliced_card:start_dissolve({HEX("57ecab")}, nil, 1.6)
+        play_sound('slice1', 0.96+math.random()*0.08)
+      return true end }))
+      
+      card.ability.extra.active = false
+    end
+    -- delay(0.5)
+    -- print("wow")
+    draw_card(G.play, G.jokers, nil, 'up', nil, card)
   end,
 }
