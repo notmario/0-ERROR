@@ -400,3 +400,57 @@ SMODS.Joker {
     draw_card(G.play, G.jokers, nil, 'up', nil, card)
   end,
 }
+
+SMODS.Joker {
+  key = "elite_inferno",
+  name = "Elite Inferno",
+  config = {
+    extra = {
+      active = true,
+      triggering = false,
+      times_mult = 7,
+    },
+  },
+  pos = {x = 5, y = 0},
+  atlas = "zero_jokers",
+  rarity = 3,
+  cost = 9,
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+  demicoloncompat = true,
+  zero_usable = true,
+  -- keep_on_use = true,
+  can_use = function(self, card)
+    return G.STATE == G.STATES.SELECTING_HAND and card.ability.extra.active
+  end,
+  loc_vars = function(self, info_queue, center)
+    return { vars = { 
+      center.ability.extra.triggering and "active" or "inactive",
+      center.ability.extra.times_mult
+    } }
+  end,
+  calculate = function(self, card, context)
+    if context.joker_main and card.ability.extra.triggering then
+      return {
+        x_mult = card.ability.extra.times_mult
+      }
+    end
+    
+    if context.end_of_round and not context.individual and not context.repetition and not context.blueprint and G.GAME.blind.boss then
+      card.ability.extra.active = true
+    end
+    if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+      card.ability.extra.triggering = false
+    end
+  end,
+  use = function(self, card, area, copier)
+    card.ability.extra.active = false
+    card.ability.extra.triggering = true
+    delay(0.5)
+    -- print("wow")
+    draw_card(G.play, G.jokers, nil, 'up', nil, card)
+  end,
+}

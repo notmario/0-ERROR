@@ -53,6 +53,17 @@ local loc_stuff = {
           }
         },
       },
+      j_zero_elite_inferno = {
+        name = "Elite Inferno",
+        text = {
+          {
+            "Once per ante, {C:dark_edition,E:1}use{} this",
+            "joker to {C:dark_edition,E:1}activate{} it.",
+            "{X:mult,C:white}X#2#{} Mult if {C:dark_edition,E:1}active{}",
+            "{C:inactive}(Currently {C:attention}#1#{C:inactive})"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
