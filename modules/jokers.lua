@@ -361,6 +361,10 @@ SMODS.Joker {
       end
 
     end
+    
+    if context.end_of_round and not context.individual and not context.repetition and not context.blueprint and G.GAME.blind.boss then
+      card.ability.extra.active = true
+    end
 
     return SMODS.merge_effects(returns)
   end,
