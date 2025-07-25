@@ -345,6 +345,8 @@ SMODS.Joker {
     if not context.no_blueprint then
 
       for _, copied in ipairs(card.ability.immutable.copied_jokers) do
+
+        -- based on code from Maximus (bootlegger)
         context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
         context.blueprint_card = context.blueprint_card or card
         local ret = copied:calculate_joker(context)
