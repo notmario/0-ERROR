@@ -454,3 +454,133 @@ SMODS.Joker {
     draw_card(G.play, G.jokers, nil, 'up', nil, card)
   end,
 }
+
+SMODS.Joker {
+  key = "defense_removal",
+  name = "Defense Removal",
+  config = {
+    extra = {
+      active = true,
+    }
+  },
+  pos = {x = 8, y = 0},
+  atlas = "zero_jokers",
+  rarity = 2,
+  cost = 8,
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+  demicoloncompat = false,
+  zero_usable = true,
+  -- keep_on_use = true,
+  can_use = function(self, card)
+    return card.ability.extra.active
+  end,
+  loc_vars = function(self, info_queue, center)
+  end,
+  calculate = function(self, card, context)
+    if context.end_of_round and not card.ability.extra.active and G.GAME.blind.boss then
+      card.ability.extra.active = true
+      return {
+        message = localize("k_charged_ex")
+      }
+    end
+  end,
+  use = function(self, card, area, copier)
+    card.ability.extra.active = false
+    G.E_MANAGER:add_event(Event({
+      trigger = 'before',
+      delay = 0.8,
+      func = function() 
+        card:juice_up(0.3, 0.5)
+
+        G.GAME.blind.chips = math.floor(G.GAME.blind.chips / 4)
+        G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+        return true end }))
+
+    -- snippet taken from Magic the Jokering
+    if not next(SMODS.find_mod("NotJustYet")) then
+      G.E_MANAGER:add_event(Event({
+      func = (function(t)
+        if G.GAME.chips >= G.GAME.blind.chips then 
+        G.E_MANAGER:add_event(
+          Event({
+            trigger = "immediate",
+            func = function()
+              if G.STATE ~= G.STATES.SELECTING_HAND then
+                return false
+              end
+              G.STATE = G.STATES.HAND_PLAYED
+              G.STATE_COMPLETE = true
+              end_round()
+              return true
+            end,
+          }),
+          "other"
+        )
+      end
+      return true end)
+      }))
+    end
+    delay(0.5)
+    -- print("wow")
+    draw_card(G.play, G.jokers, nil, 'up', nil, card)
+  end,
+}
+
+SMODS.Joker {
+  key = "dream_book",
+  name = "Dream Book",
+  config = {
+    extra = {
+      active = true,
+      selected = false,
+    }
+  },
+  pos = {x = 7, y = 0},
+  atlas = "zero_jokers",
+  rarity = 2,
+  cost = 8,
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = true,
+  eternal_compat = true,
+  perishable_compat = true,
+  demicoloncompat = false,
+  zero_usable = true,
+  -- keep_on_use = true,
+  can_use = function(self, card)
+    return G.STATE == G.STATES.SELECTING_HAND and card.ability.extra.active
+  end,
+  loc_vars = function(self, info_queue, center)
+  end,
+  calculate = function(self, card, context)
+    if context.end_of_round and not card.ability.extra.active and G.GAME.blind.boss then
+      card.ability.extra.active = true
+      return {
+        message = localize("k_charged_ex")
+      }
+    end
+    if context.end_of_round and card.ability.extra.selected then
+      card.ability.extra.selected = false
+      SMODS.change_play_limit(-1)
+      SMODS.change_discard_limit(-1)
+    end
+  end,
+  use = function(self, card, area, copier)
+    card.ability.extra.active = false
+    card.ability.extra.selected = true
+    SMODS.change_play_limit(1)
+    SMODS.change_discard_limit(1)
+
+    local draw_count = #G.hand.cards
+    
+    SMODS.draw_cards(draw_count)
+
+    delay(0.5)
+    -- print("wow")
+    draw_card(G.play, G.jokers, nil, 'up', nil, card)
+  end,
+}

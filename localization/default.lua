@@ -64,6 +64,26 @@ local loc_stuff = {
           }
         },
       },
+      j_zero_defense_removal = {
+        name = "Defense Removal",
+        text = {
+          {
+            "Once per ante, {C:dark_edition,E:1}use{} this joker",
+            "to reduce the {C:attention}blind",
+            "requirement by three quarters"
+          }
+        },
+      },
+      j_zero_dream_book = {
+        name = "Dream Book",
+        text = {
+          {
+            "Once per ante, {C:dark_edition,E:1}use{} this joker to draw ",
+            "a card for each card currently in hand,",
+            "and get +1 {C:blue}selection {C:red}limit{} until end of round"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
