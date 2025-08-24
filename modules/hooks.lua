@@ -153,3 +153,29 @@ function zero_error_use_joker (card, area, copier)
 		return obj:use(card, area, copier)
 	end
 end
+
+-- patch for Brights' [Spades/Hearts/Clubs/Diamonds]ness
+-- look here for Suit Yourself cards later
+local alias__Card_is_suit = Card.is_suit
+function Card:is_suit(suit, bypass_debuff, flush_calc)
+	if not SMODS.has_no_suit(self) and self.base.suit == "zero_Brights" then
+		if suit == "Spades" or suit == "Hearts" or suit == "Clubs" or suit == "Diamonds" then
+			return true
+		end
+		
+		-- this specifically makes it do the thing for spectrums
+		if suit == "not a suit" then return true end
+	end
+	return alias__Card_is_suit(self, suit, bypass_debuff, flush_calc)
+end
+
+local alias__SMODS_localize_perma_bonuses = SMODS.localize_perma_bonuses
+function SMODS.localize_perma_bonuses(specific_vars, desc_nodes)
+	local ret = alias__SMODS_localize_perma_bonuses(specific_vars, desc_nodes)
+	
+    if specific_vars and specific_vars.zero_brights then
+        localize{type = 'other', key = 'zero_brights_blurb', nodes = desc_nodes, vars = {}}
+    end
+	
+	return ret
+end

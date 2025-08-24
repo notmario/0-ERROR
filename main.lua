@@ -3,5 +3,7 @@ assert(SMODS.load_file("./modules/hooks.lua"))()
 
 assert(SMODS.load_file("./modules/prestige.lua"))()
 assert(SMODS.load_file("./modules/jokers.lua"))()
+assert(SMODS.load_file("./modules/suits.lua"))()
+assert(SMODS.load_file("./modules/tarot.lua"))()
 
 print("testing")

@@ -1,5 +1,15 @@
 local loc_stuff = {
   descriptions = {
+    Tarot = {
+	  c_zero_light = {
+	    name = "The Light",
+		text = {
+          "Converts up to",
+          "{C:attention}#1#{} selected cards",
+          "to {V:1}#2#{}",
+		},
+	  },
+	},
     Joker = {
       j_zero_mad = {
         name = "Mutual Assured Destruction",
@@ -331,6 +341,12 @@ local loc_stuff = {
           "{C:attention}+1{} consumeable slot",
         },
       },
+	  zero_brights_blurb = {
+        text = {
+          "Counts as each",
+		  "regular suit",
+        },
+	  },
     },
   },
   misc = {
@@ -353,7 +369,13 @@ local loc_stuff = {
       k_c_zero_harmonycrystal = "Harmony Crystal",
       k_c_zero_artifact = "Artifact",
       k_c_zero_bloodstone = "Blood Stone",
-    }
+    },
+	suits_singular = {
+	  zero_Brights = "Bright",
+	},
+	suits_plural = {
+	  zero_Brights = "Brights",
+	},
   }
 }
 
