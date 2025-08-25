@@ -28,7 +28,7 @@ SMODS.Enhancement {
     if context.main_scoring and context.cardarea == G.hand then
 	  local val = card.ability.extra.xmult
 	  for k,v in ipairs(G.hand.cards) do
-	    if SMODS.has_enhancement(v, "m_zero_sunsteel") then
+	    if v ~= card and SMODS.has_enhancement(v, "m_zero_sunsteel") then
 		  val = val + card.ability.extra.xmult_mod
 		end
       end
