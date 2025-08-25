@@ -1,0 +1,18 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# why doesnt smods do this
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "table.insert(curr, hand[j])"
+position = "at"
+payload = '''
+if not SMODS.has_no_rank(hand[j]) then
+  table.insert(curr, hand[j])
+end
+'''
+match_indent = true
+overwrite = true

@@ -10,7 +10,7 @@ target = "card.lua"
 pattern = "bonus_chips = bonus_chips ~= 0 and bonus_chips or nil,"
 position = "after"
 payload = '''
-zero_brights = not not (self.base.suit == "zero_Brights" and not SMODS.has_no_suit(self)),'''
+zero_brights = not not (self.base.suit == "zero_Brights" and not self.config.center.replace_base_card),'''
 match_indent = true
 overwrite = false
 

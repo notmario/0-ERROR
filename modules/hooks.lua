@@ -158,7 +158,7 @@ end
 -- look here for Suit Yourself cards later
 local alias__Card_is_suit = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
-	if not SMODS.has_no_suit(self) and self.base.suit == "zero_Brights" then
+	if zero_has_any_regular_suit(self) then
 		if suit == "Spades" or suit == "Hearts" or suit == "Clubs" or suit == "Diamonds" then
 			return true
 		end

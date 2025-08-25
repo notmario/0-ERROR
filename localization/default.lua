@@ -1,12 +1,49 @@
 local loc_stuff = {
   descriptions = {
+    Enhanced = {
+	  m_zero_sunsteel = {
+	    name = "Sunsteel Card",
+		text = {
+		  "{X:mult,C:white}X#1#{} Mult while this",
+		  "card stays in hand, increased",
+		  "by {X:mult,C:white}X#2#{} for each other",
+		  "{C:attention}Sunsteel Card{} held in hand",
+		},
+	  },
+	  m_zero_suit_yourself = {
+	    name = "Suit Yourself Card",
+		text = {
+		  "No rank, counts as",
+		  "any regular suit",
+		  "If scored with cards of",
+		  "each regular suit, earns {C:money}$#1#",
+		  "then {E:1,C:red}self destructs",
+		},
+	  },
+	},
     Tarot = {
 	  c_zero_light = {
 	    name = "The Light",
 		text = {
-          "Converts up to",
-          "{C:attention}#1#{} selected cards",
-          "to {V:1}#2#{}",
+          "Converts up to {C:attention}#1#{}",
+		  "selected cards to {V:1}#2#{}",
+		  "{C:inactive,s:0.7}({V:1,s:0.7}#2#{C:inactive,s:0.7} count as any regular suit)",
+		},
+	  },
+	  c_zero_flame = {
+	    name = "The Flame",
+		text = {
+		  "Enhances {C:attention}#1#",
+		  "selected card#3# to",
+		  "{C:attention}#2##3#",
+		},
+	  },
+	  c_zero_choice = {
+	    name = "The Choice",
+		text = {
+		  "Enhances {C:attention}#1#",
+		  "selected card#3# to",
+		  "{C:attention}#2##3#",
 		},
 	  },
 	},
