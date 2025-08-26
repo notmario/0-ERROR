@@ -42,7 +42,7 @@ SMODS.Enhancement {
   name = "Suit Yourself Card",
   config = {
     extra = {
-	  dollars = 10,
+	  dollars = 8,
 	  active = false,
 	},
   },

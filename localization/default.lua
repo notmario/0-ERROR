@@ -4,8 +4,8 @@ local loc_stuff = {
 	  m_zero_sunsteel = {
 	    name = "Sunsteel Card",
 		text = {
-		  "{X:mult,C:white}X#1#{} Mult while this",
-		  "card stays in hand, increased",
+		  "{X:mult,C:white}X#1#{} Mult while this card",
+		  "stays in hand, increased",
 		  "by {X:mult,C:white}X#2#{} for each other",
 		  "{C:attention}Sunsteel Card{} held in hand",
 		},
@@ -16,8 +16,8 @@ local loc_stuff = {
 		  "No rank, counts as",
 		  "any regular suit",
 		  "If scored with cards of",
-		  "each regular suit, earns {C:money}$#1#",
-		  "then {E:1,C:red}self destructs",
+		  "each regular suit, earns",
+		  "{C:money}$#1#{} then {E:1,C:red}self destructs",
 		},
 	  },
 	},
@@ -128,6 +128,48 @@ local loc_stuff = {
             "Once per ante, {C:dark_edition,E:1}use{} this joker to draw ",
             "a card for each card currently in hand,",
             "and get +1 {C:blue}selection {C:red}limit{} until end of round"
+          }
+        },
+      },
+      j_zero_brilliance = {
+        name = "Brilliance",
+        text = {
+          {
+            "Played {C:attention}Gold Cards{} give",
+			"{X:mult,C:white}X#1#{} Mult when scored",
+			"Played {C:attention}Steel Cards{}",
+			"earn {C:money}$#2#{} when scored",
+          }
+        },
+      },
+      j_zero_dragonsthorn = {
+        name = "Dragonsthorn",
+        text = {
+          {
+            "Played {C:attention}Sunsteel Cards{}",
+			"give {X:mult,C:white}X#1#{} Mult when",
+			"scored for each {C:attention}Sunsteel",
+			"{C:attention}Card{} in your {C:attention}full deck",
+			"{C:inactive}(Currently: {X:mult,C:white}X#2#{C:inactive} Mult)",
+          }
+        },
+      },
+      j_zero_venture_card = {
+        name = "Venture Card",
+        text = {
+          {
+			"Adds a {C:attention}Suit Yourself{}",
+			"card to deck when",
+			"{C:attention}Blind{} is selected",
+          }
+        },
+      },
+      j_zero_alpine_lily = {
+        name = "Alpine Lily",
+        text = {
+          {
+			"{C:attention}Mutates{} at end of round, may",
+			"gain or lose effects or values",
           }
         },
       },
@@ -391,8 +433,15 @@ local loc_stuff = {
       b_prestige = "Prestige",
       k_prestige_pack = "Prestige Pack",
       k_plus_prestige = "+1 Prestige",
+	  k_plus_suit_yourself = "+1 Suit Yourself",
       k_poisoned_ex = "Poisoned!",
       k_charged_ex = "Charged!",
+	  k_mutated_ex = "Mutated!",
+	  k_new_effect_ex = "New Effect!",
+	  k_lose_effect_ex = "Lost Effect!",
+	  k_change_effect_ex = "Changed Effect!",
+	  k_gain_value_ex = "Gained Value!",
+	  k_lose_value_ex = "Lost Value!",
 
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",
@@ -407,6 +456,13 @@ local loc_stuff = {
       k_c_zero_artifact = "Artifact",
       k_c_zero_bloodstone = "Blood Stone",
     },
+	v_dictionary = {
+	  zero_alpine_lily_mult = "+#1# Mult",
+	  zero_alpine_lily_chips = "+#1# Chips",
+	  zero_alpine_lily_xmult = "X#1# Mult",
+	  zero_alpine_lily_xchips = "X#1# Chips",
+	  zero_alpine_lily_dollars = "+$#1#",
+	},
 	suits_singular = {
 	  zero_Brights = "Bright",
 	},

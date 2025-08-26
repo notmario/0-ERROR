@@ -584,3 +584,397 @@ SMODS.Joker {
     draw_card(G.play, G.jokers, nil, 'up', nil, card)
   end,
 }
+
+SMODS.Joker {
+	key = "brilliance",
+	name = "Brilliance",
+	config = {
+		extra = {
+			xmult = 1.5,
+			dollars = 3,
+		}
+	},
+	pos = {x = 9, y = 4},
+	atlas = "zero_jokers",
+	rarity = 2,
+	cost = 6,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	demicoloncompat = false,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.m_gold
+		info_queue[#info_queue+1] = G.P_CENTERS.m_steel
+		return { vars = {
+			card.ability.extra.xmult,
+			card.ability.extra.dollars
+		}}
+	end,
+	calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play and not context.end_of_round then
+			local ret = {}
+			local function appendextra(tbl, _ret)
+				if not tbl.extra then tbl.extra = _ret else
+				appendextra(tbl.extra, _ret) end
+			end
+			if SMODS.has_enhancement(context.other_card,"m_gold") then
+				appendextra(ret, {
+					xmult = card.ability.extra.xmult,
+				})
+			end
+			if SMODS.has_enhancement(context.other_card,"m_steel") then
+				appendextra(ret, {
+					dollars = card.ability.extra.dollars,
+				})
+			end
+			if ret.extra then return ret.extra end
+		end
+	end,
+	in_pool = function(self)
+		for k,v in ipairs(G.playing_cards) do
+			if SMODS.has_enhancement(v,"m_gold") or SMODS.has_enhancement(v,"m_steel") then
+				return true
+			end
+		end
+	end,
+}
+
+SMODS.Joker {
+	key = "dragonsthorn",
+	name = "Dragonsthorn",
+	config = {
+		extra = {
+			xmult_mod = 0.05,
+		}
+	},
+	pos = {x = 8, y = 4},
+	atlas = "zero_jokers",
+	rarity = 2,
+	cost = 6,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	demicoloncompat = false,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.m_zero_sunsteel
+		local count = 0
+		if G.deck then
+			for k,v in ipairs(G.playing_cards) do
+				if SMODS.has_enhancement(v, "m_zero_sunsteel") then
+					count = count + 1
+				end
+			end
+		end
+		return { vars = {
+			card.ability.extra.xmult_mod,
+			1 + (card.ability.extra.xmult_mod * count)
+		}}
+	end,
+	calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play and not context.end_of_round and SMODS.has_enhancement(context.other_card, "m_zero_sunsteel") then
+			local count = 0
+			for k,v in ipairs(G.playing_cards) do
+				if SMODS.has_enhancement(v, "m_zero_sunsteel") then
+					count = count + 1
+				end
+			end
+			if count > 1 then -- idk
+				return { xmult = 1 + (card.ability.extra.xmult_mod * count) }
+			end
+		end
+	end,
+	enhancement_gate = "m_zero_sunsteel",
+}
+
+SMODS.Joker {
+	key = "venture_card",
+	name = "Venture Card",
+	config = {
+		extra = {
+		}
+	},
+	pos = {x = 5, y = 4},
+	atlas = "zero_jokers",
+	rarity = 2,
+	cost = 6,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_zero_suit_yourself
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind or context.forcetrigger then
+            local sy_card = SMODS.create_card { set = "Base", enhancement = "m_zero_suit_yourself", area = G.discard }
+            G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+            sy_card.playing_card = G.playing_card
+            table.insert(G.playing_cards, sy_card)
+			sy_card.states.visible = false
+
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    G.play:emplace(sy_card)
+					sy_card.states.visible = true
+                    sy_card:start_materialize({ G.C.SUITS.Spades, G.C.SUITS.Hearts, G.C.SUITS.Clubs, G.C.SUITS.Diamonds })
+                    return true
+                end
+            }))
+            return {
+                message = localize('k_plus_suit_yourself'),
+                colour = G.C.SECONDARY_SET.Enhanced,
+                func = function()
+                    G.E_MANAGER:add_event(Event({
+						trigger = "after",
+                        func = function()
+                            G.deck.config.card_limit = G.deck.config.card_limit + 1
+							draw_card(G.play, G.deck, 100, 'up', nil, sy_card)
+							SMODS.calculate_context({ playing_card_added = true, cards = { sy_card } })
+                            return true
+                        end
+                    }))
+                end
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+	key = "alpine_lily",
+	name = "Alpine Lily",
+	config = {
+		extra = {
+			odds = {
+				new_effect = 3,
+				lose_effect = 3,
+				change_effect = 5,
+				gain_value = 12,
+				lose_value = 8,
+			},
+			min_new_value = 1,
+			max_new_value = 10,
+			min_gain_value = 1,
+			max_gain_value = 15,
+			min_lose_value = 1,
+			max_lose_value = 10,
+			mutations = {
+				{ effect = "mult", value = 4 }
+			}
+		}
+	},
+	pos = {x = 0, y = 1},
+	atlas = "zero_jokers",
+	rarity = 1,
+	cost = 4,
+	unlocked = true,
+	discovered = true,
+	eternal_compat = true,
+	perishable_compat = true,
+	demicoloncompat = true,
+	
+	-- this is TODO because this is complicated already
+	blueprint_compat = false,
+	
+	-- Alright buckle up because this is where it gets weird
+	
+	lily_mutation_effects = {
+		mult = {
+			calculate = function(self, card, value)
+				return {
+					mult = value * 1
+				}
+			end,
+			loc_vars = function(self, card, value)
+				return { vars = { value * 1 } }
+			end,
+		},
+		chips = {
+			calculate = function(self, card, value)
+				return {
+					chips = value * 5
+				}
+			end,
+			loc_vars = function(self, card, value)
+				return { vars = { value * 5 } }
+			end,
+		},
+		xmult = {
+			calculate = function(self, card, value)
+				return {
+					xmult = 1 + (value * 0.025)
+				}
+			end,
+			loc_vars = function(self, card, value)
+				return { vars = { 1 + (value * 0.025) } }
+			end,
+		},
+		xchips = {
+			calculate = function(self, card, value)
+				return {
+					xchips = 1 + (value * 0.025)
+				}
+			end,
+			loc_vars = function(self, card, value)
+				return { vars = { 1 + (value * 0.025) } }
+			end,
+		},
+		dollars = {
+			calculate = function(self, card, value)
+				return {
+					dollars = math.floor(value * 0.4)
+				}
+			end,
+			loc_vars = function(self, card, value)
+				return { vars = { math.floor(value * 0.4) } }
+			end,
+		},
+	},
+	
+	-- Returns a list of every valid mutation effect
+	lily_list_mutation_effects = function(self)
+		local ret = {}
+		for key,effect in pairs(self.lily_mutation_effects) do
+			if type(effect.in_pool) ~= "function" or effect:in_pool() then
+				ret[#ret+1] = key
+			end
+		end
+		return ret
+	end,
+	
+	-- Creates a new mutation and places it into the mutations of card
+	lily_create_mutation = function(self, card)
+		local mutations = self:lily_list_mutation_effects()
+		
+		local mutation = { effect = pseudorandom_element(mutations, "zero_alpine_lily_new_mutation"), value = pseudorandom("zero_alpine_lily_new_value", card.ability.extra.min_new_value, card.ability.extra.max_new_value) }
+		
+		card.ability.extra.mutations[#card.ability.extra.mutations+1] = mutation
+		return mutation
+	end,	
+	
+    loc_vars = function(self, info_queue, card)
+        local main_end = {
+		}
+		for _, mutation in ipairs(card.ability.extra.mutations) do
+			local mutation_effect = self.lily_mutation_effects[mutation.effect]
+			local vars = {}
+			if type(mutation_effect.loc_vars) == "function" then
+				vars = mutation_effect:loc_vars(card, mutation.value).vars
+			end
+			main_end[#main_end+1] = {
+				n = G.UIT.R, config = { align = "cm" },
+				nodes = {
+					{
+						n = G.UIT.T, config = {text = localize{
+							type = "variable",
+							key = "zero_alpine_lily_" .. mutation.effect,
+							vars = vars
+						}, scale = 0.32, colour = G.C.UI.TEXT_DARK}
+					}
+				}
+			}
+		end
+		return {main_end = main_end}
+    end,
+	
+    calculate = function(self, card, context)
+		if context.joker_main then
+            local function append_extra(_ret, append)
+                if _ret.extra then return append_extra(_ret.extra, append) end
+                _ret.extra = append
+                return _ret
+            end
+			local ret = {}
+			for _,mutation in ipairs(card.ability.extra.mutations) do
+				local mutation_effect = self.lily_mutation_effects[mutation.effect]
+				if type(mutation_effect.calculate) == "function" then
+					append_extra(ret, mutation_effect:calculate(card, mutation.value))
+				end
+			end
+			if ret.extra then return ret.extra end
+		end
+		
+		if (context.end_of_round and not context.game_over and context.cardarea == G.jokers) or context.forcetrigger then
+			local odds_list = {
+				"new_effect",
+				"lose_effect",
+				"change_effect",
+				"gain_value",
+				"lose_value",
+			}
+			local max_odds = 0
+			for k,v in ipairs(odds_list) do max_odds = max_odds + card.ability.extra.odds[v] end
+			local roll = pseudorandom("zero_alpine_lily_eor", 1, max_odds)
+			for k,v in ipairs(odds_list) do
+				if roll <= card.ability.extra.odds[v] then
+					-- do that effect
+					if v == "new_effect" or (#card.ability.extra.mutations == 1 and v == "lose_effect") then
+						return {
+							message = localize("k_mutated_ex"),
+							extra = {
+								func = function()
+									self:lily_create_mutation(card)
+								end,
+								message = localize("k_new_effect_ex")
+							},
+						}
+					elseif v == "lose_effect" then
+						-- If this effect is rolled while the lily has
+						-- 1 effect remaining, instead we literally just
+						-- lie and pretend they rolled the above effect
+						return {
+							message = localize("k_mutated_ex"),
+							extra = {
+								func = function()
+									table.remove(card.ability.extra.mutations, pseudorandom("zero_alpine_lily_lose_effect", 1, #card.ability.extra.mutations))
+								end,
+								message = localize("k_lose_effect_ex")
+							},
+						}
+					elseif v == "change_effect" then
+						return {
+							message = localize("k_mutated_ex"),
+							extra = {
+								func = function()
+									card.ability.extra.mutations[pseudorandom("zero_alpine_lily_change_effect", 1, #card.ability.extra.mutations)].effect = pseudorandom_element(self:lily_list_mutation_effects(), "zero_alpine_lily_change_mutation")
+								end,
+								message = localize("k_change_effect_ex")
+							},
+						}
+					elseif v == "gain_value" then
+						return {
+							message = localize("k_mutated_ex"),
+							extra = {
+								func = function()
+									local mutation = card.ability.extra.mutations[pseudorandom("zero_alpine_lily_gain_value_effect", 1, #card.ability.extra.mutations)]
+									mutation.value = mutation.value + pseudorandom("zero_alpine_lily_gain_value", card.ability.extra.min_gain_value, card.ability.extra.max_gain_value)
+								end,
+								message = localize("k_gain_value_ex")
+							},
+						}
+					elseif v == "lose_value" then
+						return {
+							message = localize("k_mutated_ex"),
+							extra = {
+								func = function()
+									local mutation = card.ability.extra.mutations[pseudorandom("zero_alpine_lily_lose_value_effect", 1, #card.ability.extra.mutations)]
+									mutation.value = math.max(0, mutation.value - pseudorandom("zero_alpine_lily_lose_value", card.ability.extra.min_lose_value, card.ability.extra.max_lose_value))
+								end,
+								message = localize("k_lose_value_ex")
+							},
+						}
+					end
+					
+					break-- or return?
+				else
+					roll = roll - card.ability.extra.odds[v]
+				end
+			end
+		end
+    end,
+}
