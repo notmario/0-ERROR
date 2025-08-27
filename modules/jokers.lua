@@ -765,10 +765,6 @@ SMODS.Joker {
 			max_lose_value = 10,
 			mutations = {
 				{ effect = "mult", value = 4 },
-				{ effect = "chips", value = 4 },
-				{ effect = "xmult", value = 4 },
-				{ effect = "xchips", value = 4 },
-				{ effect = "dollars", value = 4 },
 			}
 		}
 	},
