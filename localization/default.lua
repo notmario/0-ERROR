@@ -168,11 +168,36 @@ local loc_stuff = {
         name = "Alpine Lily",
         text = {
           {
-			"{C:attention}Mutates{} at end of round, may",
-			"gain or lose effects or values",
+			"{C:attention}Mutates{} at end of round",
+			--"{s:0.15} ",
           }
         },
       },
+	  j_zero_alpine_lily_mult = {
+		text = {
+			"{C:mult}+#1#{} Mult",
+		},
+	  },
+	  j_zero_alpine_lily_chips = {
+		text = {
+			"{C:chips}+#1#{} Chips",
+		},
+	  },
+	  j_zero_alpine_lily_xmult = {
+		text = {
+			"{X:mult,C:white}X#1#{} Mult",
+		},
+	  },
+	  j_zero_alpine_lily_xchips = {
+		text = {
+			"{C:white,X:chips}X#1#{} Chips",
+		},
+	  },
+	  j_zero_alpine_lily_dollars = {
+		text = {
+			"{C:money}+$#1#",
+		},
+	  },
     },
     Prestige = {
       c_zero_plasmid = {

@@ -764,7 +764,11 @@ SMODS.Joker {
 			min_lose_value = 1,
 			max_lose_value = 10,
 			mutations = {
-				{ effect = "mult", value = 4 }
+				{ effect = "mult", value = 4 },
+				{ effect = "chips", value = 4 },
+				{ effect = "xmult", value = 4 },
+				{ effect = "xchips", value = 4 },
+				{ effect = "dollars", value = 4 },
 			}
 		}
 	},
@@ -866,18 +870,26 @@ SMODS.Joker {
 			if type(mutation_effect.loc_vars) == "function" then
 				vars = mutation_effect:loc_vars(card, mutation.value).vars
 			end
-			main_end[#main_end+1] = {
-				n = G.UIT.R, config = { align = "cm" },
-				nodes = {
-					{
-						n = G.UIT.T, config = {text = localize{
-							type = "variable",
-							key = "zero_alpine_lily_" .. mutation.effect,
-							vars = vars
-						}, scale = 0.32, colour = G.C.UI.TEXT_DARK}
-					}
-				}
-			}
+			
+			local desc_node = {}
+			localize {type = 'descriptions',
+				key = "j_zero_alpine_lily_" .. mutation.effect,
+				set = 'Joker',
+				nodes = desc_node,
+				scale = 1,
+				text_colour = G.C.UI.TEXT_DARK,
+				vars = vars
+			} 
+			desc_node = desc_from_rows(desc_node,true)
+			--desc node should contains the text nodes now
+			
+			desc_node.config.minh = 0
+			desc_node.config.padding = 0
+			desc_node.config.r = 0
+			
+			--print(inspect(desc_node.config))
+			
+			main_end[#main_end+1] = desc_node
 		end
 		return {main_end = main_end}
     end,
