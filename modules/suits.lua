@@ -54,7 +54,11 @@ SMODS.Suit {
 					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank"},
 					display_ranks = {next(SMODS.find_mod("finity")) and 'finity_V', 'King', 'Queen', 'Jack', next(SMODS.find_mod("entr")) and 'entr_nilrank' or nil},
 					atlas = self.lc_atlas,
-					pos_style = 'ranks'
+					pos_style = 'ranks',
+					akyrs_pure_suit = {
+						pos = {x = 15, y = 0,},
+						atlas_key = "zero_brights_lc",
+					},
 				},
 				{
 					key = 'hc',
@@ -62,7 +66,11 @@ SMODS.Suit {
 					display_ranks = {next(SMODS.find_mod("finity")) and 'finity_V', 'King', 'Queen', 'Jack', next(SMODS.find_mod("entr")) and 'entr_nilrank' or nil},
 					atlas = self.hc_atlas,
 					pos_style = 'ranks',
-					hc_default = true
+					hc_default = true,
+					akyrs_pure_suit = {
+						pos = {x = 15, y = 0,},
+						atlas_key = "zero_brights_hc",
+					},
 				},
 			}
 		}
