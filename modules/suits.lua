@@ -41,5 +41,30 @@ SMODS.Suit {
 	in_pool = function(self, args)
 		--this is where something for standard packs would go
 		return false
-	end
+	end,
+	
+	create_default_deck_skin = function(self)
+		SMODS.DeckSkin{
+			key = 'default_'..self.key,
+			prefix_config = { key = false },
+			suit = self.key,
+			palettes = {
+				{
+					key = contrast and 'lc' or 'def',
+					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank"},
+					display_ranks = {next(SMODS.find_mod("finity")) and 'finity_V', 'King', 'Queen', 'Jack', next(SMODS.find_mod("entr")) and 'entr_nilrank' or nil},
+					atlas = self.lc_atlas,
+					pos_style = 'ranks'
+				},
+				{
+					key = 'hc',
+					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank"},
+					display_ranks = {next(SMODS.find_mod("finity")) and 'finity_V', 'King', 'Queen', 'Jack', next(SMODS.find_mod("entr")) and 'entr_nilrank' or nil},
+					atlas = self.hc_atlas,
+					pos_style = 'ranks',
+					hc_default = true
+				},
+			}
+		}
+	end,
 }
