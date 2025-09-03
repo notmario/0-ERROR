@@ -50,7 +50,7 @@ SMODS.Suit {
 			suit = self.key,
 			palettes = {
 				{
-					key = contrast and 'lc' or 'def',
+					key = 'lc',
 					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank"},
 					display_ranks = {next(SMODS.find_mod("finity")) and 'finity_V', 'King', 'Queen', 'Jack', next(SMODS.find_mod("entr")) and 'entr_nilrank' or nil},
 					atlas = self.lc_atlas,
