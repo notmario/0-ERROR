@@ -8,4 +8,6 @@ assert(SMODS.load_file("./modules/enhancements.lua"))()
 assert(SMODS.load_file("./modules/suits.lua"))()
 assert(SMODS.load_file("./modules/tarot.lua"))()
 
-print("testing")
+assert(SMODS.load_file("./modules/challenges.lua"))()
+
+print("0 ERROR")

@@ -168,8 +168,9 @@ local loc_stuff = {
         name = "Alpine Lily",
         text = {
           {
-			"{C:attention}Mutates{} at end of round",
-			--"{s:0.15} ",
+			"{C:attention}Mutates #1#{} time#2#",
+			"at end of round",
+			"{s:0.15} ",
           }
         },
       },
@@ -467,6 +468,9 @@ local loc_stuff = {
 	  k_change_effect_ex = "Changed Effect!",
 	  k_gain_value_ex = "Gained Value!",
 	  k_lose_value_ex = "Lost Value!",
+	  k_nothing_ex = "Nothing!",
+	  k_plus_mutation_ex = "+Mutation!",
+	  k_minus_mutation_ex = "-Mutation!",
 
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",
@@ -493,6 +497,9 @@ local loc_stuff = {
 	},
 	suits_plural = {
 	  zero_Brights = "Brights",
+	},
+	challenge_names = {
+		c_zero_alpine_garden = "Alpine Garden",
 	},
   }
 }

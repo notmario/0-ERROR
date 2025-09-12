@@ -763,6 +763,7 @@ SMODS.Joker {
 			max_gain_value = 15,
 			min_lose_value = 1,
 			max_lose_value = 10,
+			mutations_per_round = 1,
 			mutations = {
 				{ effect = "mult", value = 4 },
 			}
@@ -778,8 +779,7 @@ SMODS.Joker {
 	perishable_compat = true,
 	demicoloncompat = true,
 	
-	-- this is TODO because this is complicated already
-	blueprint_compat = false,
+	blueprint_compat = true,
 	
 	-- Alright buckle up because this is where it gets weird
 	
@@ -887,16 +887,20 @@ SMODS.Joker {
 			
 			main_end[#main_end+1] = desc_node
 		end
-		return {main_end = main_end}
+		return {vars = {
+			card.ability.extra.mutations_per_round,
+			card.ability.extra.mutations_per_round == 1 and "" or "s",
+		}, main_end = main_end}
     end,
 	
     calculate = function(self, card, context)
+		local function append_extra(_ret, append)
+			if _ret.extra then return append_extra(_ret.extra, append) end
+			_ret.extra = append
+			return _ret
+		end
+		
 		if context.joker_main then
-            local function append_extra(_ret, append)
-                if _ret.extra then return append_extra(_ret.extra, append) end
-                _ret.extra = append
-                return _ret
-            end
 			local ret = {}
 			for _,mutation in ipairs(card.ability.extra.mutations) do
 				local mutation_effect = self.lily_mutation_effects[mutation.effect]
@@ -907,82 +911,117 @@ SMODS.Joker {
 			if ret.extra then return ret.extra end
 		end
 		
-		if (context.end_of_round and not context.game_over and context.cardarea == G.jokers) or context.forcetrigger then
-			local odds_list = {
-				"new_effect",
-				"lose_effect",
-				"change_effect",
-				"gain_value",
-				"lose_value",
-			}
-			local max_odds = 0
-			for k,v in ipairs(odds_list) do max_odds = max_odds + card.ability.extra.odds[v] end
-			local roll = pseudorandom("zero_alpine_lily_eor", 1, max_odds)
-			for k,v in ipairs(odds_list) do
-				if roll <= card.ability.extra.odds[v] then
-					-- do that effect
-					if v == "new_effect" or (#card.ability.extra.mutations == 1 and v == "lose_effect") then
-						return {
-							message = localize("k_mutated_ex"),
-							extra = {
-								func = function()
-									self:lily_create_mutation(card)
-								end,
-								message = localize("k_new_effect_ex")
-							},
-						}
-					elseif v == "lose_effect" then
-						-- If this effect is rolled while the lily has
-						-- 1 effect remaining, instead we literally just
-						-- lie and pretend they rolled the above effect
-						return {
-							message = localize("k_mutated_ex"),
-							extra = {
-								func = function()
-									table.remove(card.ability.extra.mutations, pseudorandom("zero_alpine_lily_lose_effect", 1, #card.ability.extra.mutations))
-								end,
-								message = localize("k_lose_effect_ex")
-							},
-						}
-					elseif v == "change_effect" then
-						return {
-							message = localize("k_mutated_ex"),
-							extra = {
-								func = function()
-									card.ability.extra.mutations[pseudorandom("zero_alpine_lily_change_effect", 1, #card.ability.extra.mutations)].effect = pseudorandom_element(self:lily_list_mutation_effects(), "zero_alpine_lily_change_mutation")
-								end,
-								message = localize("k_change_effect_ex")
-							},
-						}
-					elseif v == "gain_value" then
-						return {
-							message = localize("k_mutated_ex"),
-							extra = {
-								func = function()
-									local mutation = card.ability.extra.mutations[pseudorandom("zero_alpine_lily_gain_value_effect", 1, #card.ability.extra.mutations)]
-									mutation.value = mutation.value + pseudorandom("zero_alpine_lily_gain_value", card.ability.extra.min_gain_value, card.ability.extra.max_gain_value)
-								end,
-								message = localize("k_gain_value_ex")
-							},
-						}
-					elseif v == "lose_value" then
-						return {
-							message = localize("k_mutated_ex"),
-							extra = {
-								func = function()
-									local mutation = card.ability.extra.mutations[pseudorandom("zero_alpine_lily_lose_value_effect", 1, #card.ability.extra.mutations)]
-									mutation.value = math.max(0, mutation.value - pseudorandom("zero_alpine_lily_lose_value", card.ability.extra.min_lose_value, card.ability.extra.max_lose_value))
-								end,
-								message = localize("k_lose_value_ex")
-							},
-						}
+		if not context.blueprint and ((context.end_of_round and not context.game_over and context.cardarea == G.jokers) or context.forcetrigger) then
+			local ret = {}
+			local repeats = card.ability.extra.mutations_per_round
+			for iii=1,repeats do
+				local odds_list = {
+					"new_effect",
+					"lose_effect",
+					"change_effect",
+					"gain_value",
+					"lose_value",
+					"nothing",
+					"plus_mutation",
+					"minus_mutation",
+				}
+				local max_odds = 0
+				for k,v in ipairs(odds_list) do max_odds = max_odds + card.ability.extra.odds[v] end
+				local roll = pseudorandom("zero_alpine_lily_eor", 1, max_odds)
+				for k,v in ipairs(odds_list) do
+					if roll <= card.ability.extra.odds[v] then
+						-- do that effect
+						if v == "new_effect" or (#card.ability.extra.mutations == 1 and v == "lose_effect") then
+							append_extra(ret, {
+								message = localize("k_mutated_ex"),
+								extra = {
+									func = function()
+										self:lily_create_mutation(card)
+									end,
+									message = localize("k_new_effect_ex")
+								},
+							})
+						elseif v == "lose_effect" then
+							-- If this effect is rolled while the lily has
+							-- 1 effect remaining, instead we literally just
+							-- lie and pretend they rolled the above effect
+							append_extra(ret, {
+								message = localize("k_mutated_ex"),
+								extra = {
+									func = function()
+										table.remove(card.ability.extra.mutations, pseudorandom("zero_alpine_lily_lose_effect", 1, #card.ability.extra.mutations))
+									end,
+									message = localize("k_lose_effect_ex")
+								},
+							})
+						elseif v == "change_effect" then
+							append_extra(ret, {
+								message = localize("k_mutated_ex"),
+								extra = {
+									func = function()
+										card.ability.extra.mutations[pseudorandom("zero_alpine_lily_change_effect", 1, #card.ability.extra.mutations)].effect = pseudorandom_element(self:lily_list_mutation_effects(), "zero_alpine_lily_change_mutation")
+									end,
+									message = localize("k_change_effect_ex")
+								},
+							})
+						elseif v == "gain_value" then
+							append_extra(ret, {
+								message = localize("k_mutated_ex"),
+								extra = {
+									func = function()
+										local mutation = card.ability.extra.mutations[pseudorandom("zero_alpine_lily_gain_value_effect", 1, #card.ability.extra.mutations)]
+										mutation.value = mutation.value + pseudorandom("zero_alpine_lily_gain_value", card.ability.extra.min_gain_value, card.ability.extra.max_gain_value)
+									end,
+									message = localize("k_gain_value_ex")
+								},
+							})
+						elseif v == "lose_value" then
+							append_extra(ret, {
+								message = localize("k_mutated_ex"),
+								extra = {
+									func = function()
+										local mutation = card.ability.extra.mutations[pseudorandom("zero_alpine_lily_lose_value_effect", 1, #card.ability.extra.mutations)]
+										mutation.value = math.max(0, mutation.value - pseudorandom("zero_alpine_lily_lose_value", card.ability.extra.min_lose_value, card.ability.extra.max_lose_value))
+									end,
+									message = localize("k_lose_value_ex")
+								},
+							})
+						elseif v == "nothing" then
+							append_extra(ret, {
+								message = localize("k_mutated_ex"),
+								extra = {
+									message = localize("k_nothing_ex")
+								},
+							})
+						elseif v == "plus_mutation" or (card.ability.extra.mutations_per_round <= 1 and v == "minus_mutation") then
+							append_extra(ret, {
+								message = localize("k_mutated_ex"),
+								extra = {
+									func = function()
+										card.ability.extra.mutations_per_round = card.ability.extra.mutations_per_round + 1
+									end,
+									message = localize("k_plus_mutation_ex")
+								},
+							})
+						elseif v == "minus_mutation" then
+							append_extra(ret, {
+								message = localize("k_mutated_ex"),
+								extra = {
+									func = function()
+										card.ability.extra.mutations_per_round = card.ability.extra.mutations_per_round - 1
+									end,
+									message = localize("k_minus_mutation_ex")
+								},
+							})
+						end
+						
+						break
+					else
+						roll = roll - card.ability.extra.odds[v]
 					end
-					
-					break-- or return?
-				else
-					roll = roll - card.ability.extra.odds[v]
 				end
 			end
+			if ret.extra then return ret.extra end
 		end
     end,
 }
