@@ -22,7 +22,6 @@ SMODS.Atlas {
   py = 18,
   path = "zero_brights_ui_hc.png"
 }
-
 SMODS.Suit {
 	key = 'Brights',
 	card_key = 'BRIGHTS',
@@ -44,6 +43,13 @@ SMODS.Suit {
 	end,
 	
 	create_default_deck_skin = function(self)
+		local display_rank_arg = {'King', 'Queen', 'Jack'}
+		if next(SMODS.find_mod("finity")) then
+			table.insert(display_rank_arg, 1,'finity_V')
+		end
+		if next(SMODS.find_mod("entr")) then
+			table.insert(display_rank_arg, 5 ,'entr_nilrank')
+		end
 		SMODS.DeckSkin{
 			key = 'default_'..self.key,
 			prefix_config = { key = false },
@@ -52,7 +58,7 @@ SMODS.Suit {
 				{
 					key = 'lc',
 					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank"},
-					display_ranks = {next(SMODS.find_mod("finity")) and 'finity_V', 'King', 'Queen', 'Jack', next(SMODS.find_mod("entr")) and 'entr_nilrank' or nil},
+					display_ranks = display_rank_arg,
 					atlas = self.lc_atlas,
 					pos_style = 'ranks',
 					akyrs_pure_suit = {
@@ -63,7 +69,7 @@ SMODS.Suit {
 				{
 					key = 'hc',
 					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank"},
-					display_ranks = {next(SMODS.find_mod("finity")) and 'finity_V', 'King', 'Queen', 'Jack', next(SMODS.find_mod("entr")) and 'entr_nilrank' or nil},
+					display_ranks = display_rank_arg,
 					atlas = self.hc_atlas,
 					pos_style = 'ranks',
 					hc_default = true,
