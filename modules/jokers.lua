@@ -1116,7 +1116,7 @@ SMODS.Joker {
     cost = 7,
     config = { extra = { money = 1, xmult = 1.5, mult = 7, chips = 50, suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
-        return { vars = { localize(card.ability.extra.suit, 'suits_plural'), card.ability.extra.money, card.ability.extra.xmult, card.ability.extra.chips, card.ability.extra.mult, colours = {G.C.SUITS[card.ability.extra.suit] }, } }
+        return { vars = { localize(card.ability.extra.suit, 'suits_singular'), card.ability.extra.money, card.ability.extra.xmult, card.ability.extra.chips, card.ability.extra.mult, colours = {G.C.SUITS[card.ability.extra.suit] }, } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
