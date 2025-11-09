@@ -199,6 +199,28 @@ local loc_stuff = {
 			"{C:money}+$#1#",
 		},
 	  },
+	  j_zero_despondent_joker = {
+        name = "Despondent Joker",
+        text = {
+          {
+			"Played cards with",
+            "{V:1}#2#{} suit give",
+            "{C:mult}+#1#{} Mult when scored",
+          }
+        },
+      },
+	  j_zero_star_sapphire = {
+        name = "Star Sapphire",
+        text = {
+          {
+			"Played cards with",
+            "{V:1}#1#{} suit randomly",
+            "give {C:money}$#2#{}, {X:mult,C:white} X#3# {} Mult,",
+            "{C:chips}+#4#{} Chips or {C:mult}+#5#{} Mult",
+			"when scored"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {

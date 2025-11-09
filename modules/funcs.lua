@@ -6,6 +6,7 @@ function zero_brights_in_deck()
 			end
 		end
 	end
+	return false
 end
 
 function zero_has_any_regular_suit(card)

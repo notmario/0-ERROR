@@ -1082,3 +1082,62 @@ SMODS.Joker {
 		end
     end,
 }
+
+SMODS.Joker {
+    key = "despondent_joker",
+	atlas = "zero_jokers",
+    pos = { x = 0, y = 7 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 5,
+    config = { extra = { mult = 5, suit = 'zero_Brights'}, },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult, localize(card.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[card.ability.extra.suit] }, } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+            context.other_card:is_suit(card.ability.extra.suit) then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end,
+	in_pool = function(self, args)
+		 return zero_brights_in_deck()
+	end,
+}
+
+SMODS.Joker {
+    key = "star_sapphire",
+	atlas = "zero_jokers",
+    pos = { x = 1, y = 7 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+    config = { extra = { money = 1, xmult = 1.5, mult = 7, chips = 50, suit = 'zero_Brights'}, },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { localize(card.ability.extra.suit, 'suits_plural'), card.ability.extra.money, card.ability.extra.xmult, card.ability.extra.chips, card.ability.extra.mult, colours = {G.C.SUITS[card.ability.extra.suit] }, } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+            context.other_card:is_suit(card.ability.extra.suit) then
+			local allrets = {
+				dollars = card.ability.extra.money,
+				xmult = card.ability.extra.xmult,
+				chips = card.ability.extra.chips,
+				mult = card.ability.extra.mult
+			}
+			local keys = {}
+			for k in pairs(allrets) do
+				table.insert(keys, k)
+			end
+			local randomret = pseudorandom_element(keys)
+            return {
+                [randomret] = allrets[randomret]
+            }
+        end
+    end,
+	in_pool = function(self, args)
+		 return zero_brights_in_deck()
+	end,
+}
