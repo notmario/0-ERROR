@@ -212,12 +212,55 @@ local loc_stuff = {
 	  j_zero_star_sapphire = {
         name = "Star Sapphire",
         text = {
-          {
+			{
 			"Played cards with",
             "{V:1}#1#{} suit randomly",
             "give {C:money}$#2#{}, {X:mult,C:white} X#3# {} Mult,",
             "{C:chips}+#4#{} Chips or {C:mult}+#5#{} Mult",
 			"when scored"
+          }
+        },
+      },
+	  j_zero_konpeito = {
+        name = "Konpeito",
+        text = {
+			{
+			"Consume this and convert",
+			"all cards to {V:1}#1#{} when a",
+            "{C:attention}5-card{} poker hand is played",
+			"{C:inactive,s:0.7}({V:1,s:0.7}#1#{C:inactive,s:0.7} count as any regular suit)",
+          }
+        },
+      },
+	  j_zero_mirror_shard = {
+        name = "Mirror Shard",
+        text = {
+			{
+			"{C:attention}Glass Cards{} retrigger",
+			"adjacent cards"
+          }
+        },
+      },
+	  j_zero_queen_sigma = {
+        name = "Queen Sigma",
+        text = {
+			{
+			"{C:green}#2# in #1#{} chance to create",
+			"a {C:tarot}Tarot{} card when a {C:attention}Queen{}",
+			"is scored, make it {C:dark_edition}Negative{} if",
+			"that card's suit is {C:clubs}Clubs{}",
+			"{C:inactive,s:0.7}(Chance based on discovered {C:attention,s:0.7}base-game {C:inactive,s:0.7}Jokers)"
+          }
+        },
+      },
+	  j_zero_he_has_a_gun = {
+        name = "HE HAS A GUN",
+        text = {
+			{
+			"FORCES ALL {C:attention}7S{} TO BE SELECTED",
+			"WHEN CARDS ARE DRAWN, {C:attention}7S{} HAVE A",
+			"{C:green}#1# IN #2#{} CHANCE TO EARN {C:money}$#3#{}, {C:attention}+1{} CARD",
+			"SELECTION LIMIT PER {C:attention}7{} IN HAND"
           }
         },
       },

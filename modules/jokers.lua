@@ -1141,3 +1141,188 @@ SMODS.Joker {
 		 return zero_brights_in_deck()
 	end,
 }
+
+SMODS.Joker {
+    key = "konpeito",
+	atlas = "zero_jokers",
+    pos = { x = 2, y = 7 },
+    rarity = 2,
+    blueprint_compat = false,
+    cost = 5,
+    config = { extra = { suit = 'zero_Brights'}, },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] }, } }
+    end,
+    calculate = function(self, card, context)
+        if context.before and #context.scoring_hand == 5 and not context.blueprint then
+			for i = 1, #context.scoring_hand do
+				SMODS.change_base(context.scoring_hand[i], card.ability.extra.suit, nil, true)
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() context.scoring_hand[i]:flip(); play_sound('card1', 1); context.scoring_hand[i]:juice_up(0.3, 0.3) return true end }))
+			end
+			for i = 1, #context.scoring_hand do
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() context.scoring_hand[i]:set_sprites(context.scoring_hand[i].config.center, context.scoring_hand[i].config.card)  return true end }))
+			end
+			for i = 1, #context.scoring_hand do
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() context.scoring_hand[i]:flip(); play_sound('card1', 1); context.scoring_hand[i]:juice_up(0.3, 0.3) return true end }))
+			end
+			SMODS.destroy_cards(card, nil, nil, true)
+            return {
+				message = localize('k_eaten_ex'),
+            }
+		end
+    end,
+}
+
+SMODS.Joker {
+    key = "mirror_shard",
+	atlas = "zero_jokers",
+    pos = { x = 5, y = 5 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+    config = { extra = { suit = 'zero_Brights'}, },
+    loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
+        return { vars = { localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] }, } }
+    end,
+    calculate = function(self, card, context)
+		if context.repetition and (context.cardarea == G.play or context.cardarea == G.hand) then
+			local returns = {}
+			for i = 1, #context.cardarea.cards do
+				if context.other_card == context.cardarea.cards[i] then
+					if context.cardarea.cards[i-1] and SMODS.has_enhancement(context.cardarea.cards[i-1], 'm_glass') and not context.cardarea.cards[i-1].debuff then
+						returns[#returns+1] = {
+							repetitions = 1,
+							message = localize('k_again_ex'),
+							card = context.cardarea.cards[i-1]
+						}
+					end
+					if context.cardarea.cards[i+1] and SMODS.has_enhancement(context.cardarea.cards[i+1], 'm_glass') and not context.cardarea.cards[i+1].debuff  then
+						returns[#returns+1] = {
+							repetitions = 1,
+							message = localize('k_again_ex'),
+							card = context.cardarea.cards[i+1]
+						}
+					end
+				end
+			end
+            if #returns > 0 then
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() card:juice_up() return true end }))
+                return SMODS.merge_effects(returns)
+            end
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = "queen_sigma",
+	atlas = "zero_jokers",
+    pos = { x = 2, y = 6 },
+    rarity = 3,
+    blueprint_compat = true,
+    cost = 9,
+    config = { extra = { total = 150, discovered = 1}, },
+    loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
+		local vanilla_count = 0
+		local discover_vanilla_count = 0
+		for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+			if not v.original_mod then
+				vanilla_count = vanilla_count + 1
+				if v.discovered == true then
+					discover_vanilla_count = discover_vanilla_count + 1
+				end
+			end
+		end
+		card.ability.extra.total = vanilla_count
+		card.ability.extra.discovered = discover_vanilla_count
+        return { vars = { card.ability.extra.total, card.ability.extra.discovered * G.GAME.probabilities.normal } }
+    end,
+	set_ability = function(self, card, initial, delay_sprites)
+		local vanilla_count = 0
+		local discover_vanilla_count = 0
+		for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+			if not v.original_mod then
+				vanilla_count = vanilla_count + 1
+				if v.discovered == true then
+					discover_vanilla_count = discover_vanilla_count + 1
+				end
+			end
+		end
+		card.ability.extra.total = vanilla_count
+		card.ability.extra.discovered = discover_vanilla_count
+    end,
+    calculate = function(self, card, context)
+		if context.before and context.cardarea == G.jokers then
+			local vanilla_count = 0
+			local discover_vanilla_count = 0
+			for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+				if not v.original_mod then
+					vanilla_count = vanilla_count + 1
+					if v.discovered == true then
+						discover_vanilla_count = discover_vanilla_count + 1
+					end
+				end
+			end
+			card.ability.extra.total = vanilla_count
+			card.ability.extra.discovered = discover_vanilla_count
+		end
+        if context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 and (context.other_card:is_suit("Clubs") or #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and pseudorandom('queen_sigma') < card.ability.extra.discovered * G.GAME.probabilities.normal / card.ability.extra.total then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+				local _negative = false
+				if context.other_card:is_suit("Clubs") then
+					_negative = true
+				end
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function()
+					local _Tarot = create_card('Tarot', G.consumeables, nil, nil, nil, true)
+					if _negative == true then
+						_Tarot:set_edition("e_negative", true)
+					end
+					_Tarot:add_to_deck()
+					G.consumeables:emplace(_Tarot)
+					G.GAME.consumeable_buffer = 0
+				return true end }))
+			return {
+                message = localize('k_plus_tarot'),
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "he_has_a_gun",
+	atlas = "zero_jokers",
+    pos = { x = 8, y = 1 },
+	soul_pos = { x = 9, y = 1 },
+    rarity = 3,
+    blueprint_compat = true,
+    cost = 8,
+    config = { extra = { limit = 0, odds = 2, money = 3}, },
+    loc_vars = function(self, info_queue, card)
+		return { vars = { G.GAME.probabilities.normal, card.ability.extra.odds, card.ability.extra.money } }
+    end,
+    calculate = function(self, card, context)
+		if context.hand_drawn then
+		local count = 0
+			for _, v in pairs(G.hand.cards) do
+				if v.base.value == "7" then
+					count = count + 1
+					if not context.blueprint then
+						v.ability.forced_selection = true
+						G.hand:add_to_highlighted(v)
+					end
+				end
+			end
+			if count ~= card.ability.extra.limit then
+				SMODS.change_play_limit(-card.ability.extra.limit + count)
+				SMODS.change_discard_limit(-card.ability.extra.limit + count)
+				card.ability.extra.limit = count
+			end
+		end
+		if context.individual and context.cardarea == G.play and context.other_card.base.value == "7" and pseudorandom('he_has_a_gun') < G.GAME.probabilities.normal / card.ability.extra.odds then
+			return {
+				dollars = card.ability.extra.money
+			}
+		end
+    end,
+}
