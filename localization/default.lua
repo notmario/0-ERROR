@@ -242,7 +242,7 @@ local loc_stuff = {
         },
       },
 	  j_zero_queen_sigma = {
-        name = "Queen Sigma",
+        name = "Queen Sigma!",
         text = {
 			{
 			"{C:green}#2# in #1#{} chance to create",
@@ -261,6 +261,18 @@ local loc_stuff = {
 			"WHEN CARDS ARE DRAWN, {C:attention}7S{} HAVE A",
 			"{C:green}#1# IN #2#{} CHANCE TO EARN {C:money}$#3#{}, {C:attention}+1{} CARD",
 			"SELECTION LIMIT PER {C:attention}7{} IN HAND"
+          }
+        },
+      },
+	  j_zero_lockout = {
+        name = "Lockout",
+        text = {
+			{
+			"{C:attention}3{} times per round,",
+			"shuffle all cards back",
+			"in deck if only possible",
+			"hand is a {C:attention}High Card",
+			"{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
           }
         },
       },

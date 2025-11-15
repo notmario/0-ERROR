@@ -1326,3 +1326,40 @@ SMODS.Joker {
 		end
     end,
 }
+
+SMODS.Joker {
+    key = "lockout",
+	atlas = "zero_jokers",
+    pos = { x = 4, y = 4 },
+    rarity = 1,
+    blueprint_compat = false,
+    cost = 4,
+	config = { extra = { uses = 3, current_uses = 3, used = false}, },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.current_uses, card.ability.extra.uses } }
+    end,
+    calculate = function(self, card, context)
+		if context.blueprint then return end
+		if context.hand_drawn then
+			if card.ability.extra.current_uses > 0 and G.FUNCS.get_poker_hand_info(G.hand.cards) == "High Card" then
+				SMODS.calculate_effect({
+					message = "Impossible!"
+				}, card)	
+				for _, v in pairs(G.hand.cards) do
+					draw_card(G.hand, G.deck, nil, nil, nil, v)
+					G.deck:shuffle()
+				end
+				card.ability.extra.current_uses = card.ability.extra.current_uses - 1
+				card.ability.extra.used = true
+			elseif card.ability.extra.used == true then
+				card.ability.extra.used = false
+				return {
+					message = card.ability.extra.current_uses .. "/" .. card.ability.extra.uses
+				}
+			end
+		end
+		if context.end_of_round and context.main_eval then
+			card.ability.extra.current_uses = card.ability.extra.uses
+		end
+    end
+}
