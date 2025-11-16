@@ -1,4 +1,5 @@
 assert(SMODS.load_file("./modules/logo.lua"))()
+assert(SMODS.load_file("./modules/resources.lua"))()
 assert(SMODS.load_file("./modules/hooks.lua"))()
 assert(SMODS.load_file("./modules/funcs.lua"))()
 

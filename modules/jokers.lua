@@ -1342,9 +1342,11 @@ SMODS.Joker {
 		if context.blueprint then return end
 		if context.hand_drawn then
 			if card.ability.extra.current_uses > 0 and G.FUNCS.get_poker_hand_info(G.hand.cards) == "High Card" then
-				SMODS.calculate_effect({
-					message = "Impossible!"
-				}, card)	
+				if card.ability.extra.used == false then
+					SMODS.calculate_effect({
+						message = "Impossible!"
+					}, card)	
+				end
 				for _, v in pairs(G.hand.cards) do
 					draw_card(G.hand, G.deck, nil, nil, nil, v)
 					G.deck:shuffle()
@@ -1360,6 +1362,105 @@ SMODS.Joker {
 		end
 		if context.end_of_round and context.main_eval then
 			card.ability.extra.current_uses = card.ability.extra.uses
+		end
+    end
+}
+
+SMODS.Joker {
+    key = "female_symbol", --this code is 25% functional stuff and 75% bells and whistles
+	atlas = "zero_jokers",
+    pos = { x = 4, y = 6 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+	config = { extra = { money = 1, xmult = 0.2, mult = 2, chips = 10, xchips = 0.2, retriggers = 1}, },
+	loc_vars = function(self, info_queue, card)
+		local randomjoker = G.P_CENTER_POOLS["Joker"][math.random(1, #G.P_CENTER_POOLS["Joker"])]
+		info_queue[#info_queue+1] = randomjoker.key and randomjoker or nil
+	end,
+	calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 then
+			local vanilla_sound_effs = {
+				"button",
+				"cancel",
+				"card1",
+				"card3",
+				"cardFan2",
+				"cardSlide1",
+				"cardSlide2",
+				"chips1",
+				"chips2",
+				"coin1",
+				"coin2",
+				"coin3",
+				"coin4",
+				"coin5",
+				"coin6",
+				"coin7",
+				"crumple1",
+				"crumple2",
+				"crumple3",
+				"crumple4",
+				"crumple5",
+				"crumpleLong1",
+				"crumpleLong2",
+				"crumpleLong2",
+				"foil1",
+				"foil2",
+				"generic1",
+				"glass1",
+				"glass2",
+				"glass3",
+				"glass4",
+				"glass5",
+				"glass6",
+				"gold_seal",
+				"gong",
+				"highlight1",
+				"highlight2",
+				"holo1",
+				"magic_crumple",
+				"magic_crumple2",
+				"magic_crumple3",
+				"multhit1",
+				"multhit2",
+				"negative",
+				"other1",
+				"paper1",
+				"polychrome1",
+				"slice1",
+				"tarot1",
+				"tarot2",
+				"timpani",
+				"whoosh",
+				"whoosh1",
+				"whoosh2",
+			}
+			local bonuses = {
+				["perma_p_dollars"] = card.ability.extra.money,
+				["perma_x_mult"] = card.ability.extra.xmult,
+				["perma_bonus"] = card.ability.extra.chips,
+				["perma_mult"] = card.ability.extra.mult,
+				["perma_x_chips"] = card.ability.extra.xchips,
+				["perma_h_x_mult"] = card.ability.extra.xmult,
+				["perma_h_chips"] = card.ability.extra.chips,
+				["perma_h_mult"] = card.ability.extra.mult,
+				["perma_h_x_chips"] = card.ability.extra.xchips,
+				["perma_h_dollars"] = card.ability.extra.money,
+				["perma_repetitions"] = card.ability.extra.retriggers
+			}
+			local keys = {}
+			for k in pairs(bonuses) do
+				table.insert(keys, k)
+			end
+			local randombonus = pseudorandom_element(keys)
+			context.other_card.ability[randombonus] = context.other_card.ability[randombonus] or 1
+			context.other_card.ability[randombonus] = context.other_card.ability[randombonus] + bonuses[randombonus]
+			local punctuations = {".", ",", ";", ":", "!", "?", "-", "_", "(", ")", "[", "]", "{", "}", "@", "#", "$", "%", "&", "*", "\"", "\'"}
+			return {
+				message = localize('k_upgrade_ex'):sub(1, -2) .. punctuations[math.random(1, #punctuations)],
+				sound = pseudorandom_element(vanilla_sound_effs)
+			}
 		end
     end
 }
