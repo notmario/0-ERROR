@@ -20,6 +20,21 @@ local loc_stuff = {
 		  "{C:money}$#1#{} then {E:1,C:red}self destructs",
 		},
 	  },
+	  m_zero_l0ck = {
+	    name = "L0ck Card",
+	  },
+	  m_zero_k3y = {
+	    name = "K3y Card",
+	  },
+	  m_zero_l0ck_k3y = {
+	    name = "#1#",
+		text = {
+		  "{C:attention}Immutable{}, must be played",
+		  "with {C:attention}#2#{}, all scoring ",
+		  "cards between the two are",
+		  "{C:attention}stored{} until played again"
+		},
+	  },
 	},
     Tarot = {
 	  c_zero_light = {
@@ -283,6 +298,27 @@ local loc_stuff = {
 			"{f:zero_pixeldingbats}O{f:zero_pokemon}Pl{f:zero_pixeldingbats}A{f:zero_pokemon}yed{f:zero_pixeldingbats}/{C:attention,f:zero_pokemon}Queens{f:zero_pixeldingbats}\"{f:zero_pokemon}gain",
 			"{f:zero_pixeldingbats})?{C:attention,f:zero_pokemon}rand{C:attention,f:zero_pixeldingbats}B{C:attention,f:zero_pokemon}m{C:attention,f:zero_pixeldingbats}=CV{C:attention,f:zero_pokemon}nuses{f:zero_pixeldingbats}£l<",
 			"{f:zero_pixeldingbats}GJD{f:zero_pokemon}wh{f:zero_pixeldingbats}U{f:zero_pokemon}en{f:zero_pixeldingbats}[{f:zero_pokemon}sc{f:zero_pixeldingbats}UQ{f:zero_pokemon}ed{f:zero_pixeldingbats}QWQW"
+          }
+        },
+      },
+	  j_zero_lockout = {
+        name = "Lockout",
+        text = {
+			{
+			"{C:attention}3{} times per round,",
+			"shuffle all cards back",
+			"in deck if only possible",
+			"hand is a {C:attention}High Card",
+			"{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
+          }
+        },
+      },
+	  j_zero_key_he4rt = {
+        name = "The Key To My He4rt",
+        text = {
+			{
+			"While owned, add a {C:attention}L0ck Card{}",
+			"and a {C:attention}K3y Card{} to deck"
           }
         },
       },

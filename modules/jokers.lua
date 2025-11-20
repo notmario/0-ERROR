@@ -1464,3 +1464,61 @@ SMODS.Joker {
 		end
     end
 }
+
+SMODS.Joker {
+    key = "key_he4rt",
+	atlas = "zero_jokers",
+    pos = { x = 9, y = 0 },
+    rarity = 2,
+    blueprint_compat = false,
+    cost = 4,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS['m_zero_l0ck']
+		info_queue[#info_queue+1] = G.P_CENTERS['m_zero_k3y']
+    end,
+    add_to_deck = function(self, card, from_debuff)
+		for _, v in pairs(G.playing_cards) do
+			if v.config.center and (v.config.center == G.P_CENTERS.m_zero_k3y or v.config.center == G.P_CENTERS.m_zero_l0ck) then
+				return
+			end
+		end
+			local l0ck_card = SMODS.add_card { set = "Base", enhancement = "m_zero_l0ck", area = G.play }
+			local k3y_card = SMODS.add_card { set = "Base", enhancement = "m_zero_k3y", area = G.play }
+		for _, v in pairs(G.play.cards) do
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+				draw_card(G.play, G.deck, nil, nil, nil, v)
+			return true end }))
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		for _, v in pairs(G.jokers.cards) do
+			if v.config.center and v.config.center.key == "j_zero_key_he4rt" then
+				return
+			end
+		end
+		for _, v in pairs(G.playing_cards) do
+			if v.config.center and (v.config.center == G.P_CENTERS.m_zero_l0ck or v.config.center == G.P_CENTERS.m_zero_k3y) then
+				v:start_dissolve("override")
+			end
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.setting_blind then
+			local found_l0ck = false
+			local found_k3y = false
+			for _, v in pairs(G.playing_cards) do
+				if v.config.center and v.config.center == G.P_CENTERS.m_zero_l0ck then
+					found_l0ck = true
+				elseif v.config.center and v.config.center == G.P_CENTERS.m_zero_k3y then
+					found_k3y = true
+				end
+			end
+			if found_l0ck == false then
+				local l0ck_card = SMODS.add_card { set = "Base", enhancement = "m_zero_l0ck", area = G.deck }
+			end
+			if found_k3y == false then
+				local k3y_card = SMODS.add_card { set = "Base", enhancement = "m_zero_k3y", area = G.deck }
+			end
+		end
+    end
+}

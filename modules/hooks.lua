@@ -179,3 +179,72 @@ function SMODS.localize_perma_bonuses(specific_vars, desc_nodes)
 	
 	return ret
 end
+
+--loads saved zone for key to my he4rt
+local alias__Game_start_run = Game.start_run
+function Game:start_run(args)
+	local PREGAME = args and args.savetext and args.savetext.GAME or {}
+	if PREGAME.zero_Keytomyhe4rt_zone then
+		G["Keytomyhe4rt_zone"] = CardArea(0, 0, G.CARD_W * 100, G.CARD_H,
+			{ card_limit = 1e300, type = 'play', highlight_limit = 0 })
+		local playing_cards_storage = G["Keytomyhe4rt_zone"]
+		playing_cards_storage.states.visible = false
+		playing_cards_storage.states.collide.can = false
+		playing_cards_storage.states.focus.can = false
+		playing_cards_storage.states.click.can = false
+		G.GAME.zero_Keytomyhe4rt_zone = true
+	end
+	alias__Game_start_run(self, args)
+end
+
+--prevents l0ck and k3y cards from ever being destroyed
+local alias__start_dissolve = Card.start_dissolve
+function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+	if dissolve_colours == "override" then
+		alias__start_dissolve(self)
+	elseif self.config.center and (self.config.center == G.P_CENTERS.m_zero_k3y or self.config.center == G.P_CENTERS.m_zero_l0ck) then
+	else
+		alias__start_dissolve(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
+	end
+end
+
+--prevents l0ck and k3y cards from passing the enhancement when copied
+local alias__copy_card = copy_card
+function copy_card(other, new_card, card_scale, playing_card, strip_edition)
+	local ret = alias__copy_card(other, new_card, card_scale, playing_card, strip_edition)
+	if not card_scale and new_card and new_card.config.center and (new_card.config.center == G.P_CENTERS.m_zero_k3y or new_card.config.center == G.P_CENTERS.m_zero_l0ck) then
+		new_card:set_ability("c_base")
+	end
+	if not card_scale and ret.config.center and (ret.config.center == G.P_CENTERS.m_zero_k3y or ret.config.center == G.P_CENTERS.m_zero_l0ck) then
+		ret:set_ability("c_base","override")
+	end
+	return ret
+end
+
+--prevents overwriting l0ck and k3y cards enhancement
+local alias__set_ability = Card.set_ability
+function Card:set_ability(center, initial, delay_sprites)
+	if initial ~= "override" and self.config.center and (self.config.center == G.P_CENTERS.m_zero_k3y or self.config.center == G.P_CENTERS.m_zero_l0ck) then
+	elseif initial == "override" then
+		alias__set_ability(self, center)
+	else
+		alias__set_ability(self, center, initial, delay_sprites)
+	end
+end
+
+--take a wild guess
+local alias__set_edition = Card.set_edition
+function Card:set_edition(center, initial, delay_sprites)
+	if self.config.center and (self.config.center == G.P_CENTERS.m_zero_k3y or self.config.center == G.P_CENTERS.m_zero_l0ck) then
+	else
+		alias__set_edition(self, center, initial, delay_sprites)
+	end
+end
+
+local alias__set_seal = Card.set_seal
+function Card:set_seal(center, initial, delay_sprites)
+	if self.config.center and (self.config.center == G.P_CENTERS.m_zero_k3y or self.config.center == G.P_CENTERS.m_zero_l0ck) then
+	else
+		alias__set_seal(self, center, initial, delay_sprites)
+	end
+end

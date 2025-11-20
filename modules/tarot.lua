@@ -10,7 +10,7 @@ SMODS.Consumable {
   key = "light",
   name = "The Light",
   config = {
-    max_highlighted = 3,
+    max_highlighted = 2,
 	suit_conv = "zero_Brights",
   },
   pos = {x = 0, y = 0},
