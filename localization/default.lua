@@ -301,18 +301,6 @@ local loc_stuff = {
           }
         },
       },
-	  j_zero_lockout = {
-        name = "Lockout",
-        text = {
-			{
-			"{C:attention}3{} times per round,",
-			"shuffle all cards back",
-			"in deck if only possible",
-			"hand is a {C:attention}High Card",
-			"{C:inactive}({C:attention}#1#{C:inactive}/#2#)"
-          }
-        },
-      },
 	  j_zero_key_he4rt = {
         name = "The Key To My He4rt",
         text = {
