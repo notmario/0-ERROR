@@ -174,6 +174,7 @@ SMODS.Consumable({
     G.GAME.PrestigeValues.mult_extra = G.GAME.PrestigeValues.mult_extra + value
   end,
   loc_vars = function(self, info_queue, center)
+    if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
     info_queue[#info_queue+1] = { key = "scaler_explainer", set="Other", specific_vars = { center.ability.name, center.ability.extra.scale_amount } }
     return {vars = { 
       G.GAME.Prestiges and G.GAME.Prestiges["c_zero_plasmid"] or center.ability.immutable.base_amount, 
@@ -209,6 +210,7 @@ SMODS.Consumable({
     end
   end,
   loc_vars = function(self, info_queue, center)
+    if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
     local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["c_zero_phage"] or 1
     local cur_cd = G.GAME.Prestiges["c_zero_phage"]
     if cur_cd ~= nil then
@@ -256,6 +258,7 @@ SMODS.Consumable({
     end
   end,
   loc_vars = function(self, info_queue, center)
+    if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
     local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["c_zero_darkenergy"] or 1
     local cur_cd = G.GAME.Prestiges["c_zero_darkenergy"]
     if cur_cd ~= nil then
@@ -303,6 +306,7 @@ SMODS.Consumable({
     end
   end,
   loc_vars = function(self, info_queue, center)
+    if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
     local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["c_zero_harmonycrystal"] or 1
     local cur_cd = G.GAME.Prestiges["c_zero_harmonycrystal"]
     if cur_cd ~= nil then
@@ -397,6 +401,7 @@ SMODS.Consumable({
     end
   end,
   loc_vars = function(self, info_queue, center)
+    if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
     local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["c_zero_artifact"] or 1
     local cur_cd = G.GAME.Prestiges["c_zero_artifact"]
     if cur_cd ~= nil then
@@ -445,6 +450,7 @@ SMODS.Consumable({
     end
   end,
   loc_vars = function(self, info_queue, center)
+    if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
     local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["c_zero_aicore"] or 1
     local cur_cd = G.GAME.Prestiges["c_zero_aicore"]
     if cur_cd ~= nil then
@@ -493,6 +499,7 @@ SMODS.Consumable({
     G.GAME.PrestigeValues.xmult_extra = G.GAME.PrestigeValues.xmult_extra + value
   end,
   loc_vars = function(self, info_queue, center)
+    if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
     info_queue[#info_queue+1] = { key = "scaler_explainer", set="Other", specific_vars = { center.ability.name, center.ability.extra.scale_amount } }
     return {vars = { 
       G.GAME.Prestiges and G.GAME.Prestiges["c_zero_supercoiledplasmid"] or center.ability.immutable.base_amount, 
@@ -530,6 +537,7 @@ SMODS.Consumable({
     G.GAME.PrestigeValues.chips_extra = G.GAME.PrestigeValues.chips_extra + value
   end,
   loc_vars = function(self, info_queue, center)
+    if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
     info_queue[#info_queue+1] = { key = "scaler_explainer", set="Other", specific_vars = { center.ability.name, center.ability.extra.scale_amount } }
     return {vars = { 
       G.GAME.Prestiges and G.GAME.Prestiges["c_zero_antiplasmid"] or center.ability.immutable.base_amount, 
