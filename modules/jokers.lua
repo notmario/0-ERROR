@@ -1567,45 +1567,53 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["j_zero_valdi"] or 1
 		local cur_cd = G.GAME.Prestiges["j_zero_valdi"]
-		for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i] == card and G.jokers.cards[i - 1] then other_joker = G.jokers.cards[i - 1] end
-        end
-		local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
-        main_end = {
-            {
-                n = G.UIT.C,
-                config = { align = "bm", minh = 0.4 },
-                nodes = {
-                    {
-                        n = G.UIT.C,
-                        config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
-                        nodes = {
-                            { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
-                        }
-                    }
-                }
-            }
-        }
+		local main_end
+		if card.area and card.area == G.jokers then
+			local other_joker
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card and G.jokers.cards[i - 1] then other_joker = G.jokers.cards[i - 1] end
+			end
+			local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+			main_end = {
+				{
+					n = G.UIT.C,
+					config = { align = "bm", minh = 0.4 },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+							nodes = {
+								{ n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+							}
+						}
+					}
+				}
+			}
+		end
+		local ret
 		if cur_cd ~= nil then
-		info_queue[#info_queue+1] = { key = "valdi_effect", set="Other" }
-		return {
-			key = self.key.."_cd",
-			vars = {
+			info_queue[#info_queue+1] = { key = "valdi_effect", set="Other" }
+			ret = {
+				key = self.key.."_cd",
+				vars = {
+				card.ability.extra.copy,
+				(card.ability.extra.copy == 1) and "" or "s",
+				cur_cd,
+				(cur_cd == 1) and "" or "s"
+				},
+			}
+		else
+			info_queue[#info_queue+1] = { key = "cooldown_explainer", set="Other", specific_vars = {"Prestige cards", cd_dur } }
+			ret = {vars = { 
 			card.ability.extra.copy,
 			(card.ability.extra.copy == 1) and "" or "s",
-			cur_cd,
-			(cur_cd == 1) and "" or "s"
-			},
-			main_end = main_end
-		}
+			cd_dur, 
+			},}
 		end
-		info_queue[#info_queue+1] = { key = "cooldown_explainer", set="Other", specific_vars = {"Prestige cards", cd_dur } }
-		return {vars = { 
-		card.ability.extra.copy,
-		(card.ability.extra.copy == 1) and "" or "s",
-		cd_dur, 
-		},
-		main_end = main_end		}
+		if main_end then
+			ret["main_end"] = main_end
+		end
+		return ret
     end,
     calculate = function(self, card, context)
 		if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == "Prestige" then
