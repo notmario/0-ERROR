@@ -310,6 +310,42 @@ local loc_stuff = {
           }
         },
       },
+	  j_zero_hater = {
+        name = "Hater",
+        text = {
+			{
+			"This Joker gains {C:chips}Chips{} equal to",
+			"total sell value of all current",
+			"{C:attention}Jokers{} when hand is played",
+			"{C:inactive,s:0.7}(Max of {C:chips,s:0.7}+#2#{C:inactive,s:0.7} at once, currently {C:chips,s:0.7}+#1#{C:inactive,s:0.7} Chips)"
+          }
+        },
+      },
+	  j_zero_valdi = {
+        name = "Valdi",
+        text = {
+			{
+			"Copies ability of {C:attention}Joker{}",
+			"to the left {C:attention}#1#{} time#2#,",
+			"{C:attention,s:0.7}Upgrades{s:0.7} if a {C:attention,s:0.7}Prestige{s:0.7} card is used",
+			"",
+			"{C:dark_edition,s:0.7}Cooldown{s:0.3,C:attention} {f:6,s:0.55}—{s:0.3,C:attention} {C:attention,s:0.7}#3#"
+          }
+        },
+      },
+	  j_zero_valdi_cd = {
+        name = "Valdi",
+        text = {
+			{
+			"Copies ability of {C:attention}Joker{}",
+			"to the left {C:attention}#1#{} time#2#,",
+			"{C:red,s:0.7}Upgrade on cooldown!{}",
+			"",
+            "{s:0.7}Will become functional",
+            "{s:0.7}after {C:attention,s:0.7}#3#{s:0.7} more {C:attention,s:0.7}Prestige{s:0.7} use#4#"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -555,6 +591,13 @@ local loc_stuff = {
         name = "Blood Stone",
         text = {
           "{C:attention}+1{} consumeable slot",
+        },
+      },
+	  valdi_effect = {
+        name = "Valdi",
+        text = {
+			"{C:attention}Upgrades{} if a ",
+			"{C:attention}Prestige{} card is used"
         },
       },
 	  zero_brights_blurb = {

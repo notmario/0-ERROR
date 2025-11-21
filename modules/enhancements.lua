@@ -109,6 +109,10 @@ SMODS.Enhancement {
   end
 }
 
+--for debugging reasons i'd recommend to add further enhancements here
+--before the key to my he4rt ones, this is because they cannot change
+--to another enhancement once you apply them, even with debugplus
+
 SMODS.Enhancement {
   key = "l0ck",
   name = "L0ck Card",

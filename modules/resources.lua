@@ -23,6 +23,19 @@ SMODS.Font {
 SMODS.Sound{
      vol = 1.0,
     pitch = 1.0, 
+    key = "music_prestige", 
+    path = "prestigepack.ogg",
+    select_music_track = function() 
+        local booster = G.pack_cards and G.pack_cards.cards and SMODS.OPENED_BOOSTER
+		if booster and booster.config.center_key:find('p_zero_prestige_') then
+			return 1e10
+		end
+	end
+}
+
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
     key = "music_silence", 
     path = "silence.ogg",
     select_music_track = function() 

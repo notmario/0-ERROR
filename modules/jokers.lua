@@ -1522,3 +1522,113 @@ SMODS.Joker {
 		end
     end
 }
+
+SMODS.Joker {
+    key = "hater",
+	atlas = "zero_jokers",
+    pos = { x = 0, y = 4 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 4,
+	config = { extra = { chips = 0, max = 50 } },
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.chips, card.ability.extra.max } }
+    end,
+    calculate = function(self, card, context)
+		if context.before and not context.blueprint then
+			local _upgrade = 0
+			for _, v in pairs(G.jokers.cards) do
+				_upgrade = _upgrade + v.sell_cost
+			end
+			if _upgrade ~= 0 then
+				card.ability.extra.chips = card.ability.extra.chips + math.min(_upgrade, card.ability.extra.max)
+				return {
+					message = localize('k_upgrade_ex'),
+					colour = G.C.CHIPS,
+				}
+			end
+		end
+		if context.joker_main and card.ability.extra.chips ~= 0 then
+            return {
+                chips = card.ability.extra.chips
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "valdi",
+	atlas = "zero_jokers",
+    pos = { x = 0, y = 6 },
+    rarity = 3,
+    blueprint_compat = true,
+    cost = 8,
+	config = { extra = { copy = 0} },
+	loc_vars = function(self, info_queue, card)
+		local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["j_zero_valdi"] or 1
+		local cur_cd = G.GAME.Prestiges["j_zero_valdi"]
+		for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == card and G.jokers.cards[i - 1] then other_joker = G.jokers.cards[i - 1] end
+        end
+		local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+        main_end = {
+            {
+                n = G.UIT.C,
+                config = { align = "bm", minh = 0.4 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+                        }
+                    }
+                }
+            }
+        }
+		if cur_cd ~= nil then
+		info_queue[#info_queue+1] = { key = "valdi_effect", set="Other" }
+		return {
+			key = self.key.."_cd",
+			vars = {
+			card.ability.extra.copy,
+			(card.ability.extra.copy == 1) and "" or "s",
+			cur_cd,
+			(cur_cd == 1) and "" or "s"
+			},
+			main_end = main_end
+		}
+		end
+		info_queue[#info_queue+1] = { key = "cooldown_explainer", set="Other", specific_vars = {"Prestige cards", cd_dur } }
+		return {vars = { 
+		card.ability.extra.copy,
+		(card.ability.extra.copy == 1) and "" or "s",
+		cd_dur, 
+		},
+		main_end = main_end		}
+    end,
+    calculate = function(self, card, context)
+		if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == "Prestige" then
+            local works = cooldown_keyword(card, "j_zero_valdi")
+			if works then
+				card.ability.extra.copy = card.ability.extra.copy + 1
+				return {
+					message = localize('k_upgrade_ex')
+				}
+			end
+        end
+		if card.area and card.area == G.jokers and card.ability.extra.copy > 0 then
+            local other_joker
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i] == card and G.jokers.cards[i - 1] then other_joker = G.jokers.cards[i - 1] end
+            end
+			local effects = {}
+			for i = 1, card.ability.extra.copy do
+				effects[#effects+1] = SMODS.blueprint_effect(card, other_joker, context)
+			end
+			if #effects > 0 then
+				return SMODS.merge_effects(effects)
+			end
+		end
+    end
+}
