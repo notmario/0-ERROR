@@ -612,6 +612,8 @@ local loc_stuff = {
     dictionary = {
       b_prestige = "Prestige",
       k_prestige_pack = "Prestige Pack",
+	  b_cups = "Cups",
+      k_cups_pack = "Cups Pack",
       k_plus_prestige = "+1 Prestige",
 	  k_plus_suit_yourself = "+1 Suit Yourself",
       k_poisoned_ex = "Poisoned!",
@@ -625,6 +627,7 @@ local loc_stuff = {
 	  k_nothing_ex = "Nothing!",
 	  k_plus_mutation_ex = "+Mutation!",
 	  k_minus_mutation_ex = "-Mutation!",
+	  k_impossible_ex = "Impossible!",
 
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",
@@ -638,6 +641,7 @@ local loc_stuff = {
       k_c_zero_harmonycrystal = "Harmony Crystal",
       k_c_zero_artifact = "Artifact",
       k_c_zero_bloodstone = "Blood Stone",
+	  k_j_zero_valdi = "Valdi",
     },
 	v_dictionary = {
 	  zero_alpine_lily_mult = "+#1# Mult",

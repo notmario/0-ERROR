@@ -1344,7 +1344,7 @@ SMODS.Joker {
 			if card.ability.extra.current_uses > 0 and G.FUNCS.get_poker_hand_info(G.hand.cards) == "High Card" then
 				if card.ability.extra.used == false then
 					SMODS.calculate_effect({
-						message = "Impossible!"
+						message = localize('k_impossible_ex')
 					}, card)	
 				end
 				for _, v in pairs(G.hand.cards) do
@@ -1563,7 +1563,6 @@ SMODS.Joker {
     rarity = 3,
     blueprint_compat = true,
     cost = 8,
-	config = { extra = { copy = 0} },
 	loc_vars = function(self, info_queue, card)
 		local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["j_zero_valdi"] or 1
 		local cur_cd = G.GAME.Prestiges["j_zero_valdi"]
@@ -1596,8 +1595,8 @@ SMODS.Joker {
 			ret = {
 				key = self.key.."_cd",
 				vars = {
-				card.ability.extra.copy,
-				(card.ability.extra.copy == 1) and "" or "s",
+				G.GAME.Valdi_power,
+				(G.GAME.Valdi_power == 1) and "" or "s",
 				cur_cd,
 				(cur_cd == 1) and "" or "s"
 				},
@@ -1605,8 +1604,8 @@ SMODS.Joker {
 		else
 			info_queue[#info_queue+1] = { key = "cooldown_explainer", set="Other", specific_vars = {"Prestige cards", cd_dur } }
 			ret = {vars = { 
-			card.ability.extra.copy,
-			(card.ability.extra.copy == 1) and "" or "s",
+			G.GAME.Valdi_power,
+			(G.GAME.Valdi_power == 1) and "" or "s",
 			cd_dur, 
 			},}
 		end
@@ -1617,21 +1616,22 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
 		if context.using_consumeable and not context.blueprint and context.consumeable.ability.set == "Prestige" then
-            local works = cooldown_keyword(card, "j_zero_valdi")
+            G.GAME.Valdi_power = G.GAME.Valdi_power or 0
+			local works = cooldown_keyword(card, "j_zero_valdi")
 			if works then
-				card.ability.extra.copy = card.ability.extra.copy + 1
+				G.GAME.Valdi_power = G.GAME.Valdi_power + 1
 				return {
 					message = localize('k_upgrade_ex')
 				}
 			end
         end
-		if card.area and card.area == G.jokers and card.ability.extra.copy > 0 then
+		if card.area and card.area == G.jokers and G.GAME.Valdi_power and G.GAME.Valdi_power > 0 then
             local other_joker
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i] == card and G.jokers.cards[i - 1] then other_joker = G.jokers.cards[i - 1] end
             end
 			local effects = {}
-			for i = 1, card.ability.extra.copy do
+			for i = 1, G.GAME.Valdi_power do
 				effects[#effects+1] = SMODS.blueprint_effect(card, other_joker, context)
 			end
 			if #effects > 0 then
