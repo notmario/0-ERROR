@@ -67,7 +67,7 @@ local loc_stuff = {
         name = "Mutual Assured Destruction",
         text = {
           {
-            "Creates a {C:attention}Prestige{} card when {C:attention}Blind{}",
+            "Creates a {X:prestige,C:white}Prestige{} card when {C:attention}Blind{}",
             "is beaten on {C:attention}final {C:attention}hand{} of round"
           }
         },
@@ -327,7 +327,7 @@ local loc_stuff = {
 			{
 			"Copies ability of {C:attention}Joker{}",
 			"to the left {C:attention}#1#{} time#2#,",
-			"{C:attention,s:0.7}Upgrades{s:0.7} if a {C:attention,s:0.7}Prestige{s:0.7} card is used",
+			"{C:attention,s:0.7}Upgrades{s:0.7} if a {X:prestige,C:white,s:0.7}Prestige{s:0.7} card is used",
 			"",
 			"{C:dark_edition,s:0.7}Cooldown{s:0.3,C:attention} {f:6,s:0.55}—{s:0.3,C:attention} {C:attention,s:0.7}#3#"
           }
@@ -342,7 +342,7 @@ local loc_stuff = {
 			"{C:red,s:0.7}Upgrade on cooldown!{}",
 			"",
             "{s:0.7}Will become functional",
-            "{s:0.7}after {C:attention,s:0.7}#3#{s:0.7} more {C:attention,s:0.7}Prestige{s:0.7} use#4#"
+            "{s:0.7}after {C:attention,s:0.7}#3#{s:0.7} more {X:prestige,C:white,s:0.7}Prestige{s:0.7} use#4#"
           }
         },
       },
@@ -508,34 +508,126 @@ local loc_stuff = {
           }
         },
       },
+	},
+	Cups = {
+	  c_zero_cups_ace = {
+        name = "Ace of Cups",
+        text = {
+          {
+          "Converts {C:attention}#1#{} selected card",
+		  "to {V:1}#2#{} and creates",
+		  "{C:attention}1{} random {C:cups}Cups{} card",
+		  "{C:inactive,s:0.7}({V:1,s:0.7}#2#{C:inactive,s:0.7} count as any regular suit)",
+          }
+        },
+      },
+	  c_zero_cups_two = {
+        name = "Two of Cups",
+        text = {
+          {
+          "Changes enhancement of",
+		  "up to {C:attention}#1#{} cards to {C:attention}Steel",
+		  "{C:attention}Gold{} or {C:attention}Sunsteel{} randomly",
+          }
+        },
+      },
+	  c_zero_cups_three = {
+        name = "Three of Cups",
+        text = {
+          "Creates up to a random",
+          "{X:prestige,C:white}Prestige{} and {C:planet}Planet{} card",
+          "{C:inactive}(Must have room)",
+        },
+      },
+	  c_zero_cups_four = {
+        name = "Four of Cups",
+        text = {
+          "Add {C:dark_edition}Negative{} effect",
+          "to a random {C:attention}Consumable"
+        },
+      },
+	  c_zero_cups_five = {
+        name = "Five of Cups",
+        text = {
+          "Selected card gives away",
+          "{C:attention}Enhancement{}, {C:attention}Seal{} and",
+          "{C:dark_edition}Edition{} to adjacent cards",
+        },
+      },
+	  c_zero_cups_six = {
+        name = "Six of Cups",
+        text = {
+          "Add {C:attention}Eternal{} to",
+          "a selected Joker",
+        },
+      },
+	  c_zero_cups_seven = {
+        name = "Seven of Cups",
+        text = {
+          "Add a random {C:attention}Seal{} to",
+          "up to {C:attention}#1#{} selected cards",
+        },
+      },
     },
     Other = {
       p_zero_prestige_normal_1 = {
         name = "Prestige Pack",
         text = {
           "Choose {C:attention}#1#{} of up to",
-          "{C:attention}#2#{C:attention} Prestige{} cards",
+          "{C:attention}#2# {X:prestige,C:white}Prestige{} cards",
         }
       },
       p_zero_prestige_normal_2 = {
         name = "Prestige Pack",
         text = {
           "Choose {C:attention}#1#{} of up to",
-          "{C:attention}#2#{C:attention} Prestige{} cards",
+          "{C:attention}#2# {X:prestige,C:white}Prestige{} cards",
         }
       },
       p_zero_prestige_jumbo_1 = {
         name = "Jumbo Prestige Pack",
         text = {
           "Choose {C:attention}#1#{} of up to",
-          "{C:attention}#2#{C:attention} Prestige{} cards",
+          "{C:attention}#2# {X:prestige,C:white}Prestige{} cards",
         }
       },
       p_zero_prestige_mega_1 = {
         name = "Mega Prestige Pack",
         text = {
           "Choose {C:attention}#1#{} of up to",
-          "{C:attention}#2#{C:attention} Prestige{} cards",
+          "{C:attention}#2# {X:prestige,C:white}Prestige{} cards",
+        }
+      },
+	  p_zero_cups_normal_1 = {
+        name = "Cups Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:cups} Cups{} cards to",
+		  "be used immediately"
+        }
+      },
+      p_zero_cups_normal_2 = {
+        name = "Cups Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:cups} Cups{} cards to",
+		  "be used immediately"
+        }
+      },
+      p_zero_cups_jumbo_1 = {
+        name = "Jumbo Cups Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:cups} Cups{} cards to",
+		  "be used immediately"
+        }
+      },
+      p_zero_cups_mega_1 = {
+        name = "Mega Cups Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:cups} Cups{} cards to",
+		  "be used immediately"
         }
       },
 
@@ -543,7 +635,7 @@ local loc_stuff = {
         name = "Scaler",
         text = {
           "When used, increases",
-          "all future {C:attention}#1#{}'s",
+          "all future {X:prestige,C:white}#1#{}'s",
           "strength by {C:attention}#2#"
         }
       },
@@ -551,7 +643,7 @@ local loc_stuff = {
         name = "Cooldown",
         text = {
           "When used, next {C:attention}#2#{} uses of",
-          "{C:attention}#1#{} do nothing, and",
+          "{X:prestige,C:white}#1#{} do nothing, and",
           "increases next duration by {C:attention}1"
         }
       },
@@ -597,7 +689,7 @@ local loc_stuff = {
         name = "Valdi",
         text = {
 			"{C:attention}Upgrades{} if a ",
-			"{C:attention}Prestige{} card is used"
+			"{X:prestige,C:white}Prestige{} card is used"
         },
       },
 	  zero_brights_blurb = {

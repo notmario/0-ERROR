@@ -1159,6 +1159,7 @@ SMODS.Joker {
 				SMODS.change_base(context.scoring_hand[i], card.ability.extra.suit, nil, true)
 				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() context.scoring_hand[i]:flip(); play_sound('card1', 1); context.scoring_hand[i]:juice_up(0.3, 0.3) return true end }))
 			end
+			delay(0.2)
 			for i = 1, #context.scoring_hand do
 				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() context.scoring_hand[i]:set_sprites(context.scoring_hand[i].config.center, context.scoring_hand[i].config.card)  return true end }))
 			end
@@ -1595,16 +1596,16 @@ SMODS.Joker {
 			ret = {
 				key = self.key.."_cd",
 				vars = {
-				G.GAME.Valdi_power,
+				G.GAME.Valdi_power or 0,
 				(G.GAME.Valdi_power == 1) and "" or "s",
 				cur_cd,
 				(cur_cd == 1) and "" or "s"
 				},
 			}
 		else
-			info_queue[#info_queue+1] = { key = "cooldown_explainer", set="Other", specific_vars = {"Prestige cards", cd_dur } }
+			info_queue[#info_queue+1] = { key = "cooldown_explainer", set="Other", specific_vars = {"any Prestige", cd_dur } }
 			ret = {vars = { 
-			G.GAME.Valdi_power,
+			G.GAME.Valdi_power or 0,
 			(G.GAME.Valdi_power == 1) and "" or "s",
 			cd_dur, 
 			},}

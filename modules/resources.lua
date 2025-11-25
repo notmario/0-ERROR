@@ -42,3 +42,15 @@ SMODS.Sound{
         return next(SMODS.find_card('j_zero_female_symbol')) and 100 or nil
 	end
 }
+
+--Custom Colors
+G.C.CUPS = HEX("53468A")
+G.C.PRESTIGE = HEX("344245")
+
+local ref_loc_colour = loc_colour
+function loc_colour(_c, _default)
+    ref_loc_colour(_c, _default)
+    G.ARGS.LOC_COLOURS.cups = G.C.CUPS
+	G.ARGS.LOC_COLOURS.prestige = G.C.PRESTIGE
+    return G.ARGS.LOC_COLOURS[_c] or _default or G.C.UI.TEXT_DARK
+end
