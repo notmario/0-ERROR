@@ -171,6 +171,38 @@ SMODS.Consumable{
     key = 'cups_two',
 	pos = { x = 1, y = 0 },
 	config = {
+		generate = { "Prestige", "Planet"}
+	},
+	can_use = function(self, card)
+		return (G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit) or (card.area == G.consumeables)
+	end,
+	use = function(self, card)
+		local count = 1
+        for i = 1, math.min(#card.ability.generate, G.consumeables.config.card_limit - #G.consumeables.cards) do
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.4,
+                func = function()
+                    if G.consumeables.config.card_limit > #G.consumeables.cards then
+                        play_sound('timpani')
+                        SMODS.add_card({ set = card.ability.generate[count] })
+                        card:juice_up(0.3, 0.5)
+						count = count + 1
+                    end
+                    return true
+                end
+            }))
+        end
+        delay(0.6)
+    end
+}
+
+SMODS.Consumable{
+    set = 'Cups',
+	atlas = 'zero_cups',
+    key = 'cups_three',
+	pos = { x = 2, y = 0 },
+	config = {
 		max_highlighted = 5,
 		random_mod_conv = {"m_steel","m_gold","m_zero_sunsteel"},
 	},
@@ -216,59 +248,8 @@ SMODS.Consumable{
 SMODS.Consumable{
     set = 'Cups',
 	atlas = 'zero_cups',
-    key = 'cups_three',
-	pos = { x = 2, y = 0 },
-	config = {
-		generate = { "Prestige", "Planet"}
-	},
-	can_use = function(self, card)
-		return (G.consumeables and #G.consumeables.cards < G.consumeables.config.card_limit) or (card.area == G.consumeables)
-	end,
-	use = function(self, card)
-		local count = 1
-        for i = 1, math.min(#card.ability.generate, G.consumeables.config.card_limit - #G.consumeables.cards) do
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 0.4,
-                func = function()
-                    if G.consumeables.config.card_limit > #G.consumeables.cards then
-                        play_sound('timpani')
-                        SMODS.add_card({ set = card.ability.generate[count] })
-                        card:juice_up(0.3, 0.5)
-						count = count + 1
-                    end
-                    return true
-                end
-            }))
-        end
-        delay(0.6)
-    end
-}
-
-SMODS.Consumable{
-    set = 'Cups',
-	atlas = 'zero_cups',
     key = 'cups_four',
 	pos = { x = 3, y = 0 },
-	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
-    end,
-	can_use = function(self, card)
-		return true
-	end,
-	use = function(self, card)
-		if #G.consumeables.cards > 0 then
-			pseudorandom_element(G.consumeables.cards, "cups_two"):set_edition("e_negative")
-		end
-		card:juice_up(0.3, 0.5)
-    end
-}
-
-SMODS.Consumable{
-    set = 'Cups',
-	atlas = 'zero_cups',
-    key = 'cups_five',
-	pos = { x = 4, y = 0 },
 	can_use = function(self, card)
 		return G.hand and G.hand.highlighted and #G.hand.highlighted == 1
 	end,
@@ -320,6 +301,25 @@ SMODS.Consumable{
         end
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
         delay(0.6)
+    end
+}
+
+SMODS.Consumable{
+    set = 'Cups',
+	atlas = 'zero_cups',
+    key = 'cups_five',
+	pos = { x = 4, y = 0 },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
+    end,
+	can_use = function(self, card)
+		return true
+	end,
+	use = function(self, card)
+		if #G.consumeables.cards > 0 then
+			pseudorandom_element(G.consumeables.cards, "cups_two"):set_edition("e_negative")
+		end
+		card:juice_up(0.3, 0.5)
     end
 }
 

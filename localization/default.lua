@@ -169,6 +169,15 @@ local loc_stuff = {
           }
         },
       },
+	  j_zero_dismantled_cube = {
+        name = "Dismantled Cube",
+        text = {
+          {
+			"Sorts Deck",
+			"by {C:attention}Suit order",
+          }
+        },
+      },
       j_zero_venture_card = {
         name = "Venture Card",
         text = {
@@ -524,34 +533,34 @@ local loc_stuff = {
 	  c_zero_cups_two = {
         name = "Two of Cups",
         text = {
-          {
-          "Changes enhancement of",
-		  "up to {C:attention}#1#{} cards to {C:attention}Steel",
-		  "{C:attention}Gold{} or {C:attention}Sunsteel{} randomly",
-          }
+          "Creates a random {X:prestige,C:white}Prestige{}",
+          "and {C:planet}Planet{} card",
+          "{C:inactive}(Must have room)",
         },
       },
 	  c_zero_cups_three = {
         name = "Three of Cups",
         text = {
-          "Creates up to a random",
-          "{X:prestige,C:white}Prestige{} and {C:planet}Planet{} card",
-          "{C:inactive}(Must have room)",
+          {
+          "Changes enhancement of",
+		  "up to {C:attention}#1#{} cards to {C:attention}Steel,",
+		  "{C:attention}Gold{} or {C:attention}Sunsteel{} randomly",
+          }
         },
       },
 	  c_zero_cups_four = {
         name = "Four of Cups",
         text = {
-          "Add {C:dark_edition}Negative{} effect",
-          "to a random {C:attention}Consumable"
+          "Selected card gives away",
+          "{C:attention}Enhancement{}, {C:attention}Seal{} and",
+          "{C:dark_edition}Edition{} to adjacent cards",
         },
       },
 	  c_zero_cups_five = {
         name = "Five of Cups",
         text = {
-          "Selected card gives away",
-          "{C:attention}Enhancement{}, {C:attention}Seal{} and",
-          "{C:dark_edition}Edition{} to adjacent cards",
+          "Add {C:dark_edition}Negative{} effect",
+          "to a random {C:attention}Consumable"
         },
       },
 	  c_zero_cups_six = {

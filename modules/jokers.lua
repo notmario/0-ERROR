@@ -690,58 +690,15 @@ SMODS.Joker {
 	enhancement_gate = "m_zero_sunsteel",
 }
 
--- WARNING: Joker not finished
 SMODS.Joker {
   key = "dismantled_cube",
-  name = "Dismantled Cube",
-  loc_txt = {text = {
-    "{C:attention}Cards{} are drawn in increasing order"
-  }},
   pos = {x = 1, y = 0},
   atlas = "zero_jokers",
   rarity = 2,
   cost = 8,
-	unlocked = true,
-	discovered = true,
-	blueprint_compat = true,
-  loc_vars = function(self,info_queue,card)
-    return {}
-  end,
-  calculate = function(self,card,context)
-    local order = {}
-    local rank_order = {"zero_Brights","Spades","Hearts","Clubs","Diamonds"}
-    local get_pos = function(t,k)
-      for i,_ in pairs(t) do
-            if t[i] == k then
-          return i
-        end
-      end
-    end
-    if context.setting_blind then
-      for i,playing_card in ipairs(G.deck.cards) do
-        if G.deck.cards[i+1] then
-          if get_pos(rank_order,playing_card.base.suit) > get_pos(rank_order,G.deck.cards[i+1].base.suit) then
-            if playing_card:get_id() > G.deck.cards[i+1]:get_id() then
-              table.insert(order,playing_card)
-            end
-          end
-        end
-        if SMODS.has_no_rank(playing_card) == true and SMODS.has_no_suit(playing_card) == true then
-          table.insert(order,playing_card,#order)
-        end
-      end
-      for i=1,#order do
-        draw_card(G.deck, G.hand, nil, "up", nil, order[i])
-        table.remove(order,i)
-      end
-    end
-    if context.hand or context.discard then
-      for i=1,#order do
-        draw_card(G.deck, G.hand, nil, "up", nil, order[i])
-        table.remove(order,i)
-      end
-    end
-  end
+  unlocked = true,
+  discovered = true,
+  blueprint_compat = false,
 }
 
 SMODS.Joker {

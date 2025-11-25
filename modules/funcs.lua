@@ -21,3 +21,10 @@ function zero_has_any_regular_suit(card)
 	
 	return false
 end
+
+function zero_cube_shuffle(_table)
+	for i = #_table, 2, -1 do
+		local j = pseudorandom("dismantled_cube", 1, i)
+		_table[i], _table[j] = _table[j], _table[i]
+    end
+end

@@ -248,3 +248,104 @@ function Card:set_seal(center, initial, delay_sprites)
 		alias__set_seal(self, center, initial, delay_sprites)
 	end
 end
+
+--i absolutely loathe this but i don't think there's a better way to implement Dismantled Cube
+local alias_G_FUNCS_draw_from_deck_to_hand = G.FUNCS.draw_from_deck_to_hand
+G.FUNCS.draw_from_deck_to_hand = function(e)
+	if next(SMODS.find_card('j_zero_dismantled_cube')) then
+		if not (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and
+			G.hand.config.card_limit <= 0 and #G.hand.cards == 0 then 
+			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false 
+			return true
+		end
+	
+		local hand_space = e
+		local cards_to_draw = {}
+		if not hand_space then
+			local limit = G.hand.config.card_limit - #G.hand.cards - (SMODS.cards_to_draw or 0)
+			local unfixed = not G.hand.config.fixed_limit
+			local n = 0
+			while n < #G.deck.cards do
+				local card = G.deck.cards[#G.deck.cards-n]
+				local mod = unfixed and (card.ability.card_limit - card.ability.extra_slots_used) or 0
+				if limit - 1 + mod < 0 then
+				else    
+					limit = limit - 1 + mod
+					table.insert(cards_to_draw, card)
+					if limit <= 0 then break end
+				end
+				n = n + 1
+			end
+			hand_space = #cards_to_draw
+		end
+		SMODS.cards_to_draw = (SMODS.cards_to_draw or 0) + hand_space
+		if G.GAME.blind.name == 'The Serpent' and
+			not G.GAME.blind.disabled and
+			(G.GAME.current_round.hands_played > 0 or
+			G.GAME.current_round.discards_used > 0) then
+				hand_space = math.min(#G.deck.cards, 3)
+		end
+		local flags = SMODS.calculate_context({drawing_cards = true, amount = hand_space})
+		hand_space = math.min(#G.deck.cards, flags.cards_to_draw or flags.modify or hand_space)
+		delay(0.3)
+		SMODS.drawn_cards = {}
+		local suit_order = {}
+		for i = #SMODS.Suit.obj_buffer, 1, -1 do
+			table.insert(suit_order, SMODS.Suit.obj_buffer[i])
+		end
+		local suit_groups = {}
+		for _, playing_card in ipairs(G.deck.cards) do
+			local suit = playing_card.base.suit or "none"
+			if not suit_groups[suit] then
+			suit_groups[suit] = {}
+			end
+			table.insert(suit_groups[suit], playing_card)
+		end
+		for _, group in pairs(suit_groups) do
+			zero_cube_shuffle(group)
+		end
+		local ordered = {}
+		for _, suit in ipairs(suit_order) do
+			if suit_groups[suit] then
+			for _, c in ipairs(suit_groups[suit]) do
+				table.insert(ordered, c)
+			end
+			end
+		end
+		if suit_groups["none"] then
+			for _, c in ipairs(suit_groups["none"]) do
+			table.insert(ordered, c)
+			end
+		end
+		for i=1, hand_space do
+			if G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK then 
+				draw_card(G.deck,G.hand, i*100/hand_space,'up', true, ordered[i])
+			else
+				draw_card(G.deck,G.hand, i*100/hand_space,'up', true, ordered[i])
+			end
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = 'immediate',
+			func = function()                
+				SMODS.cards_to_draw = math.max(SMODS.cards_to_draw - hand_space, 0)
+				return true
+			end
+		}))
+		G.E_MANAGER:add_event(Event({
+			trigger = 'before',
+			delay = 0.4,
+			func = function()
+				if #SMODS.drawn_cards > 0 then
+					SMODS.calculate_context({first_hand_drawn = not G.GAME.current_round.any_hand_drawn and G.GAME.facing_blind,
+											hand_drawn = G.GAME.facing_blind and SMODS.drawn_cards,
+											other_drawn = not G.GAME.facing_blind and SMODS.drawn_cards})
+					SMODS.drawn_cards = {}
+					if G.GAME.facing_blind then G.GAME.current_round.any_hand_drawn = true end
+				end
+				return true
+			end
+		}))
+	else
+		return alias_G_FUNCS_draw_from_deck_to_hand(e)
+	end
+end
