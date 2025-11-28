@@ -1225,7 +1225,7 @@ SMODS.Joker {
 			card.ability.extra.total = vanilla_count
 			card.ability.extra.discovered = discover_vanilla_count
 		end
-        if context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 and (context.other_card:is_suit("Clubs") or #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) and pseudorandom('queen_sigma') < card.ability.extra.discovered * G.GAME.probabilities.normal / card.ability.extra.total then
+        if (context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 and (context.other_card:is_suit("Clubs") or #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit)) or context.forcetrigger and pseudorandom('queen_sigma') < card.ability.extra.discovered * G.GAME.probabilities.normal / card.ability.extra.total then
 			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 				local _negative = false
 				if context.other_card:is_suit("Clubs") then
@@ -1298,8 +1298,8 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
 		if context.blueprint then return end
-		if context.hand_drawn then
-			if card.ability.extra.current_uses > 0 and G.FUNCS.get_poker_hand_info(G.hand.cards) == "High Card" then
+		if context.hand_drawn or context.forcetrigger then
+			if (card.ability.extra.current_uses > 0 and G.FUNCS.get_poker_hand_info(G.hand.cards) == "High Card") or context.forcetrigger then
 				if card.ability.extra.used == false then
 					SMODS.calculate_effect({
 						message = localize('k_impossible_ex')
@@ -1338,7 +1338,7 @@ SMODS.Joker {
 	end,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 then
-			local vanilla_sound_effs = {
+			local random_sound_effs = {
 				"button",
 				"cancel",
 				"card1",
@@ -1393,6 +1393,7 @@ SMODS.Joker {
 				"whoosh",
 				"whoosh1",
 				"whoosh2",
+				"zero_galasfx"
 			}
 			local bonuses = {
 				["perma_p_dollars"] = card.ability.extra.money,
@@ -1417,7 +1418,7 @@ SMODS.Joker {
 			local punctuations = {".", ",", ";", ":", "!", "?", "-", "_", "(", ")", "[", "]", "{", "}", "@", "#", "$", "%", "&", "*", "\"", "\'"}
 			return {
 				message = localize('k_upgrade_ex'):sub(1, -2) .. punctuations[math.random(1, #punctuations)],
-				sound = pseudorandom_element(vanilla_sound_effs)
+				sound = pseudorandom_element(random_sound_effs)
 			}
 		end
     end
@@ -1493,7 +1494,7 @@ SMODS.Joker {
         return { vars = { card.ability.extra.chips, card.ability.extra.max } }
     end,
     calculate = function(self, card, context)
-		if context.before and not context.blueprint then
+		if context.before or context.forcetrigger and not context.blueprint then
 			local _upgrade = 0
 			for _, v in pairs(G.jokers.cards) do
 				_upgrade = _upgrade + v.sell_cost
@@ -1596,5 +1597,45 @@ SMODS.Joker {
 				return SMODS.merge_effects(effects)
 			end
 		end
+    end
+}
+
+SMODS.Joker {
+    key = "4_h",
+	atlas = "zero_jokers",
+    pos = { x = 5, y = 6 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 6,
+	config = { choice = 0, rank = 9, extra = {
+	{mult = 10},
+	{chips = 50},
+	{xmult = 1.5},
+	{dollars = 1},
+	{swap = true, message = "localizeswap"},
+	{balance = true}
+	}},
+	loc_vars = function(self, info_queue, card)
+		for k, v in pairs(card.ability.extra[card.ability.choice]) do
+			return { vars = { card.ability.rank, v } }
+		end
+    end,
+	set_ability = function(self, card, initial, delay_sprites)
+        card.ability.choice = pseudorandom("4_h", 1, #card.ability.extra)
+    end,
+    calculate = function(self, card, context)
+		if (context.individual and context.cardarea == G.play and context.other_card:get_id() == card.ability.rank) or context.forcetrigger then
+            local ret = {}
+			local val
+			for k, v in pairs(card.ability.extra[card.ability.choice]) do
+				if v == "localizeswap" then
+					val = localize('k_swap_ex')
+				else
+					val = v
+				end
+				ret[k] = val
+			end
+			return ret
+        end
     end
 }

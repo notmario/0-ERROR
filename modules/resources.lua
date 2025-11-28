@@ -43,6 +43,18 @@ SMODS.Sound{
 	end
 }
 
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
+    key = "galasfx", 
+    path = "galasfx.ogg",
+}
+
+SMODS.Shader{
+	key = "gala",
+	path = "gala.fs"
+}
+
 --Custom Colors
 G.C.CUPS = HEX("53468A")
 G.C.PRESTIGE = HEX("344245")

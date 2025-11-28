@@ -1,5 +1,15 @@
 local loc_stuff = {
   descriptions = {
+    Edition = {
+      e_zero_gala = {
+        name = "Gala",
+        text = {
+			"{C:attention}Mutates #1#{} time#2#",
+			"at end of round",
+			"{s:0.15} ",
+        }
+      },
+	},
     Enhanced = {
 	  m_zero_sunsteel = {
 	    name = "Sunsteel Card",
@@ -33,6 +43,30 @@ local loc_stuff = {
 		  "with {C:attention}#2#{}, all scoring ",
 		  "cards between the two are",
 		  "{C:attention}stored{} until played again"
+		},
+	  },
+	},
+	Tag = {
+	  tag_zero_crispr = {
+	    name = "CRISPR Tag",
+		text = {
+          "Gives a free",
+          "{X:prestige,C:white}Mega Prestige Pack",
+		},
+	  },
+	  tag_zero_chalice = {
+	    name = "Chalice Tag",
+		text = {
+          "Gives a free",
+          "{C:cups}Mega Cups Pack",
+		},
+	  },
+	  tag_zero_gala = {
+	    name = "Gala Tag",
+		text = {
+          "Next base edition shop",
+          "Joker is free and",
+          "becomes {C:dark_edition}Gala",
 		},
 	  },
 	},
@@ -355,6 +389,16 @@ local loc_stuff = {
           }
         },
       },
+	  j_zero_4_h = {
+        name = "{f:zero_pokemon}4 h",
+        text = {
+			{
+			"{f:zero_pokemon}Pl{f:zero_pixeldingbats}A{f:zero_pokemon}yed{f:zero_pixeldingbats}W{f:zero_pokemon,C:attention}#1#s{f:zero_pixeldingbats}PkO",
+			"{f:zero_pixeldingbats}CP{f:zero_pokemon}Kaf{f:zero_pixeldingbats}S{f:zero_pokemon}Js{f:zero_pixeldingbats}MV{f:zero_pokemon}srt",
+			"{f:zero_pokemon,C:attention}#2#",
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -542,9 +586,9 @@ local loc_stuff = {
         name = "Three of Cups",
         text = {
           {
-          "Changes enhancement of",
-		  "up to {C:attention}#1#{} cards to {C:attention}Steel,",
-		  "{C:attention}Gold{} or {C:attention}Sunsteel{} randomly",
+          "Changes {C:attention}#1#{} enhanced",
+		  "cards to {C:attention}Steel{}, {C:attention}Gold{} or",
+		  "{C:attention}Sunsteel Cards{} randomly",
           }
         },
       },
@@ -559,21 +603,21 @@ local loc_stuff = {
 	  c_zero_cups_five = {
         name = "Five of Cups",
         text = {
-          "Add {C:dark_edition}Negative{} effect",
-          "to a random {C:attention}Consumable"
+          "Adds {C:dark_edition}Negative{} to",
+          "a random {C:attention}Consumable"
         },
       },
 	  c_zero_cups_six = {
         name = "Six of Cups",
         text = {
-          "Add {C:attention}Eternal{} to",
+          "Adds {C:attention}Eternal{} to",
           "a selected Joker",
         },
       },
 	  c_zero_cups_seven = {
         name = "Seven of Cups",
         text = {
-          "Add a random {C:attention}Seal{} to",
+          "Adds a random {C:attention}Seal{} to",
           "up to {C:attention}#1#{} selected cards",
         },
       },
@@ -707,6 +751,36 @@ local loc_stuff = {
 		  "regular suit",
         },
 	  },
+	  zero_gala_mult = {
+		name = "Gala Mutation",
+		text = {
+			"{C:mult}+#1#{} Mult",
+		},
+	  },
+	  zero_gala_chips = {
+		name = "Gala Mutation",
+		text = {
+			"{C:chips}+#1#{} Chips",
+		},
+	  },
+	  zero_gala_xmult = {
+		name = "Gala Mutation",
+		text = {
+			"{X:mult,C:white}X#1#{} Mult",
+		},
+	  },
+	  zero_gala_xchips = {
+		name = "Gala Mutation",
+		text = {
+			"{C:white,X:chips}X#1#{} Chips",
+		},
+	  },
+	  zero_gala_dollars = {
+		name = "Gala Mutation",
+		text = {
+			"{C:money}+$#1#",
+		},
+	  },
     },
   },
   misc = {
@@ -729,6 +803,7 @@ local loc_stuff = {
 	  k_plus_mutation_ex = "+Mutation!",
 	  k_minus_mutation_ex = "-Mutation!",
 	  k_impossible_ex = "Impossible!",
+	  k_swap_ex = "Swap!",
 
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",
@@ -759,6 +834,9 @@ local loc_stuff = {
 	},
 	challenge_names = {
 		c_zero_alpine_garden = "Alpine Garden",
+	},
+	labels = {
+		zero_gala = "Gala",
 	},
   }
 }
