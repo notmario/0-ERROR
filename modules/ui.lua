@@ -1,7 +1,5 @@
 --Credits page
 SMODS.current_mod.extra_tabs = function()
-  local result = {}
-
   local credits_tab = {
     n = G.UIT.ROOT,
     config = { align = 'cm', padding = 0.05, emboss = 0.05, r = 0.1, colour = G.C.BLACK },
@@ -106,7 +104,6 @@ SMODS.current_mod.extra_tabs = function()
       },
     }
   }
-
   return {
     {
       label = localize('b_credits'),
