@@ -36,7 +36,7 @@ SMODS.current_mod.extra_tabs = function()
           },
         }
       },
-	  {n = G.UIT.R, config = {align = "tm"}, nodes = {{n = G.UIT.T, config = {text = "", colour = G.C.WHITE, scale = 0.5}}}},
+	  {n = G.UIT.R, config = {align = "tm"}, nodes = {{n = G.UIT.T, config = {text = "", colour = G.C.WHITE, scale = 0.7}}}},
 	  {
         n = G.UIT.R,
 		config = {align = "tm"},

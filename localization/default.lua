@@ -399,6 +399,17 @@ local loc_stuff = {
           }
         },
       },
+	  j_zero_prestige_tree = {
+        name = "Prestige Tree",
+        text = {
+			{
+			"{C:chips}+#3#{} Chips, {C:mult}+#4#{} Mult,",
+			"{C:green}#2# in #1#{} chance to create",
+			"another {X:prestige,C:white}Prestige{} card",
+			"when one is used"
+			}
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {

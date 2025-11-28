@@ -1225,7 +1225,7 @@ SMODS.Joker {
 			card.ability.extra.total = vanilla_count
 			card.ability.extra.discovered = discover_vanilla_count
 		end
-        if (context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 and (context.other_card:is_suit("Clubs") or #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit)) or context.forcetrigger and pseudorandom('queen_sigma') < card.ability.extra.discovered * G.GAME.probabilities.normal / card.ability.extra.total then
+        if ((context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 or context.forcetrigger) and (context.other_card:is_suit("Clubs") or #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit)) and pseudorandom('queen_sigma') < card.ability.extra.discovered * G.GAME.probabilities.normal / card.ability.extra.total then
 			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 				local _negative = false
 				if context.other_card:is_suit("Clubs") then
@@ -1637,5 +1637,51 @@ SMODS.Joker {
 			end
 			return ret
         end
+    end
+}
+
+SMODS.Joker {
+    key = "prestige_tree",
+	atlas = "zero_jokers",
+    pos = { x = 1, y = 6 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 5,
+	config = { extra = { odds = 3, chips = 5, mult = 1 }},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.odds, G.GAME.probabilities.normal, card.ability.extra.chips, card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+		if context.joker_main then
+			local rets = {}
+			rets[1] = {
+                chips = card.ability.extra.chips
+            }
+			rets[2] = {
+                mult = card.ability.extra.mult
+            }
+            return SMODS.merge_effects(rets)
+        end
+		if ((context.using_consumeable and context.consumeable.ability.set == "Prestige") or context.forcetrigger) and pseudorandom('prestige_tree') < G.GAME.probabilities.normal / card.ability.extra.odds and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+			G.E_MANAGER:add_event(Event({
+			trigger = 'before',
+			delay = 0.0,
+			func = (function()
+				local card = create_card('Prestige',G.consumeables, nil, nil, nil, nil, nil, 'prestige_tree')
+				card:add_to_deck()
+				G.consumeables:emplace(card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end)}))
+			if G.GAME.probabilities.normal >= card.ability.extra.odds then
+				card.ability.extra.odds = card.ability.extra.odds * 2
+			end
+			return {
+			message = localize('k_plus_prestige'),
+			colour = G.C.SECONDARY_SET.Spectral,
+			card = card
+			}
+		end
     end
 }
