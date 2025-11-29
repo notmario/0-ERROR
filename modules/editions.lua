@@ -35,7 +35,7 @@ SMODS.Edition {
     get_weight = function(self)
         return (G.GAME.edition_rate - 1) * G.P_CENTERS["e_negative"].weight + G.GAME.edition_rate * self.weight
     end,
-    gala_mutation_effects = {
+    mutation_effects = {
 		mult = {
 			calculate = function(self, card, value)
 				return {
@@ -87,32 +87,10 @@ SMODS.Edition {
 			end,
 		},
 	},
-	
-	-- Returns a list of every valid mutation effect
-	gala_list_mutation_effects = function(self)
-		local ret = {}
-		for key,effect in pairs(self.gala_mutation_effects) do
-			if type(effect.in_pool) ~= "function" or effect:in_pool() then
-				ret[#ret+1] = key
-			end
-		end
-		return ret
-	end,
-	
-	-- Creates a new mutation and places it into the mutations of card
-	gala_create_mutation = function(self, card)
-		local mutations = self:gala_list_mutation_effects()
-		
-		local mutation = { effect = pseudorandom_element(mutations, "zero_gala_new_mutation"), value = pseudorandom("zero_gala_new_value", card.edition.extra.min_new_value, card.edition.extra.max_new_value) }
-		
-		card.edition.extra.mutations[#card.edition.extra.mutations+1] = mutation
-		return mutation
-	end,	
-	
     loc_vars = function(self, info_queue, card)
 		if card.edition then
 			for _, mutation in ipairs(card.edition.extra.mutations) do
-				local mutation_effect = self.gala_mutation_effects[mutation.effect]
+				local mutation_effect = self.mutation_effects[mutation.effect]
 				local vars = {}
 				if type(mutation_effect.loc_vars) == "function" then
 					vars = mutation_effect:loc_vars(card, mutation.value).vars
@@ -136,7 +114,7 @@ SMODS.Edition {
 		if context.pre_joker then
 			local ret = {}
 			for _,mutation in ipairs(card.edition.extra.mutations) do
-				local mutation_effect = self.gala_mutation_effects[mutation.effect]
+				local mutation_effect = self.mutation_effects[mutation.effect]
 				if type(mutation_effect.calculate) == "function" then
 					append_extra(ret, mutation_effect:calculate(card, mutation.value))
 				end
@@ -169,7 +147,7 @@ SMODS.Edition {
 								message = localize("k_mutated_ex"),
 								extra = {
 									func = function()
-										self:gala_create_mutation(card)
+										zero_create_mutation(self,card,true)
 									end,
 									message = localize("k_new_effect_ex")
 								},
@@ -192,7 +170,7 @@ SMODS.Edition {
 								message = localize("k_mutated_ex"),
 								extra = {
 									func = function()
-										card.edition.extra.mutations[pseudorandom("zero_gala_change_effect", 1, #card.edition.extra.mutations)].effect = pseudorandom_element(self:gala_list_mutation_effects(), "zero_gala_change_mutation")
+										card.edition.extra.mutations[pseudorandom("zero_gala_change_effect", 1, #card.edition.extra.mutations)].effect = pseudorandom_element(zero_list_mutation_effects(self), "zero_gala_change_mutation")
 									end,
 									message = localize("k_change_effect_ex")
 								},

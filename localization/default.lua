@@ -410,6 +410,98 @@ local loc_stuff = {
 			}
         },
       },
+	  j_zero_ankimo = {
+        name = "Ankimo",
+        text = {
+			{
+			"While playing your {C:attention}highest-level",
+			"hand above {C:attention}1{}, played cards mutate",
+			"this Joker {C:attention}#1#{} time#2# when scored",
+			"{C:inactive}(#3#)"
+			}
+        },
+      },
+	  j_zero_receipt = {
+        name = "Receipt",
+        text = {
+			{
+			"Bought cards gain",
+			"{C:money}$#1#{} of {C:attention}sell value"
+			}
+        },
+      },
+	  j_zero_playjoke_chips = {
+        name = "Playjoke",
+        text = {
+			{
+			"{C:chips}+#1#{} Chips,",
+			"{C:attention}use{} to swap",
+			"between modes"
+			}
+        },
+      },
+	  j_zero_playjoke_mult = {
+        name = "Playjoke",
+        text = {
+			{
+			"{C:mult}+#1#{} Mult,",
+			"{C:attention}use{} to swap",
+			"between modes"
+			}
+        },
+      },
+	  j_zero_playjoke_xmult = {
+        name = "Playjoke",
+        text = {
+			{
+			"{X:mult,C:white}X#1#{} Mult,",
+			"{C:attention}use{} to swap",
+			"between modes"
+			}
+        },
+      },
+	  j_zero_playjoke_dollars = {
+        name = "Playjoke",
+        text = {
+			{
+			"{C:money}+$#1#{},",
+			"{C:attention}use{} to swap",
+			"between modes"
+			}
+        },
+      },
+	  j_zero_playjoke_swap = {
+        name = "Playjoke",
+        text = {
+			{
+			"Swap {X:chips,C:white}Chips{} and {X:mult,C:white}Mult{},",
+			"{C:attention}use{} to swap",
+			"between modes"
+			}
+        },
+      },
+	  j_zero_playjoke_enhance = {
+        name = "Playjoke",
+        text = {
+			{
+			"Randomly {C:attention}enhance",
+			"a card in play,",
+			"{C:attention}use{} to swap",
+			"between modes"
+			}
+        },
+      },
+	  j_zero_playjoke_consumable = {
+        name = "Playjoke",
+        text = {
+			{
+			"{C:green}#2# in #1#{} chance to create",
+			"a random consumable,",
+			"{C:attention}use{} to swap",
+			"between modes"
+			}
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -815,6 +907,13 @@ local loc_stuff = {
 	  k_minus_mutation_ex = "-Mutation!",
 	  k_impossible_ex = "Impossible!",
 	  k_swap_ex = "Swap!",
+	  k_enhanced_ex = "Enhanced!",
+	  
+	  k_ankimo_nil = "No valid hands",
+	  k_ankimo_one = " is in the lead",
+	  k_ankimo_two_1 = " and ",
+	  k_ankimo_two_2 = " are tied",
+	  k_ankimo_multiple = "Multiple hands are tied",
 
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",

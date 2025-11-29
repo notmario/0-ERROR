@@ -28,3 +28,31 @@ function zero_cube_shuffle(_table)
 		_table[i], _table[j] = _table[j], _table[i]
     end
 end
+
+--mutation-related functions
+-- Returns a list of every valid mutation effect
+zero_list_mutation_effects = function(self)
+	local ret = {}
+	for key,effect in pairs(self.mutation_effects) do
+		if type(effect.in_pool) ~= "function" or effect:in_pool() then
+			ret[#ret+1] = key
+		end
+	end
+	return ret
+end
+	
+-- Creates a new mutation and places it into the mutations of card
+zero_create_mutation = function(self, card, gala)
+	local mutations = zero_list_mutation_effects(self)
+	
+	if gala then
+		local mutation = { effect = pseudorandom_element(mutations, "zero_alpine_lily_new_mutation"), value = pseudorandom("zero_alpine_lily_new_value", card.edition.extra.min_new_value, card.edition.extra.max_new_value) }
+	
+		card.edition.extra.mutations[#card.edition.extra.mutations+1] = mutation
+	else
+		local mutation = { effect = pseudorandom_element(mutations, "zero_alpine_lily_new_mutation"), value = pseudorandom("zero_alpine_lily_new_value", card.ability.extra.min_new_value, card.ability.extra.max_new_value) }
+	
+		card.ability.extra.mutations[#card.ability.extra.mutations+1] = mutation
+	end
+	return mutation
+end
