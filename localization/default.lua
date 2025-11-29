@@ -51,7 +51,7 @@ local loc_stuff = {
 	    name = "CRISPR Tag",
 		text = {
           "Gives a free",
-          "{X:prestige,C:white}Mega Prestige Pack",
+          "{X:prestige,C:white}Mega{} {X:prestige,C:white}Prestige{} {X:prestige,C:white}Pack",
 		},
 	  },
 	  tag_zero_chalice = {

@@ -110,18 +110,20 @@ SMODS.Edition {
 	end,	
 	
     loc_vars = function(self, info_queue, card)
-		for _, mutation in ipairs(card.edition.extra.mutations) do
-			local mutation_effect = self.gala_mutation_effects[mutation.effect]
-			local vars = {}
-			if type(mutation_effect.loc_vars) == "function" then
-				vars = mutation_effect:loc_vars(card, mutation.value).vars
+		if card.edition then
+			for _, mutation in ipairs(card.edition.extra.mutations) do
+				local mutation_effect = self.gala_mutation_effects[mutation.effect]
+				local vars = {}
+				if type(mutation_effect.loc_vars) == "function" then
+					vars = mutation_effect:loc_vars(card, mutation.value).vars
+				end
+				info_queue[#info_queue+1] = { set = 'Other', key = "zero_gala_" .. mutation.effect, specific_vars = vars }
 			end
-			info_queue[#info_queue+1] = { set = 'Other', key = "zero_gala_" .. mutation.effect, specific_vars = vars }
+			return {vars = {
+				card.edition.extra.mutations_per_round,
+				card.edition.extra.mutations_per_round == 1 and "" or "s",
+			}, main_end = main_end}
 		end
-		return {vars = {
-			card.edition.extra.mutations_per_round,
-			card.edition.extra.mutations_per_round == 1 and "" or "s",
-		}, main_end = main_end}
     end,
 	
     calculate = function(self, card, context)
