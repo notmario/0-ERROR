@@ -1028,7 +1028,7 @@ SMODS.Joker {
     cost = 5,
     config = { extra = { mult = 5, suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, localize(card.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[card.ability.extra.suit] }, } }
+        return { vars = { card.ability.extra.mult, localize(card.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
@@ -1040,7 +1040,7 @@ SMODS.Joker {
     end,
 	in_pool = function(self, args)
 		 return zero_brights_in_deck()
-	end,
+	end
 }
 
 SMODS.Joker {
@@ -2045,4 +2045,40 @@ SMODS.Joker {
 			end
         end
     end
+}
+
+SMODS.Joker {
+    key = "lipu_suno",
+	atlas = "zero_jokers",
+    pos = { x = 5, y = 7 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 4,
+	config = { extra = { odds = 2, suit = 'zero_Brights' }},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { zero_compose_toki_pona(card.ability.extra.odds), zero_compose_toki_pona(G.GAME.probabilities.normal), colours = {G.C.SUITS[card.ability.extra.suit] } } }
+    end,
+    calculate = function(self, card, context)
+		if context.before then
+			local converted = false
+			for i=1, #G.play.cards do
+				if G.play.cards[i]:is_suit(card.ability.extra.suit) and SMODS.get_enhancements(G.play.cards[i]) ~= {} and pseudorandom('lipu_suno') < G.GAME.probabilities.normal / card.ability.extra.odds then
+					converted = true
+					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.play.cards[i]:flip();play_sound('card1');G.play.cards[i]:juice_up(0.3, 0.3);return true end }))
+					delay(0.2)
+					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() G.play.cards[i]:set_ability(G.P_CENTERS[SMODS.poll_enhancement({guaranteed = true})]);return true end }))
+					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.play.cards[i]:flip();play_sound('tarot2', nil, 0.6);G.play.cards[i]:juice_up(0.3, 0.3);return true end }))
+					delay(0.5)
+				end
+			end
+			if converted == true then
+				return {
+                    message = localize("k_swap_ex")
+                }
+			end
+        end
+    end,
+	in_pool = function(self, args)
+		 return zero_brights_in_deck()
+	end
 }

@@ -56,3 +56,18 @@ zero_create_mutation = function(self, card, gala)
 	end
 	return mutation
 end
+
+--for lipu suno, compose Toki Pona numerals using luka (5), tu (2), wan (1)
+--i need this so that the joker can have dynamic odds like all the others for oops-like effects...
+zero_compose_toki_pona = function(number)
+    if number <= 0 then return "ala" end
+    local parts = {}
+    local fives = math.floor(number / 5)
+    local remainder = number % 5
+    local twos = math.floor(remainder / 2)
+    local ones = remainder % 2
+    for _ = 1, fives do table.insert(parts, "luka") end
+    for _ = 1, twos  do table.insert(parts, "tu")   end
+    for _ = 1, ones  do table.insert(parts, "wan")  end
+    return table.concat(parts, " ")
+end

@@ -491,6 +491,15 @@ local loc_stuff = {
 			}
         },
       },
+	  j_zero_lipu_suno = {
+        name = "lipu suno",
+        text = {
+			{
+			"kipisi tenpo la {C:attention}ante{} e {V:1}lipu suno",
+			"{C:inactive}({C:green}#2#{C:inactive} kipisi {C:green}#1#{C:inactive} ken)"
+			}
+        },
+      },
 	  j_zero_playjoke_consumable = {
         name = "Playjoke",
         text = {
