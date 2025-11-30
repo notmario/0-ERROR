@@ -2056,6 +2056,7 @@ SMODS.Joker {
     cost = 4,
 	config = { extra = { odds = 2, suit = 'zero_Brights' }},
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = { set = 'Other', key = 'zero_lipu_suno_info', specific_vars = { card.ability.extra.odds, G.GAME.probabilities.normal, localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] }} }
 		return { vars = { zero_compose_toki_pona(card.ability.extra.odds), zero_compose_toki_pona(G.GAME.probabilities.normal), colours = {G.C.SUITS[card.ability.extra.suit] } } }
     end,
     calculate = function(self, card, context)
@@ -2081,4 +2082,42 @@ SMODS.Joker {
 	in_pool = function(self, args)
 		 return zero_brights_in_deck()
 	end
+}
+
+SMODS.Joker {
+    key = "downx2",
+	atlas = "zero_jokers",
+    pos = { x = 1, y = 4 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 5,
+	config = { extra = { odds = 2 } },
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.odds, G.GAME.probabilities.normal } }
+    end,
+    calculate = function(self, card, context)
+		if context.starting_shop and pseudorandom('downx2') < G.GAME.probabilities.normal / card.ability.extra.odds then
+			for i, _card in ipairs(G.shop_jokers.cards) do
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2,func = function()
+				_card.cost = math.ceil(_card.cost/2)
+				_card:juice_up()
+				return true end }))
+			end
+			for i, _card in ipairs(G.shop_vouchers.cards) do
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2,func = function()
+				_card.cost = math.ceil(_card.cost/2)
+				_card:juice_up()
+				return true end }))
+			end
+			for i, _card in ipairs(G.shop_booster.cards) do
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2,func = function()
+				_card.cost = math.ceil(_card.cost/2)
+				_card:juice_up()
+				return true end }))
+			end
+			return {
+                message = localize("k_discount_ex")
+            }
+        end
+    end
 }

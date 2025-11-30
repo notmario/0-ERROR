@@ -491,6 +491,17 @@ local loc_stuff = {
 			}
         },
       },
+	  j_zero_playjoke_consumable = {
+        name = "Playjoke",
+        text = {
+			{
+			"{C:green}#2# in #1#{} chance to create",
+			"a random consumable,",
+			"{C:attention}use{} to swap",
+			"between modes"
+			}
+        },
+      },
 	  j_zero_lipu_suno = {
         name = "lipu suno",
         text = {
@@ -500,14 +511,13 @@ local loc_stuff = {
 			}
         },
       },
-	  j_zero_playjoke_consumable = {
-        name = "Playjoke",
+	  j_zero_downx2 = {
+        name = "Down Down",
         text = {
 			{
-			"{C:green}#2# in #1#{} chance to create",
-			"a random consumable,",
-			"{C:attention}use{} to swap",
-			"between modes"
+			"{C:green}#2# in #1#{} chance",
+			"to {C:attention}halve{} all costs",
+			"when entering {C:attention}shops"
 			}
         },
       },
@@ -857,6 +867,7 @@ local loc_stuff = {
 			"{X:prestige,C:white}Prestige{} card is used"
         },
       },
+	  
 	  zero_brights_blurb = {
         text = {
           "Counts as each",
@@ -893,6 +904,14 @@ local loc_stuff = {
 			"{C:money}+$#1#",
 		},
 	  },
+	  zero_lipu_suno_info = {
+		name = "mi toki ala e toki pona",
+		text = {
+			"Scoring {V:1}#3#{} have a",
+			"{C:green}#2# in #1#{} chance to",
+			"change {C:attention}enhancement"
+		},
+	  },
     },
   },
   misc = {
@@ -917,6 +936,7 @@ local loc_stuff = {
 	  k_impossible_ex = "Impossible!",
 	  k_swap_ex = "Swap!",
 	  k_enhanced_ex = "Enhanced!",
+	  k_discount_ex = "Discount!",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",
