@@ -20,16 +20,16 @@ SMODS.Enhancement {
   discovered = true,
   loc_vars = function(self, info_queue, card)
     return { vars = {
-	  card.ability.extra.xmult,
-	  card.ability.extra.xmult_mod
+	  card.ability.extra.xmult + (G.GAME.zero_sunsteel_pow or 0),
+	  card.ability.extra.xmult_mod + (G.GAME.zero_sunsteel_pow or 0)
 	}}
   end,
   calculate = function(self, card, context)
     if context.main_scoring and context.cardarea == G.hand then
-	  local val = card.ability.extra.xmult
+	  local val = card.ability.extra.xmult + (G.GAME.zero_sunsteel_pow or 0)
 	  for k,v in ipairs(G.hand.cards) do
 	    if v ~= card and SMODS.has_enhancement(v, "m_zero_sunsteel") then
-		  val = val + card.ability.extra.xmult_mod
+		  val = val + card.ability.extra.xmult_mod + (G.GAME.zero_sunsteel_pow or 0)
 		end
       end
       return { xmult = val }

@@ -2121,3 +2121,61 @@ SMODS.Joker {
         end
     end
 }
+
+SMODS.Joker {
+    key = "sacred_pyre",
+	atlas = "zero_jokers",
+    pos = { x = 0, y = 2 },
+    rarity = 3,
+    blueprint_compat = true,
+    cost = 8,
+	config = { extra = { boost = 0.05, unused = true } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_zero_sunsteel
+        return { vars = { card.ability.extra.boost * (( not card.ability.extra.unused and 0.5) or 1) } }
+    end,
+	set_ability = function(self, card, initial, delay_sprites)
+
+		if G.GAME.zero_sacred_pyre_revived == true then
+			card.ability.extra.unused = nil
+			card.children.center:set_sprite_pos({x=1, y=2})
+		end
+	end,
+	set_sprites = function(self, card, front)
+		if card.ability and card.ability.extra and not card.ability.extra.unused then
+			card.children.center:set_sprite_pos({x=1, y=2})
+		end
+	end,
+    calculate = function(self, card, context)
+		if context.end_of_round and context.main_eval then
+			if context.game_over then
+				G.GAME.zero_sacred_pyre_revived = true
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.hand_text_area.blind_chips:juice_up()
+						G.hand_text_area.game_chips:juice_up()
+						play_sound('tarot1')
+						card:start_dissolve()
+						return true
+					end
+				}))
+				return {
+					message = localize('k_saved_ex'),
+					saved = 'ph_zero_sacred_pyre',
+					colour = G.C.RED
+				}
+			else
+				G.GAME.zero_sunsteel_pow = G.GAME.zero_sunsteel_pow or 0
+				G.GAME.zero_sunsteel_pow = G.GAME.zero_sunsteel_pow + card.ability.extra.boost * (( not card.ability.extra.unused and 0.5) or 1)
+				local sunsteel_card = SMODS.add_card { set = "Base", enhancement = "m_zero_sunsteel", area = G.deck }
+                return {
+                    message = localize('k_plus_sunsteel_pow'),
+                    colour = G.C.SECONDARY_SET.Enhanced,
+                    func = function()
+                        SMODS.calculate_context({ playing_card_added = true, cards = { sunsteel_card } })
+                    end
+                }
+			end
+        end
+    end
+}

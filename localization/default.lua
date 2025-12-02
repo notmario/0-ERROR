@@ -521,6 +521,17 @@ local loc_stuff = {
 			}
         },
       },
+	  j_zero_sacred_pyre = {
+        name = "Sacred Pyre",
+        text = {
+			{
+			"Add a random {C:attention}Sunsteel Card{} to",
+			"deck and increase {C:attention}Sunsteel Power",
+			"by {X:mult,C:white}X#1#{} at end of round,",
+			"{C:red,E:2}self destructs{} to prevent death once"
+			}
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -743,6 +754,15 @@ local loc_stuff = {
           "up to {C:attention}#1#{} selected cards",
         },
       },
+	  c_zero_cups_knight = {
+	    name = "Knight of Cups",
+		text = {
+		  "Enhances {C:attention}#1#{} selected",
+		  "card#3# to {C:attention}#2##3#{},",
+		  "increase {C:attention}Sunsteel",
+		  "{C:attention}Power{} by {X:mult,C:white}X#4#"
+		},
+	  },
     },
     Other = {
       p_zero_prestige_normal_1 = {
@@ -937,6 +957,7 @@ local loc_stuff = {
 	  k_swap_ex = "Swap!",
 	  k_enhanced_ex = "Enhanced!",
 	  k_discount_ex = "Discount!",
+	  k_plus_sunsteel_pow = "+Sunsteel Power",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",
@@ -957,6 +978,8 @@ local loc_stuff = {
       k_c_zero_artifact = "Artifact",
       k_c_zero_bloodstone = "Blood Stone",
 	  k_j_zero_valdi = "Valdi",
+	  
+	  ph_zero_sacred_pyre = "Saved by Sacred Pyre"
     },
 	v_dictionary = {
 	  zero_alpine_lily_mult = "+#1# Mult",
