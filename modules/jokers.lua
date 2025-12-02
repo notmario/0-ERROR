@@ -2151,23 +2151,25 @@ SMODS.Joker {
 		end
 	end,
     calculate = function(self, card, context)
-		if context.end_of_round and context.main_eval then
+		if (context.end_of_round and context.main_eval) or context.forcetrigger	then
 			if context.game_over then
-				G.GAME.zero_sacred_pyre_revived = true
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						G.hand_text_area.blind_chips:juice_up()
-						G.hand_text_area.game_chips:juice_up()
-						play_sound('tarot1')
-						card:start_dissolve()
-						return true
-					end
-				}))
-				return {
-					message = localize('k_saved_ex'),
-					saved = 'ph_zero_sacred_pyre',
-					colour = G.C.RED
-				}
+				if not context.blueprint then
+					G.GAME.zero_sacred_pyre_revived = true
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							G.hand_text_area.blind_chips:juice_up()
+							G.hand_text_area.game_chips:juice_up()
+							play_sound('tarot1')
+							card:start_dissolve()
+							return true
+						end
+					}))
+					return {
+						message = localize('k_saved_ex'),
+						saved = 'ph_zero_sacred_pyre',
+						colour = G.C.RED
+					}
+				end
 			else
 				G.GAME.zero_sunsteel_pow = G.GAME.zero_sunsteel_pow or 0
 				G.GAME.zero_sunsteel_pow = G.GAME.zero_sunsteel_pow + card.ability.extra.boost * (( not card.ability.extra.unused and 0.5) or 1)
@@ -2182,4 +2184,52 @@ SMODS.Joker {
 			end
         end
     end
+}
+
+SMODS.Joker {
+    key = "violet_apostrophe_s_vessel", --why not
+	atlas = "zero_jokers",
+    pos = { x = 8, y = 5 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+	config = { extra = { multiply = 2, cups = 2}},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.multiply,
+		card.ability.extra.cups,
+		card.ability.extra.cups == 1 and "" or "s"} }
+    end,
+    calculate = function(self, card, context)
+		if context.setting_blind then
+			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+                G.GAME.blind.chips = G.GAME.blind.chips * card.ability.extra.multiply
+                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                
+                local chips_UI = G.hand_text_area.blind_chips
+                G.FUNCS.blind_chip_UI_scale(G.hand_text_area.blind_chips)
+                G.HUD_blind:recalculate() 
+                chips_UI:juice_up()
+                if not silent then play_sound('chips2') end
+            return true end }))
+			for i = 1, math.min(card.ability.extra.cups, G.consumeables.config.card_limit - #G.consumeables.cards) do
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.4,
+					func = function()
+						if G.consumeables.config.card_limit > #G.consumeables.cards then
+							play_sound('timpani')
+							SMODS.add_card({ set = 'Cups', key_append = "zero_violet_apostrophe_s_vessel" })
+							card:juice_up(0.3, 0.5)
+						end
+						return true
+					end
+				}))
+				SMODS.calculate_effect(
+					{ message = localize('k_plus_cups'), colour = G.C.PURPLE },
+					context.blueprint_card or card
+				)
+			end
+			return nil, true
+		end
+	end
 }

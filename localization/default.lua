@@ -134,7 +134,7 @@ local loc_stuff = {
           {
             "{C:dark_edition,E:1}Use{} this joker to gain",
             "{C:attention}four fifths{} of the blind score",
-            "{C:red}self destructs{}"
+            "{C:red,E:2}self destructs{}"
           }
         },
       },
@@ -542,6 +542,16 @@ local loc_stuff = {
 			}
         },
       },
+	  j_zero_violet_apostrophe_s_vessel = {
+        name = "Violet's Vessel",
+        text = {
+			{
+			"Create {C:attention}#2# {C:cups}Cups{} card#3#",
+            "when {C:attention}Blind{} is selected,",
+			"{X:attention,C:white}X#1#{C:attention} Blind{} size"
+			}
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -764,12 +774,20 @@ local loc_stuff = {
           "up to {C:attention}#1#{} selected cards",
         },
       },
+	  c_zero_cups_eight = {
+        name = "Eight of Cups",
+        text = {
+          "Destroys {C:attention}#1#{} random card#2#",
+          "in hand and creates {C:attention}#3#{} cop#4# ",
+          "of a random remaining one",
+        },
+      },
 	  c_zero_cups_knight = {
 	    name = "Knight of Cups",
 		text = {
 		  "Enhances {C:attention}#1#{} selected",
-		  "card#3# to {C:attention}#2##3#{},",
-		  "increase {C:attention}Sunsteel",
+		  "card#3# to {C:attention}#2##3#",
+		  "and increases {C:attention}Sunsteel",
 		  "{C:attention}Power{} by {X:mult,C:white}X#4#"
 		},
 	  },
@@ -951,7 +969,9 @@ local loc_stuff = {
 	  b_cups = "Cups",
       k_cups_pack = "Cups Pack",
       k_plus_prestige = "+1 Prestige",
+	  k_plus_cups = "+1 Cups",
 	  k_plus_suit_yourself = "+1 Suit Yourself",
+	  k_plus_sunsteel_pow = "+Sunsteel Power",
       k_poisoned_ex = "Poisoned!",
       k_charged_ex = "Charged!",
 	  k_mutated_ex = "Mutated!",
@@ -967,7 +987,6 @@ local loc_stuff = {
 	  k_swap_ex = "Swap!",
 	  k_enhanced_ex = "Enhanced!",
 	  k_discount_ex = "Discount!",
-	  k_plus_sunsteel_pow = "+Sunsteel Power",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",

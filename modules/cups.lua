@@ -17,7 +17,7 @@ SMODS.ConsumableType {
  			text = { '???' },
  		},
   },
-  collection_rows = { 4, 5 },
+  collection_rows = { 7, 7 },
   shop_rate = 0.0
 }
   
@@ -380,6 +380,71 @@ SMODS.Consumable{
 			}))
 		end
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+    end
+}
+
+SMODS.Consumable{
+    set = 'Cups',
+	atlas = 'zero_cups',
+    key = 'cups_eight',
+	pos = { x = 2, y = 1 },
+	config = { extra = {
+		destroy = 3,
+		copies = 1}
+	},
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.destroy, card.ability.extra.destroy == 1 and "" or "s", card.ability.extra.copies, card.ability.extra.copies == 1 and "y" or "ies"} }
+    end,
+	can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0
+    end,
+	use = function(self, card, area, copier)
+        local destroyed_cards = {}
+        local temp_hand = {}
+
+        for _, playing_card in ipairs(G.hand.cards) do temp_hand[#temp_hand + 1] = playing_card end
+        table.sort(temp_hand,
+            function(a, b)
+                return not a.playing_card or not b.playing_card or a.playing_card < b.playing_card
+            end
+        )
+
+        pseudoshuffle(temp_hand, 'immolate')
+		local count = 1
+        for i = 1, card.ability.extra.destroy do destroyed_cards[#destroyed_cards + 1] = temp_hand[i] count = count + 1 end
+		local to_copy = temp_hand[count]
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+        SMODS.destroy_cards(destroyed_cards)
+        delay(0.5)
+		if to_copy then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local _first_dissolve = nil
+					local new_cards = {}
+					for i = 1, card.ability.extra.copies do
+						G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+						local _card = copy_card(to_copy, nil, nil, G.playing_card)
+						_card:add_to_deck()
+						G.deck.config.card_limit = G.deck.config.card_limit + 1
+						table.insert(G.playing_cards, _card)
+						G.hand:emplace(_card)
+						_card:start_materialize(nil, _first_dissolve)
+						_first_dissolve = true
+						new_cards[#new_cards + 1] = _card
+					end
+					SMODS.calculate_context({ playing_card_added = true, cards = new_cards })
+					return true
+				end
+			}))
+		end
     end
 }
 
