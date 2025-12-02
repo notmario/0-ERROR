@@ -670,8 +670,8 @@ SMODS.Joker {
 			end
 		end
 		return { vars = {
-			card.ability.extra.xmult_mod,
-			1 + (card.ability.extra.xmult_mod * count)
+			card.ability.extra.xmult_mod + (G.GAME.zero_sunsteel_pow or 0),
+			1 + ((card.ability.extra.xmult_mod + (G.GAME.zero_sunsteel_pow or 0)) * count)
 		}}
 	end,
 	calculate = function(self, card, context)
@@ -683,7 +683,7 @@ SMODS.Joker {
 				end
 			end
 			if count > 1 then -- idk
-				return { xmult = 1 + (card.ability.extra.xmult_mod * count) }
+				return { xmult = 1 + ((card.ability.extra.xmult_mod + (G.GAME.zero_sunsteel_pow or 0)) * count) }
 			end
 		end
 	end,
@@ -2132,7 +2132,11 @@ SMODS.Joker {
 	config = { extra = { boost = 0.05, unused = true } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_zero_sunsteel
-        return { vars = { card.ability.extra.boost * (( not card.ability.extra.unused and 0.5) or 1) } }
+		local _key = "j_zero_sacred_pyre"
+		if not card.ability.extra.unused then
+			_key = "j_zero_sacred_pyre_resurrected"
+		end
+        return { vars = { card.ability.extra.boost * (( not card.ability.extra.unused and 0.5) or 1) }, key = _key, set = 'Joker',}
     end,
 	set_ability = function(self, card, initial, delay_sprites)
 

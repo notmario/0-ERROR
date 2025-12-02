@@ -528,7 +528,17 @@ local loc_stuff = {
 			"Add a random {C:attention}Sunsteel Card{} to",
 			"deck and increase {C:attention}Sunsteel Power",
 			"by {X:mult,C:white}X#1#{} at end of round,",
-			"{C:red,E:2}self destructs{} to prevent death once"
+			"{C:red,E:2,s:0.9}self destructs{s:0.9} to prevent death once"
+			}
+        },
+      },
+	  j_zero_sacred_pyre_resurrected = {
+        name = "Sacred Pyre",
+        text = {
+			{
+			"Add a random {C:attention}Sunsteel Card{} to",
+			"deck and increase {C:attention}Sunsteel Power",
+			"by {X:mult,C:white}X#1#{} at end of round,"
 			}
         },
       },
