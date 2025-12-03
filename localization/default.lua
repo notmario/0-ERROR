@@ -552,6 +552,16 @@ local loc_stuff = {
 			}
         },
       },
+	  j_zero_viscount = {
+        name = "Viscount",
+        text = {
+			{
+			"{C:cups}Cups{} cards in your",
+            "{C:attention}consumable{} area give",
+            "{X:red,C:white} X#1# {} Mult",
+			}
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -780,6 +790,14 @@ local loc_stuff = {
           "Destroys {C:attention}#1#{} random card#2#",
           "in hand and creates {C:attention}#3#{} cop#4# ",
           "of a random remaining one",
+        },
+      },
+	  c_zero_cups_nine = {
+        name = "Nine of Cups",
+        text = {
+          "Improves {C:attention}#1#{} card#2#",
+          "{C:inactive}(determined by already",
+		  "{C:inactive}applied {C:attention}modifiers{C:inactive})"
         },
       },
 	  c_zero_cups_knight = {

@@ -1973,6 +1973,7 @@ SMODS.Joker {
 	atlas = "zero_jokers",
     pos = { x = 2, y = 4 },
 	pixel_size = { w = 63, h = 59},
+	display_size = { w = 63 * 1.1, h = 59 * 1.1},
     rarity = 1,
     blueprint_compat = true,
     cost = 4,
@@ -2232,4 +2233,25 @@ SMODS.Joker {
 			return nil, true
 		end
 	end
+}
+
+SMODS.Joker {
+    key = "viscount",
+	atlas = "zero_jokers",
+    pos = { x = 9, y = 5 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+	config = { extra = { xmult = 2.5 }},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmult } }
+    end,
+    calculate = function(self, card, context)
+		if context.other_consumeable and context.other_consumeable.ability.set == 'Cups' then
+            return {
+                xmult = card.ability.extra.xmult,
+				message_card = context.other_consumeable
+            }
+        end
+    end,
 }

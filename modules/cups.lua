@@ -389,7 +389,7 @@ SMODS.Consumable{
     key = 'cups_eight',
 	pos = { x = 2, y = 1 },
 	config = { extra = {
-		destroy = 3,
+		destroy = 4,
 		copies = 1}
 	},
 	loc_vars = function(self, info_queue, card)
@@ -445,6 +445,70 @@ SMODS.Consumable{
 				end
 			}))
 		end
+    end
+}
+
+SMODS.Consumable{
+    set = 'Cups',
+	atlas = 'zero_cups',
+    key = 'cups_nine',
+	pos = { x = 3, y = 1 },
+	config = {
+		max_highlighted = 1,
+	},
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.max_highlighted, card.ability.max_highlighted == 1 and "" or "s"} }
+    end,
+	use = function(self, card)
+		local chosencard
+		for i = 1, #G.hand.highlighted do
+			if G.hand.highlighted[i].config.center and G.hand.highlighted[i].config.center.key ~= "c_base" then
+				if not G.hand.highlighted[i].edition then
+					G.E_MANAGER:add_event(Event({
+						trigger = 'after',
+						delay = 0.4,
+						func = function()
+						G.hand.highlighted[i]:set_edition("e_polychrome",true)
+						card:juice_up(0.3, 0.5)
+						return true
+						end
+					}))
+				else
+					if not G.hand.highlighted[i].seal then
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								play_sound('tarot1')
+								card:juice_up(0.3, 0.5)
+								return true
+							end
+						}))
+						G.E_MANAGER:add_event(Event({
+						trigger = 'after',
+						delay = 0.1,
+						func = function()
+							G.hand.highlighted[i]:set_seal("Red", nil, true)
+							return true
+						end
+						}))
+						delay(0.5)			
+					else
+						G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
+						play_sound('tarot1')
+						G.hand.highlighted[i]:juice_up(0.3, 0.5)
+						G.hand.highlighted[i].ability.perma_bonus = G.hand.highlighted[i].ability.perma_bonus or 0
+						G.hand.highlighted[i].ability.perma_bonus = G.hand.highlighted[i].ability.perma_bonus + 50
+						return true end }))
+					end
+				end
+			else
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('card1');G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+				delay(0.2)
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() G.hand.highlighted[i]:set_ability("m_steel");return true end }))
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('tarot2', nil, 0.6);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+			end
+		end
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+		delay(0.5)
     end
 }
 
