@@ -800,6 +800,22 @@ local loc_stuff = {
 		  "{C:inactive}applied {C:attention}modifiers{C:inactive})"
         },
       },
+	  c_zero_cups_ten = {
+        name = "Ten of Cups",
+        text = {
+          "{C:green}#2# in #1#{} chance to",
+          "create a random",
+          "{C:dark_edition}Negative {C:attention}Joker{} card"
+        },
+      },
+	  c_zero_cups_page = {
+        name = "Page of Cups",
+        text = {
+           "Creates a random {f:zero_pokemon}Glitch{C:attention} Joker{},",
+           "if you already have one without an",
+		   "{C:dark_edition}edition{}, adds {C:dark_edition}Gala{} to it instead",
+        },
+      },
 	  c_zero_cups_knight = {
 	    name = "Knight of Cups",
 		text = {

@@ -20,6 +20,12 @@ SMODS.ConsumableType {
   collection_rows = { 7, 7 },
   shop_rate = 0.0
 }
+
+SMODS.UndiscoveredSprite {
+    key = "Cups",
+    atlas = "zero_cups",
+    pos = {x = 4, y = 2} 
+}
   
 SMODS.Booster({
   key = "cups_normal_1",
@@ -509,6 +515,133 @@ SMODS.Consumable{
 		end
 		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
 		delay(0.5)
+    end
+}
+
+SMODS.Consumable{
+    set = 'Cups',
+	atlas = 'zero_cups',
+    key = 'cups_ten',
+	pos = { x = 4, y = 1 },
+	config = { extra = {
+		odds = 4,}
+	},
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = 'e_negative', set = 'Edition', config = { extra = 1 } }
+        return { vars = { card.ability.extra.odds, G.GAME.probabilities.normal } }
+    end,
+	can_use = function(self, card)
+        return true
+    end,
+	use = function(self, card)
+		if SMODS.pseudorandom_probability(card, 'zero_cups_ten', 1, card.ability.extra.odds) then
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+				play_sound('timpani')
+				SMODS.add_card({ set = 'Joker', edition = 'e_negative' })
+				card:juice_up(0.3, 0.5)
+				return true
+            end
+			}))
+			delay(0.6)
+        else
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.4,
+                func = function()
+                    attention_text({
+                        text = localize('k_nope_ex'),
+                        scale = 1.3,
+                        hold = 1.4,
+                        major = card,
+                        backdrop_colour = G.C.CUPS,
+                        align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and
+                            'tm' or 'cm',
+                        offset = { x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and -0.2 or 0 },
+                        silent = true
+                    })
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.06 * G.SETTINGS.GAMESPEED,
+                        blockable = false,
+                        blocking = false,
+                        func = function()
+                            play_sound('tarot2', 0.76, 0.4)
+                            return true
+                        end
+                    }))
+                    play_sound('tarot2', 1, 0.4)
+                    card:juice_up(0.3, 0.5)
+                    return true
+                end
+            }))
+        end
+    end
+}
+
+SMODS.Consumable{
+    set = 'Cups',
+	atlas = 'zero_cups',
+    key = 'cups_page',
+	pos = { x = 0, y = 2 },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_zero_gala
+	end,
+	can_use = function(self, card)
+		if G.jokers then
+			local glitches = {}
+			local foundglitches = {}
+			for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+				if v.zero_glitch then
+					glitches[#glitches + 1] = v.key
+				end
+			end
+			for _, v in pairs(G.jokers.cards) do
+				if not v.edition then
+					for _, w in pairs(glitches) do
+						if v.config.center.key == w then
+							foundglitches[#foundglitches + 1] = v
+						end
+					end
+				end
+			end
+			return #foundglitches > 0 or (#G.jokers.cards < G.jokers.config.card_limit)
+		end
+    end,
+	use = function(self, card)
+		local glitches = {}
+		local foundglitches = {}
+		for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+			if v.zero_glitch then
+				glitches[#glitches + 1] = v.key
+			end
+		end
+		for _, v in pairs(G.jokers.cards) do
+			if not v.edition then
+				for _, w in pairs(glitches) do
+					if v.config.center.key == w then
+						foundglitches[#foundglitches + 1] = v
+					end
+				end
+			end
+		end
+		if #foundglitches > 0 then
+			pseudorandom_element(foundglitches, "cups_page"):set_edition("e_zero_gala", true)
+		else
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+				play_sound('timpani')
+				SMODS.add_card({ set = 'Joker', key = pseudorandom_element(glitches, "cups_page")})
+				card:juice_up(0.3, 0.5)
+				return true
+            end
+			}))
+			delay(0.6)
+		end
     end
 }
 

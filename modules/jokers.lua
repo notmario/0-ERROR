@@ -1400,7 +1400,8 @@ SMODS.Joker {
 				sound = pseudorandom_element(random_sound_effs)
 			}
 		end
-    end
+    end,
+	zero_glitch = true
 }
 
 SMODS.Joker {
@@ -1616,7 +1617,8 @@ SMODS.Joker {
 			end
 			return ret
         end
-    end
+    end,
+	zero_glitch = true
 }
 
 SMODS.Joker {
