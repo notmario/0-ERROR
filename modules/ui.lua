@@ -95,7 +95,7 @@ SMODS.current_mod.extra_tabs = function()
                 n = G.UIT.R,
                 config = { align = 'cm' },
                 nodes = {
-                  { n = G.UIT.T, config = { text = "missingnumber\n(prestige pack theme)", colour = G.C.WHITE, scale = 0.4 } },
+                  { n = G.UIT.T, config = { text = "missingnumber\n(booster pack themes)", colour = G.C.WHITE, scale = 0.4 } },
                 }
               },
             }

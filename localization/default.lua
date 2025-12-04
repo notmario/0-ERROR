@@ -850,6 +850,14 @@ local loc_stuff = {
 		  "suits that card {C:attention}doesn't have"
 		},
 	  },
+	  c_zero_cups_king = {
+	    name = "King of Cups",
+		text = {
+		  "Gives {C:money}$#1#{} per {C:cups}Cups",
+		  "card used this run",
+		  "{C:inactive}(currently {C:money}$#2#{C:inactive})"
+		},
+	  },
     },
     Other = {
       p_zero_prestige_normal_1 = {

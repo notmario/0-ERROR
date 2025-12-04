@@ -751,3 +751,30 @@ SMODS.Consumable{
 		delay(0.5)
     end
 }
+
+SMODS.Consumable{
+    set = 'Cups',
+	atlas = 'zero_cups',
+    key = 'cups_king',
+	pos = { x = 3, y = 2 },
+	config = {extra = { money = 1 }},
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.money, G.GAME.consumeable_usage_total and ((G.GAME.consumeable_usage_total.cups + 1) * card.ability.extra.money) or 1 } }
+    end,
+	can_use = function(self, card)
+        return true
+    end,
+	use = function(self, card)
+		G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('timpani')
+                card:juice_up(0.3, 0.5)
+                ease_dollars( G.GAME.consumeable_usage_total and (G.GAME.consumeable_usage_total.cups * card.ability.extra.money ) or 1, true)
+                return true
+            end
+        }))
+        delay(0.6)
+    end
+}
