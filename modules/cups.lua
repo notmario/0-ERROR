@@ -689,3 +689,65 @@ SMODS.Consumable{
 		delay(0.5)
     end
 }
+
+SMODS.Consumable{
+    set = 'Cups',
+	atlas = 'zero_cups',
+    key = 'cups_queen',
+	pos = { x = 2, y = 2 },
+	config = {
+		max_highlighted = 1,
+	},
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.max_highlighted, card.ability.max_highlighted == 1 and "" or "s" } }
+    end,
+	use = function(self, card)
+		local possible_suits = {}
+		local to_find = {}
+		for k, v in pairs(SMODS.Suit.obj_table) do
+			if G.hand.highlighted[1]:is_suit(k) then
+				to_find[#to_find + 1] = k
+			else
+				possible_suits[#possible_suits + 1] = k
+			end
+		end
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+			play_sound('tarot1')
+			card:juice_up(0.3, 0.5)
+        return true end }))
+		if #possible_suits == 0 then
+			local to_destroy = {}
+			for i=1, #G.hand.cards do
+				if not SMODS.has_no_suit(G.hand.cards[i]) then
+					to_destroy[#to_destroy + 1] = G.hand.cards[i]
+				end
+			end
+			SMODS.destroy_cards(to_destroy)
+		else
+			local to_convert = {}
+			for i=1, #G.hand.cards do
+				convertable = true
+				for k, v in ipairs(to_find) do
+					if G.hand.cards[i]:is_suit(v) then
+						to_convert[#to_convert + 1] = G.hand.cards[i]
+						break
+					end
+				end
+			end
+			for i=1, #to_convert do
+				local percent = 1.15 - (i-0.999)/(#to_convert-0.998)*0.3
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() to_convert[i]:flip();play_sound('card1', percent);to_convert[i]:juice_up(0.3, 0.3);return true end }))
+			end
+			delay(0.2)
+			for i=1, #to_convert do
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() to_convert[i]:change_suit(pseudorandom_element(possible_suits,cups_queen));return true end }))
+			end    
+			for i=1, #to_convert do
+				local percent = 0.85 + (i-0.999)/(#G.hand.cards-0.998)*0.3
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() to_convert[i]:flip();play_sound('tarot2', percent, 0.6);to_convert[i]:juice_up(0.3, 0.3);return true end }))
+			end
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
+		end
+		delay(0.5)
+    end
+}

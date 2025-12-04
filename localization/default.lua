@@ -562,6 +562,23 @@ local loc_stuff = {
 			}
         },
       },
+	  j_zero_qrcode = {
+        name = "QR Code",
+        text = {
+            "{C:chips}+#1#{} Chips for each",
+            "{C:attention}0 ERROR{C:attention} Joker{} card",
+            "{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
+        },
+      },
+	  j_zero_cups_prince = {
+        name = "Prince of Cups",
+        text = {
+            "Create a {C:cups}Cups{} card if",
+            "hand containing only",
+            "{C:attention}face{} cards with the",
+			"same rank is played"
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -823,6 +840,14 @@ local loc_stuff = {
 		  "card#3# to {C:attention}#2##3#",
 		  "and increases {C:attention}Sunsteel",
 		  "{C:attention}Power{} by {X:mult,C:white}X#4#"
+		},
+	  },
+	  c_zero_cups_queen = {
+	    name = "Queen of Cups",
+		text = {
+		  "Converts all cards {C:attention}sharing",
+		  "a suit with selected card to",
+		  "suits that card {C:attention}doesn't have"
 		},
 	  },
     },

@@ -349,3 +349,27 @@ G.FUNCS.draw_from_deck_to_hand = function(e)
 		return alias_G_FUNCS_draw_from_deck_to_hand(e)
 	end
 end
+
+--prevents Gala on playing cards, full credits to Paperback for this implementation
+local poll_edition_ref = poll_edition
+function poll_edition(_key, _mod, _no_neg, _guaranteed, _options)
+  local removed, pos
+
+  if _no_neg then
+    for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
+      if v.key == 'e_zero_gala' then
+        pos = i
+        removed = table.remove(G.P_CENTER_POOLS.Edition, i)
+        break
+      end
+    end
+  end
+
+  local ret = poll_edition_ref(_key, _mod, _no_neg, _guaranteed, _options)
+
+  if _no_neg and removed and pos then
+    table.insert(G.P_CENTER_POOLS.Edition, pos, removed)
+  end
+
+  return ret
+end

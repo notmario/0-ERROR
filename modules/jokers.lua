@@ -2243,7 +2243,7 @@ SMODS.Joker {
     pos = { x = 9, y = 5 },
     rarity = 2,
     blueprint_compat = true,
-    cost = 6,
+    cost = 5,
 	config = { extra = { xmult = 2.5 }},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xmult } }
@@ -2256,4 +2256,82 @@ SMODS.Joker {
             }
         end
     end,
+}
+
+SMODS.Joker {
+    key = "qrcode",
+	atlas = "zero_jokers",
+    pos = { x = 1, y = 3 },
+	pixel_size = { w = 35, h = 35},
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 4,
+	config = { extra = { chips = 40 }},
+	loc_vars = function(self, info_queue, card)
+		local count = 0
+		if G.jokers then
+			for k, v in ipairs(G.jokers.cards) do
+				if v.config.center.mod.id == "zeroError" then
+				count = count + 1
+				end
+			end
+		else
+			count = 1
+		end
+		return { vars = { card.ability.extra.chips, card.ability.extra.chips * count } }
+    end,
+    calculate = function(self, card, context)
+		if context.joker_main then
+			local count = 0
+            for k, v in ipairs(G.jokers.cards) do
+				if v.config.center.mod.id == "zeroError" then
+				count = count + 1
+				end
+			end
+			if count > 0 then
+				return {
+					chips = card.ability.extra.chips * count
+				}
+			end
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "cups_prince",
+	atlas = "zero_jokers",
+    pos = { x = 7, y = 5 },
+    rarity = 3,
+    blueprint_compat = true,
+    cost = 8,
+    calculate = function(self, card, context)
+		if context.joker_main and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+            local _rank
+			for k, v in ipairs(context.full_hand) do
+				if not _rank then
+					if v:is_face() then
+						_rank = v:get_id()
+					else
+						return
+					end
+				elseif (not v:is_face()) or v:get_id() ~= _rank then
+					return
+				end
+			end
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+			G.E_MANAGER:add_event(Event({
+				func = (function()
+					SMODS.add_card {
+						set = 'Cups',
+						key_append = 'zero_cups_prince'
+					}
+					G.GAME.consumeable_buffer = 0
+					return true
+				end)
+			}))
+			return {
+				message = localize('k_plus_cups'),
+			}
+        end
+    end
 }
