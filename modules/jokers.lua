@@ -119,7 +119,8 @@ SMODS.Joker {
         }
       end
     end
-  end
+  end,
+  pronouns = "it_its"
 }
 
 SMODS.Joker {
@@ -688,6 +689,7 @@ SMODS.Joker {
 		end
 	end,
 	enhancement_gate = "m_zero_sunsteel",
+	pronouns = "she_her"
 }
 
 SMODS.Joker {
@@ -753,7 +755,8 @@ SMODS.Joker {
                 end
             }
         end
-    end
+    end,
+	pronouns = "any_all"
 }
 
 SMODS.Joker {
@@ -1149,6 +1152,7 @@ SMODS.Joker {
             end
         end
     end,
+	pronouns = "mirror"
 }
 
 SMODS.Joker {
@@ -1223,7 +1227,8 @@ SMODS.Joker {
                 message = localize('k_plus_tarot'),
             }
         end
-    end
+    end,
+	pronouns = "she_her"
 }
 
 SMODS.Joker {
@@ -1262,6 +1267,7 @@ SMODS.Joker {
 			}
 		end
     end,
+	pronouns = "he_him"
 }
 
 SMODS.Joker {
@@ -1401,7 +1407,8 @@ SMODS.Joker {
 			}
 		end
     end,
-	zero_glitch = true
+	zero_glitch = true,
+	pronouns = "she_her"
 }
 
 SMODS.Joker {
@@ -1492,7 +1499,8 @@ SMODS.Joker {
                 chips = card.ability.extra.chips
             }
         end
-    end
+    end,
+	pronouns = "he_they"
 }
 
 SMODS.Joker {
@@ -1942,6 +1950,7 @@ SMODS.Joker {
 			if ret.extra then return ret.extra end
 		end
     end,
+	pronouns = "he_him"
 }
 
 SMODS.Joker {
@@ -2234,7 +2243,8 @@ SMODS.Joker {
 			end
 			return nil, true
 		end
-	end
+	end,
+	pronouns = "he_him"
 }
 
 SMODS.Joker {
@@ -2256,6 +2266,7 @@ SMODS.Joker {
             }
         end
     end,
+	pronouns = "he_him"
 }
 
 SMODS.Joker {
@@ -2333,5 +2344,6 @@ SMODS.Joker {
 				message = localize('k_plus_cups'),
 			}
         end
-    end
+    end,
+	pronouns = "he_him"
 }
