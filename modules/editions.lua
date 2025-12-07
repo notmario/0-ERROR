@@ -98,7 +98,7 @@ SMODS.Edition {
 				info_queue[#info_queue+1] = { set = 'Other', key = "zero_gala_" .. mutation.effect, specific_vars = vars }
 			end
 			local _key = "e_zero_gala"
-			if card.ability.set == "Default" then
+			if card.ability and card.ability.set == "Default" then
 				_key = "e_zero_gala_playing_card"
 			end
 			return {vars = {
