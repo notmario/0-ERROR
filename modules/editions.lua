@@ -97,10 +97,14 @@ SMODS.Edition {
 				end
 				info_queue[#info_queue+1] = { set = 'Other', key = "zero_gala_" .. mutation.effect, specific_vars = vars }
 			end
+			local _key = "e_zero_gala"
+			if card.ability.set == "Default" then
+				_key = "e_zero_gala_playing_card"
+			end
 			return {vars = {
 				card.edition.extra.mutations_per_round,
 				card.edition.extra.mutations_per_round == 1 and "" or "s",
-			}, main_end = main_end}
+			}, main_end = main_end, key = _key, set = "Edition",}
 		end
     end,
 	
@@ -111,7 +115,7 @@ SMODS.Edition {
 			return _ret
 		end
 		
-		if context.pre_joker then
+		if context.pre_joker or (context.main_scoring and context.cardarea == G.play) then
 			local ret = {}
 			for _,mutation in ipairs(card.edition.extra.mutations) do
 				local mutation_effect = self.mutation_effects[mutation.effect]
@@ -122,7 +126,7 @@ SMODS.Edition {
 			if ret.extra then return ret.extra end
 		end
 		
-		if not context.blueprint and ((context.end_of_round and not context.game_over and context.cardarea == G.jokers) or context.forcetrigger) then
+		if not context.blueprint and ((context.end_of_round and not context.game_over and context.cardarea == G.jokers) or (context.after and context.cardarea == G.play) or context.forcetrigger) then
 			local ret = {}
 			local repeats = card.edition.extra.mutations_per_round
 			for iii=1,repeats do

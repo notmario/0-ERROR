@@ -9,6 +9,14 @@ local loc_stuff = {
 			"{s:0.15} ",
         }
       },
+	  e_zero_gala_playing_card = {
+        name = "Gala",
+        text = {
+			"{C:attention}Mutates #1#{} time#2#",
+			"at end of scoring",
+			"{s:0.15} ",
+        }
+      },
 	},
     Enhanced = {
 	  m_zero_sunsteel = {
@@ -415,7 +423,7 @@ local loc_stuff = {
         text = {
 			{
 			"While playing your {C:attention}highest-level",
-			"hand above {C:attention}1{}, played cards mutate",
+			"hand above {C:attention}1{}, played cards {C:attention}mutate",
 			"this Joker {C:attention}#1#{} time#2# when scored",
 			"{C:inactive}(#3#)"
 			}

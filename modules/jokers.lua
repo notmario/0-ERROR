@@ -1134,20 +1134,19 @@ SMODS.Joker {
 						returns[#returns+1] = {
 							repetitions = 1,
 							message = localize('k_again_ex'),
-							card = context.cardarea.cards[i-1]
+							message_card  = context.cardarea.cards[i-1]
 						}
 					end
 					if context.cardarea.cards[i+1] and SMODS.has_enhancement(context.cardarea.cards[i+1], 'm_glass') and not context.cardarea.cards[i+1].debuff  then
 						returns[#returns+1] = {
 							repetitions = 1,
 							message = localize('k_again_ex'),
-							card = context.cardarea.cards[i+1]
+							message_card  = context.cardarea.cards[i+1]
 						}
 					end
 				end
 			end
             if #returns > 0 then
-				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() card:juice_up() return true end }))
                 return SMODS.merge_effects(returns)
             end
         end
