@@ -2281,7 +2281,7 @@ SMODS.Joker {
 		local count = 0
 		if G.jokers then
 			for k, v in ipairs(G.jokers.cards) do
-				if v.config.center.mod.id == "zeroError" then
+				if v.config.center.mod and v.config.center.mod.id == "zeroError" then
 				count = count + 1
 				end
 			end
@@ -2294,7 +2294,7 @@ SMODS.Joker {
 		if context.joker_main then
 			local count = 0
             for k, v in ipairs(G.jokers.cards) do
-				if v.config.center.mod.id == "zeroError" then
+				if v.config.center.mod and v.config.center.mod.id == "zeroError" then
 				count = count + 1
 				end
 			end
