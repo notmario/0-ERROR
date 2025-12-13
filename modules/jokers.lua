@@ -180,7 +180,7 @@ SMODS.Joker {
             end
           end
           local card = create_playing_card({front = G.P_CARDS[_suit..'_'.._rank], center = pseudorandom_element(cen_pool, pseudoseed('energysupercharge'))}, target_area, nil, i ~= 1, {G.C.PURPLE})
-          card.zero_temporary = true
+          card.ability.zero_temporary = true
           playing_card_joker_effects(cards)
           return true end }))
     end
