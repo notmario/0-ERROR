@@ -145,6 +145,7 @@ SMODS.Edition {
 				}
 				local max_odds = 0
 				local _lost = 1
+				local _lostmut = 1
 				for k,v in ipairs(odds_list) do max_odds = max_odds + card.edition.extra.odds[v] end
 				local roll = pseudorandom("zero_gala_eor", 1, max_odds)
 				for k,v in ipairs(odds_list) do
@@ -216,7 +217,10 @@ SMODS.Edition {
 									message = localize("k_nothing_ex")
 								},
 							})
-						elseif v == "plus_mutation" or (card.edition.extra.mutations_per_round <= 1 and v == "minus_mutation") then
+						elseif v == "plus_mutation" or (card.edition.extra.mutations_per_round <= _lostmut and v == "minus_mutation") then
+							if _lostmut > 1 then
+								_lostmut = _lost - 1
+							end
 							append_extra(ret, {
 								message = localize("k_mutated_ex"),
 								extra = {
@@ -227,6 +231,7 @@ SMODS.Edition {
 								},
 							})
 						elseif v == "minus_mutation" then
+							_lostmut = _lostmut + 1
 							append_extra(ret, {
 								message = localize("k_mutated_ex"),
 								extra = {
