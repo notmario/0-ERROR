@@ -909,7 +909,7 @@ SMODS.Joker {
 		
 		if not context.blueprint and ((context.end_of_round and not context.game_over and context.cardarea == G.jokers) or context.forcetrigger) then
 			if #card.ability.extra.mutations == 0 then
-				card.ability.extra.mutations = {{ effect = "chips", value = 10 }}
+				card.ability.extra.mutations = {{ effect = "mult", value = 4 }}
 			end
 			local ret = {}
 			local repeats = card.ability.extra.mutations_per_round
@@ -1839,7 +1839,7 @@ SMODS.Joker {
 		
 		if not context.blueprint and ((context.individual and context.cardarea == G.play) or context.forcetrigger) then
 			if #card.ability.extra.mutations == 0 then
-				card.ability.extra.mutations = {{ effect = "chips", value = 10 }}
+				card.ability.extra.mutations = {{ effect = "mult", value = 4 }}
 			end
 			if not context.forcetrigger then
 				if G.GAME.hands[context.scoring_name].level <= 1 then return end
