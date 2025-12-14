@@ -759,7 +759,7 @@ SMODS.Consumable{
 	pos = { x = 3, y = 2 },
 	config = {extra = { money = 1 }},
 	loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.money, G.GAME.consumeable_usage_total and ((G.GAME.consumeable_usage_total.cups + 1) * card.ability.extra.money) or 1 } }
+        return { vars = { card.ability.extra.money, G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.cups and ((G.GAME.consumeable_usage_total.cups + 1) * card.ability.extra.money) or 1 } }
     end,
 	can_use = function(self, card)
         return true
@@ -771,7 +771,7 @@ SMODS.Consumable{
             func = function()
                 play_sound('timpani')
                 card:juice_up(0.3, 0.5)
-                ease_dollars( G.GAME.consumeable_usage_total and (G.GAME.consumeable_usage_total.cups * card.ability.extra.money ) or 1, true)
+                ease_dollars( G.GAME.consumeable_usage_total and G.GAME.consumeable_usage_total.cups and (G.GAME.consumeable_usage_total.cups * card.ability.extra.money ) or 1, true)
                 return true
             end
         }))
