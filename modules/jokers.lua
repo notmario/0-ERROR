@@ -204,7 +204,7 @@ SMODS.Joker {
   unlocked = true,
   discovered = true,
   blueprint_compat = true,
-  eternal_compat = true,
+  eternal_compat = false,
   perishable_compat = true,
   demicoloncompat = false,
   zero_usable = true,
@@ -1100,6 +1100,7 @@ SMODS.Joker {
     pos = { x = 2, y = 7 },
     rarity = 2,
     blueprint_compat = false,
+	eternal_compat = false,
     cost = 5,
     config = { extra = { suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
@@ -2134,23 +2135,13 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
 		if context.starting_shop and pseudorandom('downx2') < G.GAME.probabilities.normal / card.ability.extra.odds then
-			for i, _card in ipairs(G.shop_jokers.cards) do
-				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2,func = function()
-				_card.cost = math.ceil(_card.cost/2)
-				_card:juice_up()
-				return true end }))
-			end
-			for i, _card in ipairs(G.shop_vouchers.cards) do
-				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2,func = function()
-				_card.cost = math.ceil(_card.cost/2)
-				_card:juice_up()
-				return true end }))
-			end
-			for i, _card in ipairs(G.shop_booster.cards) do
-				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2,func = function()
-				_card.cost = math.ceil(_card.cost/2)
-				_card:juice_up()
-				return true end }))
+			for  k, v in ipairs({G.shop_jokers, G.shop_vouchers, G.shop_booster}) do
+				for i, _card in ipairs(v.cards) do
+					G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2,func = function()
+					_card.cost = math.ceil(_card.cost/2)
+					_card:juice_up()
+					return true end }))
+				end
 			end
 			return {
                 message = localize("k_discount_ex")
@@ -2165,6 +2156,7 @@ SMODS.Joker {
     pos = { x = 0, y = 2 },
     rarity = 3,
     blueprint_compat = true,
+	eternal_compat = false,
     cost = 8,
 	config = { extra = { boost = 0.05, unused = true } },
 	loc_vars = function(self, info_queue, card)
@@ -2379,6 +2371,7 @@ SMODS.Joker {
     pos = { x = 7, y = 7 },
     rarity = 2,
     blueprint_compat = true,
+	eternal_compat = false,
     cost = 4,
 	config = { extra = { xmult = 4 }},
 	loc_vars = function(self, info_queue, card)
@@ -2411,4 +2404,70 @@ SMODS.Joker {
         end
     end,
 	zero_glitch = true
+}
+
+SMODS.Joker {
+    key = "damocles",
+	atlas = "zero_jokers",
+    pos = { x = 9, y = 7 },
+    rarity = 3,
+    blueprint_compat = true,
+    cost = 8,
+	config = { extra = { active = false, cards = 2 }},
+	loc_vars = function(self, info_queue, card)
+		local key = "j_zero_damocles"
+		if card.ability.extra.active == true then
+			key = "j_zero_damocles_active"
+		end
+		return { vars = { card.ability.extra.cards},
+		key = key, set = 'Joker' }
+    end,
+	zero_usable = true,
+	can_use = function(self, card)
+		return not card.ability.extra.active
+	end,
+	use = function(self, card, area, copier)
+		card.ability.extra.active = true
+		card.ability.eternal = true
+		SMODS.calculate_effect({
+			message = localize('k_plus_blessing_ex'),
+			colour = G.C.BLUE
+		}, card)
+		delay(1)
+		ease_hands_played(-G.GAME.current_round.hands_left + 1)
+		SMODS.calculate_effect({
+			message = localize('k_plus_curse_ex'),
+			colour = G.C.RED
+		}, card)
+		delay(0.4)
+		draw_card(G.play, G.consumeables, nil, 'up', nil, card)
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
+		change_shop_size(card.ability.extra.cards)
+		if G.shop_jokers and G.shop_jokers.cards then
+			G.shop_jokers.cards[#G.shop_jokers.cards].cost = 0
+			G.shop_jokers.cards[#G.shop_jokers.cards-1].cost = 0
+		end
+		G.GAME.round_resets.hands = G.GAME.round_resets.hands - 1e6
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if card.ability.extra.active == true then
+			G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+			G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1e6
+			change_shop_size(-card.ability.extra.cards)
+		end
+	end,
+    calculate = function(self, card, context)
+		if ( context.starting_shop or context.reroll_shop ) and card.ability.extra.active == true then
+			local to_discount = card.ability.extra.cards
+			local i = 0
+			while to_discount > 0 and i < #G.shop_jokers.cards do
+				local idx = #G.shop_jokers.cards - i
+				if G.shop_jokers.cards[idx].cost > 0 then
+				G.shop_jokers.cards[idx].cost = 0
+				to_discount = to_discount - 1
+				end
+			i = i + 1
+			end
+		end
+    end
 }

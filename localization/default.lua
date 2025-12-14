@@ -35,7 +35,7 @@ local loc_stuff = {
 		  "any regular suit",
 		  "If scored with cards of",
 		  "each regular suit, earns",
-		  "{C:money}$#1#{} then {E:1,C:red}self destructs",
+		  "{C:money}$#1#{} then {E:2,C:red}self destructs",
 		},
 	  },
 	  m_zero_l0ck = {
@@ -525,7 +525,7 @@ local loc_stuff = {
 			{
 			"{C:green}#2# in #1#{} chance",
 			"to {C:attention}halve{} all costs",
-			"when entering {C:attention}shops"
+			"when entering {C:attention}shop"
 			}
         },
       },
@@ -595,6 +595,23 @@ local loc_stuff = {
 			"{f:zero_pixeldingbats}£l<XMNCVBN,Aò",
 			"{f:zero_pixeldingbats},AòGBY{f:zero_pokemon,C:diamonds}NO {f:zero_pokemon,C:hearts}REDS{f:zero_pixeldingbats}L"
           }
+        },
+      },
+	  j_zero_damocles = {
+        name = "Damocles",
+        text = {
+            "{C:attention}Use{} to receive",
+			"a {E:1,C:blue}King's Blessing",
+			"and a {E:2,C:red}Curse"
+        },
+      },
+	  j_zero_damocles_active = {
+        name = "Damocles",
+        text = {
+            "{C:attention}+#1#{C:blue} free{} card slots",
+            "available in shop,",
+			"{C:red}forces{} hands per",
+			"round to {C:attention}1"
         },
       },
     },
@@ -1073,6 +1090,8 @@ local loc_stuff = {
 	  k_swap_ex = "Swap!",
 	  k_enhanced_ex = "Enhanced!",
 	  k_discount_ex = "Discount!",
+	  k_plus_blessing_ex = "+Blessing!",
+	  k_plus_curse_ex = "+Curse!",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",
