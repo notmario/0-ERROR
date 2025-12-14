@@ -587,6 +587,16 @@ local loc_stuff = {
 			"same rank is played"
         },
       },
+	  j_zero_dotdotdotdotdotdot = {
+        name = "{f:zero_pokemon}......",
+        text = {
+			{
+			"{f:zero_pixeldingbats}NJG{f:zero_pokemon,X:red,C:white}X#1#{f:zero_pokemon}Mult{f:zero_pixeldingbats}VCM",
+			"{f:zero_pixeldingbats}£l<XMNCVBN,Aò",
+			"{f:zero_pixeldingbats},AòGBY{f:zero_pokemon,C:diamonds}NO {f:zero_pokemon,C:hearts}REDS{f:zero_pixeldingbats}L"
+          }
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -1051,6 +1061,7 @@ local loc_stuff = {
       k_charged_ex = "Charged!",
 	  k_mutated_ex = "Mutated!",
 	  k_new_effect_ex = "New Effect!",
+	  k_lose_effect_ex = "Lost Effect!",
 	  k_lose_effect_ex = "Lost Effect!",
 	  k_change_effect_ex = "Changed Effect!",
 	  k_gain_value_ex = "Gained Value!",

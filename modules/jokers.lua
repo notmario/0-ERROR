@@ -2356,41 +2356,39 @@ SMODS.Joker {
 SMODS.Joker {
     key = "dotdotdotdotdotdot",
 	atlas = "zero_jokers",
-    pos = { x = 7, y = 5 },
-    rarity = 1,
+    pos = { x = 7, y = 7 },
+    rarity = 2,
     blueprint_compat = true,
-    cost = 8,
+    cost = 4,
+	config = { extra = { xmult = 4 }},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmult } }
+    end,
 	update = function(self, card)
         ease_background_colour{new_colour = G.C.BLACK, special_colour = G.C.WHITE, contrast = 2}
     end,
     calculate = function(self, card, context)
-		if context.joker_main and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-            local _rank
-			for k, v in ipairs(context.full_hand) do
-				if not _rank then
-					if v:is_face() then
-						_rank = v:get_id()
-					else
-						return
-					end
-				elseif (not v:is_face()) or v:get_id() ~= _rank then
-					return
+		if context.joker_main then
+            for _, v in ipairs(context.full_hand) do
+				if v:is_suit("Hearts") or v:is_suit("Diamonds") then
+					SMODS.destroy_cards(card, nil, nil, true)
+					return {
+						message = localize('dhsgherrorjfjdfoi'),
+					}
 				end
 			end
-			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
-			G.E_MANAGER:add_event(Event({
-				func = (function()
-					SMODS.add_card {
-						set = 'Cups',
-						key_append = 'zero_cups_prince'
+			for _, v in ipairs(G.hand.cards) do
+				if v:is_suit("Hearts") or v:is_suit("Diamonds") then
+					SMODS.destroy_cards(card, nil, nil, true)
+					return {
+						message = localize('dhsgherrorjfjdfoi'),
 					}
-					G.GAME.consumeable_buffer = 0
-					return true
-				end)
-			}))
+				end
+			end
 			return {
-				message = localize('k_plus_cups'),
-			}
+                xmult = card.ability.extra.xmult
+            }
         end
-    end
+    end,
+	zero_glitch = true,
 }
