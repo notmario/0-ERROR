@@ -2471,3 +2471,74 @@ SMODS.Joker {
 		end
     end
 }
+
+SMODS.Joker {
+    key = "crux",
+	atlas = "zero_jokers",
+    pos = { x = 4, y = 7 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+    calculate = function(self, card, context)
+		if context.ending_shop and G.consumeables.cards[1] then
+            local to_transform = pseudorandom_element(G.consumeables.cards, 'crux')
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+					play_sound('tarot1')
+					card:juice_up(0.3, 0.5)
+					return true
+				end
+			}))
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					to_transform:flip()
+					play_sound('card1')
+					to_transform:juice_up(0.3, 0.3)
+					return true
+				end
+			}))
+			delay(0.2)
+			local _handname, _played, _order = 'High Card', -1, 100
+			for k, v in pairs(G.GAME.hands) do
+				if v.played > _played or (v.played == _played and _order > v.order) then
+					_played = v.played
+					_handname = k
+				end
+			end
+			local planettocreate
+			for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+				if v.config.hand_type == _handname then
+					planettocreate = v.key
+				end
+			end
+			local planet
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.1,
+				func = function()
+					planet = create_card('Planet', nil, nil, nil, nil, false, planettocreate)
+					copy_card( planet, to_transform )
+					planet:remove()
+					return true
+				end
+			}))
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.15,
+				func = function()
+					to_transform:flip()
+					play_sound('tarot2', nil, 0.6)
+					to_transform:juice_up(0.3, 0.3)
+					return true
+				end
+			}))
+			return {
+				message = localize('k_transformed_ex'),
+			}
+        end
+    end
+}

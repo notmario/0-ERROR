@@ -582,9 +582,9 @@ local loc_stuff = {
         name = "Prince of Cups",
         text = {
             "Create a {C:cups}Cups{} card if",
-            "hand containing only",
-            "{C:attention}face{} cards with the",
-			"same rank is played"
+            "played hand contains",
+            "only {C:attention}face{} cards with",
+			"the same rank"
         },
       },
 	  j_zero_dotdotdotdotdotdot = {
@@ -612,6 +612,15 @@ local loc_stuff = {
             "available in shop,",
 			"{C:red}forces{} hands per",
 			"round to {C:attention}1"
+        },
+      },
+	  j_zero_crux = {
+        name = "Crux",
+        text = {
+            "{C:attention}Transform{} a random {C:attention}consumable",
+            "into a {C:planet}Planet{} card for your",
+			"most played {C:attention}poker hand{} at",
+			"the end of the {C:attention}shop"
         },
       },
     },
@@ -1092,6 +1101,7 @@ local loc_stuff = {
 	  k_discount_ex = "Discount!",
 	  k_plus_blessing_ex = "+Blessing!",
 	  k_plus_curse_ex = "+Curse!",
+	  k_transformed_ex = "Transformed!",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",
