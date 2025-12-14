@@ -908,6 +908,9 @@ SMODS.Joker {
 		end
 		
 		if not context.blueprint and ((context.end_of_round and not context.game_over and context.cardarea == G.jokers) or context.forcetrigger) then
+			if #card.ability.extra.mutations == 0 then
+				card.ability.extra.mutations = {{ effect = "chips", value = 10 }}
+			end
 			local ret = {}
 			local repeats = card.ability.extra.mutations_per_round
 			for iii=1,repeats do
@@ -1835,6 +1838,9 @@ SMODS.Joker {
 		end
 		
 		if not context.blueprint and ((context.individual and context.cardarea == G.play) or context.forcetrigger) then
+			if #card.ability.extra.mutations == 0 then
+				card.ability.extra.mutations = {{ effect = "chips", value = 10 }}
+			end
 			if not context.forcetrigger then
 				if G.GAME.hands[context.scoring_name].level <= 1 then return end
 				for k, v in pairs(G.GAME.hands) do
@@ -2345,4 +2351,46 @@ SMODS.Joker {
         end
     end,
 	pronouns = "he_him"
+}
+
+SMODS.Joker {
+    key = "dotdotdotdotdotdot",
+	atlas = "zero_jokers",
+    pos = { x = 7, y = 5 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 8,
+	update = function(self, card)
+        ease_background_colour{new_colour = G.C.BLACK, special_colour = G.C.WHITE, contrast = 2}
+    end,
+    calculate = function(self, card, context)
+		if context.joker_main and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+            local _rank
+			for k, v in ipairs(context.full_hand) do
+				if not _rank then
+					if v:is_face() then
+						_rank = v:get_id()
+					else
+						return
+					end
+				elseif (not v:is_face()) or v:get_id() ~= _rank then
+					return
+				end
+			end
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+			G.E_MANAGER:add_event(Event({
+				func = (function()
+					SMODS.add_card {
+						set = 'Cups',
+						key_append = 'zero_cups_prince'
+					}
+					G.GAME.consumeable_buffer = 0
+					return true
+				end)
+			}))
+			return {
+				message = localize('k_plus_cups'),
+			}
+        end
+    end
 }

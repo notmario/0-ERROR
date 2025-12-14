@@ -127,6 +127,9 @@ SMODS.Edition {
 		end
 		
 		if not context.blueprint and ((context.end_of_round and not context.game_over and context.cardarea == G.jokers) or (context.after and context.cardarea == G.play) or context.forcetrigger) then
+			if #card.edition.extra.mutations == 0 then
+				card.edition.extra.mutations = {{ effect = "chips", value = 10 }}
+			end
 			local ret = {}
 			local repeats = card.edition.extra.mutations_per_round
 			for iii=1,repeats do
