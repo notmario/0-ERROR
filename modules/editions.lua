@@ -144,12 +144,16 @@ SMODS.Edition {
 					"minus_mutation",
 				}
 				local max_odds = 0
+				local _lost = 1
 				for k,v in ipairs(odds_list) do max_odds = max_odds + card.edition.extra.odds[v] end
 				local roll = pseudorandom("zero_gala_eor", 1, max_odds)
 				for k,v in ipairs(odds_list) do
 					if roll <= card.edition.extra.odds[v] then
 						-- do that effect
-						if v == "new_effect" or (#card.edition.extra.mutations == 1 and v == "lose_effect") then
+						if v == "new_effect" or (#card.edition.extra.mutations == _lost and v == "lose_effect") then
+							if _lost > 1 then
+								_lost = _lost - 1
+							end
 							append_extra(ret, {
 								message = localize("k_mutated_ex"),
 								extra = {
@@ -160,6 +164,7 @@ SMODS.Edition {
 								},
 							})
 						elseif v == "lose_effect" then
+							_lost = _lost + 1
 							-- If this effect is rolled while the lily has
 							-- 1 effect remaining, instead we literally just
 							-- lie and pretend they rolled the above effect
