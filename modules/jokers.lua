@@ -2216,6 +2216,28 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
+    key = "viscount",
+	atlas = "zero_jokers",
+    pos = { x = 9, y = 5 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 5,
+	config = { extra = { xmult = 2.5 }},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmult } }
+    end,
+    calculate = function(self, card, context)
+		if context.other_consumeable and context.other_consumeable.ability.set == 'Cups' then
+            return {
+                xmult = card.ability.extra.xmult,
+				message_card = context.other_consumeable
+            }
+        end
+    end,
+	pronouns = "he_him"
+}
+
+SMODS.Joker {
     key = "violet_apostrophe_s_vessel", --why not
 	atlas = "zero_jokers",
     pos = { x = 8, y = 5 },
@@ -2261,28 +2283,6 @@ SMODS.Joker {
 			return nil, true
 		end
 	end,
-	pronouns = "he_him"
-}
-
-SMODS.Joker {
-    key = "viscount",
-	atlas = "zero_jokers",
-    pos = { x = 9, y = 5 },
-    rarity = 2,
-    blueprint_compat = true,
-    cost = 5,
-	config = { extra = { xmult = 2.5 }},
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.xmult } }
-    end,
-    calculate = function(self, card, context)
-		if context.other_consumeable and context.other_consumeable.ability.set == 'Cups' then
-            return {
-                xmult = card.ability.extra.xmult,
-				message_card = context.other_consumeable
-            }
-        end
-    end,
 	pronouns = "he_him"
 }
 
@@ -2540,5 +2540,96 @@ SMODS.Joker {
 				message = localize('k_transformed_ex'),
 			}
         end
+    end
+}
+
+SMODS.Joker {
+    key = "h_poke",
+	atlas = "zero_jokers",
+    pos = { x = 8, y = 7 },
+	pixel_size = { w = 71, h = 95},
+	display_size = { w = 71 * 1.2, h = 95 * 1.2 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+	config = { extra = { consumable = {} }},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { localize{type = "name_text", set = card.ability.extra.consumable[1], key = card.ability.extra.consumable[2] }} }
+    end,
+	set_ability = function(self, card, initial, delay_sprites)
+		local randomcons = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('h_poke'))
+		card.ability.extra.consumable = {randomcons.set, randomcons.key}
+    end,
+    calculate = function(self, card, context)
+		if context.end_of_round and context.main_eval and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                trigger = 'before',
+                delay = 0.0,
+                func = function()
+				SMODS.add_card({ key = card.ability.extra.consumable[2] })
+				G.GAME.consumeable_buffer = 0
+                return true
+                end
+            }))
+			local random_sound_effs = {
+				"button",
+				"cancel",
+				"card1",
+				"card3",
+				"cardFan2",
+				"cardSlide1",
+				"cardSlide2",
+				"chips1",
+				"chips2",
+				"coin1",
+				"coin2",
+				"coin3",
+				"coin4",
+				"coin5",
+				"coin6",
+				"coin7",
+				"crumple1",
+				"crumple2",
+				"crumple3",
+				"crumple4",
+				"crumple5",
+				"crumpleLong1",
+				"crumpleLong2",
+				"crumpleLong2",
+				"foil1",
+				"foil2",
+				"generic1",
+				"glass1",
+				"glass2",
+				"glass3",
+				"glass4",
+				"glass5",
+				"glass6",
+				"gold_seal",
+				"gong",
+				"highlight1",
+				"highlight2",
+				"holo1",
+				"magic_crumple",
+				"magic_crumple2",
+				"magic_crumple3",
+				"multhit1",
+				"multhit2",
+				"negative",
+				"other1",
+				"paper1",
+				"polychrome1",
+				"slice1",
+				"tarot1",
+				"tarot2",
+				"timpani",
+				"whoosh",
+				"whoosh1",
+				"whoosh2",
+				"zero_galasfx"
+			}
+			return { message = localize('kkshafjkh'), colour = G.C.SECONDARY_SET[card.ability.extra.consumable[1]], sound = pseudorandom_element(random_sound_effs) }
+		end
     end
 }

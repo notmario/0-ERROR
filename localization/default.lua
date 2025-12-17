@@ -623,6 +623,33 @@ local loc_stuff = {
 			"the end of the {C:attention}shop"
         },
       },
+	  j_zero_h_poke = {
+        name = "{f:zero_pokemon,s:1.5}h POKé",
+        text = {
+			"{f:zero_pixeldingbats,s:1.5}FESGFDBGJHNFJ",
+			"{f:zero_pixeldingbats,s:1.5}NCHLIAIPVINSK",
+			"{f:zero_pixeldingbats,s:1.5}SCHWJSRGKVBMO",
+			"{f:zero_pixeldingbats,s:1.5}NBXZZWBAFFDJC",
+			"{f:zero_pixeldingbats,s:1.5}QMDORROGCVLXA",
+			"{f:zero_pixeldingbats,s:1.5}RPMZDPVONWKQE",
+			"{f:zero_pixeldingbats,s:1.5}WYBYVJSLYQLYB",
+			"{f:zero_pixeldingbats,s:1.5}CCFNUGHGKFOTE",
+			"{f:zero_pixeldingbats,s:1.5}ALFDWDYQWHQPZ",
+			"{f:zero_pixeldingbats,s:1.5}GRMAZABRKRZZR",
+            "{f:zero_pixeldingbats,C:attention,s:1.5}M{f:zero_pokemon,C:attention,s:1.5}#1#{f:zero_pixeldingbats,C:attention,s:1.5}I",
+			"{f:zero_pixeldingbats,s:1.5}JQAVAACEGFYJS",
+			"{f:zero_pixeldingbats,s:1.5}IZORSHZUNTAKJ",
+			"{f:zero_pixeldingbats,s:1.5}DJWMFMNYUETLS",
+			"{f:zero_pixeldingbats,s:1.5}IJURGPRGIUNVI",
+			"{f:zero_pixeldingbats,s:1.5}KIGBHYOGMIXOK",
+			"{f:zero_pixeldingbats,s:1.5}PGAWOFIMZFVSN",
+			"{f:zero_pixeldingbats,s:1.5}ZYRSHTQNZUMNB",
+			"{f:zero_pixeldingbats,s:1.5}IHKTWFNMEWFBN",
+			"{f:zero_pixeldingbats,s:1.5}XLHFHVIKHVSGJ",
+			"{f:zero_pixeldingbats,s:1.5}XUJWXORTSZIIY",
+			"{f:zero_pixeldingbats,s:1.5}QAVMWUIAGGWBO",
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
