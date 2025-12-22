@@ -27,3 +27,17 @@ elseif card.config.center.zero_usable and card.from_area ~= G.shop and card.from
 '''
 match_indent = true
 times = 1
+
+# fix cryptid bug wilted rose emoji
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/overrides.lua"]'''
+pattern = "if not self.ability.consumeable then"
+position = 'before'
+payload = '''
+if self.config.center.zero_usable then
+  return cuc(self, any_state, skip_check)
+end
+'''
+match_indent = true
+times = 1
