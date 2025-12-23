@@ -2966,4 +2966,32 @@ SMODS.Joker {
 			end
 		end
     end,
+	pronouns = "she_her"
+}
+
+SMODS.Joker {
+	key = "lip_balm",
+	pos = { x = 7, y = 1 },
+	atlas = "zero_jokers",
+	rarity = 1,
+	cost = 4,
+	pools = { Food = true },
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	config = { extra = { rounds = 6 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.rounds } }
+	end,
+	calculate = function(self, card, context)
+        if context.end_of_round and context.main_eval and not context.blueprint then
+			card.ability.extra.rounds = card.ability.extra.rounds - 1
+			if card.ability.extra.rounds == 0 then
+				SMODS.destroy_cards(card, nil, nil, true)
+			end
+			return {
+                message = "" .. card.ability.extra.rounds,
+            }
+		end
+    end,
 }

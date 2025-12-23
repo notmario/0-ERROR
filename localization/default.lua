@@ -19,6 +19,14 @@ local loc_stuff = {
       },
 	},
     Enhanced = {
+	  m_wild = {
+                name = "Wild Card",
+                text = {
+                    "Can be used as",
+                    "any suit, cannot",
+					"be {C:attention}debuffed"
+                },
+            },
 	  m_zero_sunsteel = {
 	    name = "Sunsteel Card",
 		text = {
@@ -725,6 +733,13 @@ local loc_stuff = {
 			"this at end of round, consume",
 			"this and gain {C:money}${} equal to {C:attention}double",
 			"the {C:attention}sell value{} of both"
+        },
+      },
+	  j_zero_lip_balm = {
+        name = "Lip Balm",
+        text = {
+			"Cards cannot be {C:attention}debuffed{},",
+			"lasts {C:attention}#1#{} rounds",
         },
       },
     },

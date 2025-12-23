@@ -349,3 +349,30 @@ G.FUNCS.draw_from_deck_to_hand = function(e)
 		return alias_G_FUNCS_draw_from_deck_to_hand(e)
 	end
 end
+
+--debuff preventions, thank you unik!
+local Card_set_debuff = Card.set_debuff
+function Card:set_debuff(should_debuff)
+    if next(SMODS.find_card("j_zero_lip_balm")) or SMODS.has_enhancement(self,'m_wild')  then
+        if self.debuff then
+            self.debuff = false
+            if self.area == G.jokers then self:add_to_deck(true) end
+        end
+        return
+    else
+        Card_set_debuff(self,should_debuff)
+    end
+end
+
+local SMODS_debuff_card = SMODS.debuff_card
+function SMODS.debuff_card(card, debuff, source)
+    if next(SMODS.find_card("j_zero_lip_balm")) or SMODS.has_enhancement(self,'m_wild')  then
+        if card.debuff then
+            card.debuff = false
+            if card.area == G.jokers then card:add_to_deck(true) end
+        end
+        return
+    else
+        SMODS_debuff_card(card,debuff,source)
+    end
+end
