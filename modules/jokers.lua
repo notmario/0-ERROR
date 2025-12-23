@@ -2608,12 +2608,12 @@ SMODS.Joker {
 	discovered = true,
 	config = { extra = { consumable = {} }},
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.extra.consumable]
-    end,
+		info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.extra.consumable[2]]
+	end,
 	set_ability = function(self, card, initial, delay_sprites)
 		if G.jokers then
 			local randomcons = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('h_poke'))
-			card.ability.extra.consumable = randomcons.key
+			card.ability.extra.consumable = {randomcons.set, randomcons.key}
 		end
 	end,
     calculate = function(self, card, context)
@@ -2623,7 +2623,7 @@ SMODS.Joker {
                 trigger = 'before',
                 delay = 0.0,
                 func = function()
-				SMODS.add_card({ key = card.ability.extra.consumable })
+				SMODS.add_card({ key = card.ability.extra.consumable[2] })
 				G.GAME.consumeable_buffer = 0
                 return true
                 end
