@@ -650,6 +650,75 @@ local loc_stuff = {
 			"{f:zero_pixeldingbats,s:1.5}QAVMWUIAGGWBO",
         },
       },
+	  j_zero_strange_seeds = {
+        name = "Strange Seeds",
+        text = {
+            "Blooms into a random",
+            "{C:green}Magic Plant{} Joker",
+			"after {C:attention}#1#{} rounds",
+			"{C:inactive}(Currently {C:attention}#2#{C:inactive}/#1#)"
+        },
+      },
+	  j_zero_fabled_rose_of_isola = {
+        name = {"Fabled Rose of Isola",
+				"{s:0.5}Fabled Lemonbush"},
+        text = {
+			"Extremely valuable, gains {C:money}$#1#{} of",
+            "{C:attention}sell value{} at end of round",
+        },
+      },
+	  j_zero_magic_tree_of_fragrance = {
+        name = {"Magic Tree of Fragrance",
+				"{s:0.5}Fourpetal Maple"},
+        text = {
+			"{C:green}#2# in #1#{} chance to add a {C:red}Rare",
+            "Joker to shop when {C:attention}rerolling"
+        },
+      },
+	  j_zero_golden_berries_of_wealth = {
+        name = {"Golden Berries of Wealth",
+				"{s:0.5}Aureus Scandens"},
+        text = {
+			"{X:money,C:white}X#1#{} sell value to",
+            "a random Joker"
+        },
+      },
+	  j_zero_rose_of_joy = {
+        name = {"Rose of Joy",
+				"{s:0.5}Rosaceae Fern"},
+        text = {
+			"While shopping, {C:attention}selling",
+            "a Joker adds {C:attention}2{} cards",
+			"to shop"
+        },
+      },
+	  j_zero_fruit_of_life = {
+        name = {"Fruit of Life",
+				"{s:0.5}Mela Rare Oak"},
+        text = {
+			"Sell this to create",
+            "a {C:dark_edition}Negative{} {C:green}Strange Seeds{},",
+			"it blooms in {C:attention}4{} less rounds"
+        },
+      },
+	  j_zero_fruit_of_life_negative = {
+        name = {"Fruit of Life",
+				"{s:0.5}Mela Rare Oak"},
+        text = {
+			"Sell this to gain",
+			"{C:dark_edition}+1{} Joker slot and create",
+            "a {C:dark_edition}Negative{} {C:green}Strange Seeds{},",
+			"it blooms in {C:attention}4{} less rounds"
+        },
+      },
+	  j_zero_flower_of_knowledge = {
+        name = {"Flower of Knowledge",
+				"{s:0.5}Nox Orchid"},
+        text = {
+			"{C:attention}Removes{} the cap on interest",
+			"earned in each round"
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -1129,6 +1198,9 @@ local loc_stuff = {
 	  k_plus_blessing_ex = "+Blessing!",
 	  k_plus_curse_ex = "+Curse!",
 	  k_transformed_ex = "Transformed!",
+	  k_bloom_ex = "Bloom!",
+	  k_plus_shop_ex = "+Shop!",
+	  k_sell_value = "Value",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",

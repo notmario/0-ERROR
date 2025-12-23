@@ -12,6 +12,8 @@ assert(SMODS.load_file("./modules/editions.lua"))()
 assert(SMODS.load_file("./modules/suits.lua"))()
 assert(SMODS.load_file("./modules/tarot.lua"))()
 
+assert(SMODS.load_file("./modules/crossmod/pronouns.lua"))()
+
 assert(SMODS.load_file("./modules/challenges.lua"))()
 
 assert(SMODS.load_file("./modules/ui.lua"))()

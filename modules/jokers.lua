@@ -1042,6 +1042,8 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = true,
     cost = 5,
+	unlocked = true,
+	discovered = true,
     config = { extra = { mult = 5, suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, localize(card.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
@@ -1066,6 +1068,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = true,
     cost = 7,
+	unlocked = true,
+	discovered = true,
     config = { extra = { money = 1, xmult = 1.5, mult = 7, chips = 50, suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
         return { vars = { localize(card.ability.extra.suit, 'suits_singular'), card.ability.extra.money, card.ability.extra.xmult, card.ability.extra.chips, card.ability.extra.mult, colours = {G.C.SUITS[card.ability.extra.suit] }, } }
@@ -1102,6 +1106,8 @@ SMODS.Joker {
     blueprint_compat = false,
 	eternal_compat = false,
     cost = 5,
+	unlocked = true,
+	discovered = true,
     config = { extra = { suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
         return { vars = { localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] }, } }
@@ -1134,6 +1140,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = true,
     cost = 6,
+	unlocked = true,
+	discovered = true,
     config = { extra = { suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
@@ -1175,6 +1183,8 @@ SMODS.Joker {
     rarity = 3,
     blueprint_compat = true,
     cost = 9,
+	unlocked = true,
+	discovered = true,
     config = { extra = { total = 150, discovered = 1}, },
     loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = 'e_negative_consumable', set = 'Edition', config = { extra = 1 } }
@@ -1252,6 +1262,8 @@ SMODS.Joker {
     rarity = 3,
     blueprint_compat = true,
     cost = 8,
+	unlocked = true,
+	discovered = true,
     config = { extra = { limit = 0, odds = 2, money = 3}, },
     loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal, card.ability.extra.odds, card.ability.extra.money } }
@@ -1290,6 +1302,8 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = false,
     cost = 4,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { uses = 3, current_uses = 3, used = false}, },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.current_uses, card.ability.extra.uses } }
@@ -1329,6 +1343,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = true,
     cost = 6,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { money = 1, xmult = 0.2, mult = 2, chips = 10, xchips = 0.2, retriggers = 1}, },
 	loc_vars = function(self, info_queue, card)
 		local randomjoker = G.P_CENTER_POOLS["Joker"][math.random(1, #G.P_CENTER_POOLS["Joker"])]
@@ -1431,6 +1447,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = false,
     cost = 4,
+	unlocked = true,
+	discovered = true,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = G.P_CENTERS['m_zero_l0ck']
 		info_queue[#info_queue+1] = G.P_CENTERS['m_zero_k3y']
@@ -1489,6 +1507,8 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = true,
     cost = 4,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { chips = 0, max = 50 } },
 	loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chips, card.ability.extra.max } }
@@ -1523,6 +1543,8 @@ SMODS.Joker {
     rarity = 3,
     blueprint_compat = true,
     cost = 8,
+	unlocked = true,
+	discovered = true,
 	loc_vars = function(self, info_queue, card)
 		local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["j_zero_valdi"] or 1
 		local cur_cd = G.GAME.Prestiges["j_zero_valdi"]
@@ -1608,6 +1630,8 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = true,
     cost = 6,
+	unlocked = true,
+	discovered = true,
 	config = { choice = 1, rank = 9, extra = {
 	{mult = 10},
 	{chips = 50},
@@ -1649,6 +1673,8 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = true,
     cost = 5,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { odds = 3, chips = 5, mult = 1 }},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.odds, G.GAME.probabilities.normal, card.ability.extra.chips, card.ability.extra.mult } }
@@ -1986,6 +2012,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = true,
     cost = 4,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { sell_value = 2 } },
 	loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.sell_value} }
@@ -2014,7 +2042,10 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = true,
     cost = 4,
+	unlocked = true,
+	discovered = true,
 	zero_usable = true,
+	zero_stay_in_area = true,
 	config = { extra = { modes ={ "chips", "mult", "xmult", "dollars", "swap", "enhance", "consumable" },
 	values = { 20, 4, 1.25, 1, true, nil, 4 }, mode = 1
 	} },
@@ -2092,6 +2123,8 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = true,
     cost = 4,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { odds = 2, suit = 'zero_Brights' }},
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue+1] = { set = 'Other', key = 'zero_lipu_suno_info', specific_vars = { card.ability.extra.odds, G.GAME.probabilities.normal, localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] }} }
@@ -2129,6 +2162,8 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = true,
     cost = 5,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { odds = 2 } },
 	loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.odds, G.GAME.probabilities.normal } }
@@ -2158,6 +2193,8 @@ SMODS.Joker {
     blueprint_compat = true,
 	eternal_compat = false,
     cost = 8,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { boost = 0.05, unused = true } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_zero_sunsteel
@@ -2222,6 +2259,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = true,
     cost = 5,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { xmult = 2.5 }},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xmult } }
@@ -2244,6 +2283,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = true,
     cost = 6,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { multiply = 2, cups = 2}},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.multiply,
@@ -2294,6 +2335,8 @@ SMODS.Joker {
     rarity = 1,
     blueprint_compat = true,
     cost = 4,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { chips = 40 }},
 	loc_vars = function(self, info_queue, card)
 		local count = 0
@@ -2332,6 +2375,8 @@ SMODS.Joker {
     rarity = 3,
     blueprint_compat = true,
     cost = 8,
+	unlocked = true,
+	discovered = true,
     calculate = function(self, card, context)
 		if context.joker_main and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
             local _rank
@@ -2373,6 +2418,8 @@ SMODS.Joker {
     blueprint_compat = true,
 	eternal_compat = false,
     cost = 4,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { xmult = 4 }},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xmult } }
@@ -2413,6 +2460,8 @@ SMODS.Joker {
     rarity = 3,
     blueprint_compat = true,
     cost = 8,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { active = false, cards = 2 }},
 	loc_vars = function(self, info_queue, card)
 		local key = "j_zero_damocles"
@@ -2479,6 +2528,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = true,
     cost = 6,
+	unlocked = true,
+	discovered = true,
     calculate = function(self, card, context)
 		if context.ending_shop and G.consumeables.cards[1] then
             local to_transform = pseudorandom_element(G.consumeables.cards, 'crux')
@@ -2552,6 +2603,8 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = true,
     cost = 6,
+	unlocked = true,
+	discovered = true,
 	config = { extra = { consumable = {} }},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { localize{type = "name_text", set = card.ability.extra.consumable[1], key = card.ability.extra.consumable[2] }} }
@@ -2632,4 +2685,255 @@ SMODS.Joker {
 			return { message = localize('kkshafjkh'), colour = G.C.SECONDARY_SET[card.ability.extra.consumable[1]], sound = pseudorandom_element(random_sound_effs) }
 		end
     end
+}
+
+SMODS.Joker {
+    key = "strange_seeds",
+	atlas = "zero_jokers",
+    pos = { x = 0, y = 8 },
+    rarity = 2,
+    blueprint_compat = false,
+    cost = 5,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { bloom_rounds = 0, total_rounds = 6 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.total_rounds, card.ability.extra.bloom_rounds } }
+	end,
+    calculate = function(self, card, context)
+		if (context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint) or context.forcetrigger then
+            card.ability.extra.bloom_rounds = card.ability.extra.bloom_rounds + 1
+			if card.ability.extra.bloom_rounds == card.ability.extra.total_rounds - 1 then
+                local eval = function(card) return not card.REMOVED end
+                juice_card_until(card, eval, true)
+            end
+            if card.ability.extra.bloom_rounds == card.ability.extra.total_rounds then
+				local plants = {}
+				for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+					if v.zero_plant then
+						plants[#plants + 1] = v.key
+					end
+				end
+				G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+				local magic_plant = SMODS.add_card({ set = 'Joker', key = pseudorandom_element(plants, "strange_seeds")})
+				if card.edition then
+				magic_plant:set_edition(card.edition,true)
+				end
+				card:juice_up(0.3, 0.5)
+				return true
+				end}))
+				SMODS.destroy_cards(card, nil, nil, true)
+            end
+            return {
+                message = (card.ability.extra.bloom_rounds < card.ability.extra.total_rounds) and
+                    (card.ability.extra.bloom_rounds .. '/' .. card.ability.extra.total_rounds) or
+                    localize('k_bloom_ex'),
+                colour = G.C.GREEN
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "fabled_rose_of_isola",
+	atlas = "zero_jokers",
+    pos = { x = 1, y = 8 },
+    rarity = 2,
+    blueprint_compat = false,
+    cost = 100,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { price = 5 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.price } }
+	end,
+    calculate = function(self, card, context)
+		if (context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint) or context.forcetrigger then
+            card.ability.extra_value = card.ability.extra_value + card.ability.extra.price
+            card:set_cost()
+            return {
+                message = localize('k_val_up'),
+                colour = G.C.GREEN
+            }
+        end
+    end,
+	in_pool = function(self)
+		return false
+	end,
+	zero_plant = true
+}
+
+SMODS.Joker {
+    key = "magic_tree_of_fragrance",
+	atlas = "zero_jokers",
+    pos = { x = 2, y = 8 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 5,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { odds = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.odds, G.GAME.probabilities.normal } }
+	end,
+    calculate = function(self, card, context)
+		if context.reroll_shop and pseudorandom('magic_tree_of_fragrance') < G.GAME.probabilities.normal / card.ability.extra.odds then
+            G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+				local rare = SMODS.add_card({ set = 'Joker', rarity = 3, area = G.shop_jokers})
+				create_shop_card_ui(rare,rare.ability.set,G.shop_jokers)
+				card:juice_up(0.3, 0.5)
+				return true
+			end}))
+			return {
+                message = localize('k_plus_shop_ex'),
+                colour = G.C.GREEN
+            }
+        end
+    end,
+	in_pool = function(self)
+		return false
+	end,
+	zero_plant = true
+}
+
+SMODS.Joker {
+    key = "golden_berries_of_wealth",
+	atlas = "zero_jokers",
+    pos = { x = 3, y = 8 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 5,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { xvalue = 2 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xvalue } }
+	end,
+    calculate = function(self, card, context)
+		if context.forcetrigger or context.joker_main then
+            local target = pseudorandom_element(G.jokers.cards, "golden_berries_of_wealth")
+			if target.set_cost then
+				target.ability.extra_value = target.sell_cost * card.ability.extra.xvalue - math.floor(target.config.center.cost / 2)
+				target:set_cost()
+			end
+			return {
+                message = "X" .. card.ability.extra.xvalue .. " " .. localize('k_sell_value'),
+                colour = G.C.GREEN,
+				message_card = target,
+				card = card
+            }
+		end
+    end,
+	in_pool = function(self)
+		return false
+	end,
+	zero_plant = true
+}
+
+SMODS.Joker {
+    key = "rose_of_joy",
+	atlas = "zero_jokers",
+    pos = { x = 4, y = 8 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 5,
+	unlocked = true,
+	discovered = true,
+    calculate = function(self, card, context)
+		if context.selling_card and context.card.ability.set == 'Joker' and context.card ~= card and G.shop_jokers then
+			for i = 1,2 do
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.4,
+					func = function()
+					local shop_card = SMODS.add_card({set = pseudorandom_element({'Joker','Consumeables'},"rose_of_joy"), area = G.shop_jokers})
+					create_shop_card_ui(shop_card,shop_card.ability.set,G.shop_jokers)
+					card:juice_up(0.3, 0.5)
+					return true
+				end}))
+			end
+			return {
+                message = localize('k_plus_shop_ex'),
+                colour = G.C.GREEN
+            }
+		end
+    end,
+	in_pool = function(self)
+		return false
+	end,
+	zero_plant = true
+}
+
+SMODS.Joker {
+    key = "fruit_of_life",
+	atlas = "zero_jokers",
+    pos = { x = 5, y = 8 },
+    rarity = 2,
+    blueprint_compat = false,
+    cost = 8,
+	unlocked = true,
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_zero_strange_seeds
+		return { key = "j_zero_fruit_of_life" .. ((card.edition and card.edition.key and card.edition.key == "e_negative" and "_negative") or ""), set = 'Joker' }
+	end,
+    calculate = function(self, card, context)
+		if context.selling_self then
+			local negaseeds
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+				negaseeds = SMODS.add_card({set = 'Joker', area = G.jokers, key = "j_zero_strange_seeds", edition = "e_negative"})
+				return true
+			end}))
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+				negaseeds.ability.extra.total_rounds = 2
+				if card.edition and card.edition.key and card.edition.key == "e_negative" then
+					G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+				end
+				return true
+			end}))
+		end
+    end,
+	in_pool = function(self)
+		return false
+	end,
+	zero_plant = true
+}
+
+SMODS.Joker {
+    key = "flower_of_knowledge",
+	atlas = "zero_jokers",
+    pos = { x = 6, y = 8 },
+    rarity = 2,
+    blueprint_compat = false,
+    cost = 5,
+	unlocked = true,
+	discovered = true,
+    add_to_deck = function(self, card, from_debuff)
+		G.GAME.interest_cap = G.GAME.interest_cap + 1e10
+	end,
+	calculate = function(self, card, context)
+        if G.GAME.interest_cap < 1e10 then
+			G.GAME.interest_cap = G.GAME.interest_cap + 1e10
+		end
+    end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.GAME.interest_cap = G.GAME.interest_cap - 1e10
+	end,
+	in_pool = function(self)
+		return false
+	end,
+	zero_plant = true
 }
