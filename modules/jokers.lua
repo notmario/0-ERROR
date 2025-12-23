@@ -1106,6 +1106,7 @@ SMODS.Joker {
     blueprint_compat = false,
 	eternal_compat = false,
     cost = 5,
+	pools = { Food = true },
 	unlocked = true,
 	discovered = true,
     config = { extra = { suit = 'zero_Brights'}, },
