@@ -2608,12 +2608,14 @@ SMODS.Joker {
 	discovered = true,
 	config = { extra = { consumable = {} }},
 	loc_vars = function(self, info_queue, card)
-		return { vars = { localize{type = "name_text", set = card.ability.extra.consumable[1], key = card.ability.extra.consumable[2] }} }
+		info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.extra.consumable]
     end,
 	set_ability = function(self, card, initial, delay_sprites)
-		local randomcons = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('h_poke'))
-		card.ability.extra.consumable = {randomcons.set, randomcons.key}
-    end,
+		if G.jokers then
+			local randomcons = pseudorandom_element(G.P_CENTER_POOLS.Consumeables, pseudoseed('h_poke'))
+			card.ability.extra.consumable = randomcons.key
+		end
+	end,
     calculate = function(self, card, context)
 		if context.end_of_round and context.main_eval and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
@@ -2621,7 +2623,7 @@ SMODS.Joker {
                 trigger = 'before',
                 delay = 0.0,
                 func = function()
-				SMODS.add_card({ key = card.ability.extra.consumable[2] })
+				SMODS.add_card({ key = card.ability.extra.consumable })
 				G.GAME.consumeable_buffer = 0
                 return true
                 end
@@ -2878,6 +2880,7 @@ SMODS.Joker {
     rarity = 2,
     blueprint_compat = false,
     cost = 8,
+	pools = { Food = true },
 	unlocked = true,
 	discovered = true,
 	loc_vars = function(self, info_queue, card)
@@ -2937,4 +2940,30 @@ SMODS.Joker {
 		return false
 	end,
 	zero_plant = true
+}
+
+SMODS.Joker {
+    key = "croque_madame",
+	atlas = "zero_jokers",
+    pos = { x = 6, y = 1 },
+    rarity = 1,
+    blueprint_compat = false,
+	eternal_compat = false,
+    cost = 3,
+	pools = { Food = true },
+	unlocked = true,
+	discovered = true,
+    calculate = function(self, card, context)
+        if context.end_of_round and context.main_eval and not context.blueprint then
+			for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 1] end
+            end
+			if other_joker and other_joker.config.center.cost then
+				SMODS.destroy_cards(card, nil, nil, true)
+				return {
+					dollars = (card.sell_cost + other_joker.sell_cost) * 2,
+				}
+			end
+		end
+    end,
 }

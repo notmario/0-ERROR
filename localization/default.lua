@@ -636,7 +636,6 @@ local loc_stuff = {
 			"{f:zero_pixeldingbats,s:1.5}CCFNUGHGKFOTE",
 			"{f:zero_pixeldingbats,s:1.5}ALFDWDYQWHQPZ",
 			"{f:zero_pixeldingbats,s:1.5}GRMAZABRKRZZR",
-            "{f:zero_pixeldingbats,C:attention,s:1.5}M{f:zero_pokemon,C:attention,s:1.5}#1#{f:zero_pixeldingbats,C:attention,s:1.5}I",
 			"{f:zero_pixeldingbats,s:1.5}JQAVAACEGFYJS",
 			"{f:zero_pixeldingbats,s:1.5}IZORSHZUNTAKJ",
 			"{f:zero_pixeldingbats,s:1.5}DJWMFMNYUETLS",
@@ -717,6 +716,15 @@ local loc_stuff = {
         text = {
 			"{C:attention}Removes{} the cap on interest",
 			"earned in each round"
+        },
+      },
+	  j_zero_croque_madame = {
+        name = "Croque Madame",
+        text = {
+			"If a Joker is on the right of",
+			"this at end of round, consume",
+			"this and gain {C:money}${} equal to {C:attention}double",
+			"the {C:attention}sell value{} of both"
         },
       },
     },
