@@ -742,6 +742,14 @@ local loc_stuff = {
 			"lasts {C:attention}#1#{} rounds",
         },
       },
+	  j_zero_red_sketch = {
+        name = "Red Sketch",
+        text = {
+			"Consumables copy the ability",
+			"of rightmost {C:attention}Joker{}, destroy all",
+			"consumables at end of round"
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {

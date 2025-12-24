@@ -2995,3 +2995,59 @@ SMODS.Joker {
 		end
     end,
 }
+
+SMODS.Joker {
+	key = "red_sketch",
+	pos = { x = 2, y = 9 },
+	atlas = "zero_jokers",
+	rarity = 3,
+	cost = 12,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, card)
+		local main_end
+		if card.area and card.area == G.jokers then
+			local other_joker
+			if G.jokers.cards[#G.jokers.cards] ~= card then
+				other_joker = G.jokers.cards[#G.jokers.cards]
+			end
+			local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+			main_end = {
+				{
+					n = G.UIT.C,
+					config = { align = "bm", minh = 0.4 },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+							nodes = {
+								{ n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+							}
+						}
+					}
+				}
+			}
+		end
+		return {main_end = main_end}
+	end,
+	calculate = function(self, card, context)
+		if card.area and card.area == G.jokers and G.jokers.cards[#G.jokers.cards] ~= card then
+            local other_joker = G.jokers.cards[#G.jokers.cards]
+			local effects = {}
+			for k,v in ipairs(G.consumeables.cards) do
+				local singleret = SMODS.blueprint_effect(v, other_joker, context)
+				if singleret then
+					singleret.message_card = v
+					effects[#effects+1] = singleret
+				end
+			end
+			if #effects > 0 then
+				return SMODS.merge_effects(effects)
+			end
+		end
+		if context.end_of_round and context.main_eval and not context.blueprint then
+			SMODS.destroy_cards(G.consumeables.cards)
+		end
+    end,
+}
