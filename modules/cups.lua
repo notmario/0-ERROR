@@ -687,6 +687,23 @@ SMODS.Consumable{
         end
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
 		delay(0.5)
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = function()
+				card:juice_up(0.3, 0.5)
+				if G.hand then
+					for k, v in pairs(G.hand.cards) do
+						if SMODS.has_enhancement(v, "m_zero_sunsteel") then
+							v:juice_up(0.5)
+						end
+					end
+				end
+				play_sound('zero_sunsteelpow', 1, 0.4)
+				return true
+			end
+		}))
+		delay(0.5)
     end
 }
 

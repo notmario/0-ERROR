@@ -63,6 +63,13 @@ SMODS.Sound{
     path = "galasfx.ogg",
 }
 
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
+    key = "sunsteelpow", 
+    path = "sunsteelpow.ogg",
+}
+
 SMODS.Shader{
 	key = "gala",
 	path = "gala.fs"

@@ -543,7 +543,7 @@ local loc_stuff = {
 			{
 			"Add a random {C:attention}Sunsteel Card{} to",
 			"deck and increase {C:attention}Sunsteel Power",
-			"by {X:mult,C:white}X#1#{} at end of round,",
+			"by {X:diamonds,C:white}X#1#{} at end of round,",
 			"{C:red,E:2,s:0.9}self destructs{s:0.9} to prevent death once"
 			}
         },
@@ -554,7 +554,7 @@ local loc_stuff = {
 			{
 			"Add a random {C:attention}Sunsteel Card{} to",
 			"deck and increase {C:attention}Sunsteel Power",
-			"by {X:mult,C:white}X#1#{} at end of round,"
+			"by {X:diamonds,C:white}X#1#{} at end of round,"
 			}
         },
       },
@@ -1010,7 +1010,7 @@ local loc_stuff = {
 		  "Enhances {C:attention}#1#{} selected",
 		  "card#3# to {C:attention}#2##3#",
 		  "and increases {C:attention}Sunsteel",
-		  "{C:attention}Power{} by {X:mult,C:white}X#4#"
+		  "{C:attention}Power{} by {X:diamonds,C:white}X#4#"
 		},
 	  },
 	  c_zero_cups_queen = {

@@ -172,6 +172,16 @@ SMODS.Consumable({
     local value = scaler_keyword(card, "c_zero_plasmid")
 
     G.GAME.PrestigeValues.mult_extra = G.GAME.PrestigeValues.mult_extra + value
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
@@ -208,6 +218,16 @@ SMODS.Consumable({
     if works then
       G.hand:change_size(1)
     end
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
@@ -256,6 +276,16 @@ SMODS.Consumable({
     if works then
       G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.amount
     end
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
@@ -304,6 +334,16 @@ SMODS.Consumable({
     if works then
       SMODS.change_free_rerolls(card.ability.extra.amount)
     end
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
@@ -352,6 +392,16 @@ SMODS.Consumable({
     if works then
       G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.amount
     end
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     local cd_dur = G.GAME.PrestigeCooldowns and G.GAME.PrestigeCooldowns["c_zero_bloodstone"] or 1
@@ -399,6 +449,16 @@ SMODS.Consumable({
     if works then
       G.GAME.shop.joker_max = G.GAME.shop.joker_max + card.ability.extra.amount
     end
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
@@ -448,6 +508,16 @@ SMODS.Consumable({
       SMODS.change_play_limit(card.ability.extra.amount)
       SMODS.change_discard_limit(card.ability.extra.amount)
     end
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
@@ -497,6 +567,16 @@ SMODS.Consumable({
     local value = scaler_keyword(card, "c_zero_supercoiledplasmid")
 
     G.GAME.PrestigeValues.xmult_extra = G.GAME.PrestigeValues.xmult_extra + value
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     if not G.GAME.Prestiges then G.GAME.Prestiges = {} end
@@ -535,6 +615,16 @@ SMODS.Consumable({
     local value = scaler_keyword(card, "c_zero_antiplasmid")
 
     G.GAME.PrestigeValues.chips_extra = G.GAME.PrestigeValues.chips_extra + value
+	G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        delay = 0.4,
+        func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true
+        end
+    }))
+	delay(0.5)
   end,
   loc_vars = function(self, info_queue, center)
     if not G.GAME.Prestiges then G.GAME.Prestiges = {} end

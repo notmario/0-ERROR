@@ -1349,7 +1349,11 @@ SMODS.Joker {
 	config = { extra = { money = 1, xmult = 0.2, mult = 2, chips = 10, xchips = 0.2, retriggers = 1}, },
 	loc_vars = function(self, info_queue, card)
 		local randomjoker = G.P_CENTER_POOLS["Joker"][math.random(1, #G.P_CENTER_POOLS["Joker"])]
-		info_queue[#info_queue+1] = randomjoker.key and randomjoker or nil
+		if not randomjoker.generate_ui then
+			info_queue[#info_queue+1] = randomjoker.key and randomjoker or nil
+		else
+			info_queue[#info_queue+1] = {key = "jhsuhfuiashiunonenonenone", set = "Other"}
+		end
 	end,
 	calculate = function(self, card, context)
 		if context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 then
@@ -2052,7 +2056,7 @@ SMODS.Joker {
 	} },
 	loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.values[card.ability.extra.mode], G.GAME.probabilities.normal },
-			key = 'j_zero_playjoke_' .. card.ability.extra.modes[card.ability.extra.mode] , set = 'Joker',}
+			key = 'j_zero_playjoke_' .. card.ability.extra.modes[card.ability.extra.mode] , set = 'Joker'}
     end,
 	can_use = function(self, card)
 		return true
@@ -2072,9 +2076,6 @@ SMODS.Joker {
 			return true end)}))
 		delay(0.5)
 		draw_card(G.play, G.jokers, nil, 'up', nil, card)
-		return {
-            message = localize('k_changed_ex')
-        }
 	end,
     calculate = function(self, card, context)
 		if context.joker_main then
@@ -2243,8 +2244,18 @@ SMODS.Joker {
 				local sunsteel_card = SMODS.add_card { set = "Base", enhancement = "m_zero_sunsteel", area = G.deck }
                 return {
                     message = localize('k_plus_sunsteel_pow'),
-                    colour = G.C.SECONDARY_SET.Enhanced,
+					sound = "zero_sunsteelpow",
+					volume = 0.4,
+					pitch = 1.0,
+                    colour = G.ARGS.LOC_COLOURS.diamonds,
                     func = function()
+						if G.hand then
+							for k, v in pairs(G.hand.cards) do
+								if SMODS.has_enhancement(v, "m_zero_sunsteel") then
+									v:juice_up(0.5)
+								end
+							end
+						end
                         SMODS.calculate_context({ playing_card_added = true, cards = { sunsteel_card } })
                     end
                 }
