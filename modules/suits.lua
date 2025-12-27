@@ -50,6 +50,9 @@ SMODS.Suit {
 		if next(SMODS.find_mod("entr")) then
 			table.insert(display_rank_arg, 5 ,'entr_nilrank')
 		end
+		if next(SMODS.find_mod("paperback")) then
+			table.insert(display_rank_arg, 6 ,'paperback_Apostle')
+		end
 		SMODS.DeckSkin{
 			key = 'default_'..self.key,
 			prefix_config = { key = false },
@@ -57,7 +60,7 @@ SMODS.Suit {
 			palettes = {
 				{
 					key = 'lc',
-					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank"},
+					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank", "paperback_Apostle"},
 					display_ranks = display_rank_arg,
 					atlas = self.lc_atlas,
 					pos_style = 'ranks',
@@ -68,7 +71,7 @@ SMODS.Suit {
 				},
 				{
 					key = 'hc',
-					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank"},
+					ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', "King", "Ace", "finity_V", "entr_nilrank", "paperback_Apostle"},
 					display_ranks = display_rank_arg,
 					atlas = self.hc_atlas,
 					pos_style = 'ranks',
