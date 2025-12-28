@@ -750,6 +750,15 @@ local loc_stuff = {
 			"consumables at end of round"
         },
       },
+	  j_zero_q_triangle = {
+        name = "{f:zero_pokemon}Q ▶",
+        text = {
+			"{f:zero_pixeldingbats}O{f:zero_pokemon,C:attention}H{f:zero_pixeldingbats}RE{f:zero_pokemon}8{f:zero_pixeldingbats}H{f:zero_pokemon}7{f:zero_pixeldingbats}S",
+			"{f:zero_pixeldingbats}DHZ{f:zero_pokemon,C:attention}I{f:zero_pixeldingbats}NWAN",
+			"{f:zero_pixeldingbats}Y{f:zero_pokemon}1{f:zero_pixeldingbats}GDA{f:zero_pokemon,C:attention}D{f:zero_pixeldingbats}ST",
+			"{f:zero_pixeldingbats}IYUGZOO{f:zero_pokemon,C:attention}E{f:zero_pixeldingbats}",
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -1091,7 +1100,6 @@ local loc_stuff = {
 		  "be used immediately"
         }
       },
-
       scaler_explainer = {
         name = "Scaler",
         text = {
@@ -1108,7 +1116,6 @@ local loc_stuff = {
           "increases next duration by {C:attention}1"
         }
       },
-      
       phage_effect = {
         name = "Phage",
         text = {
@@ -1153,7 +1160,6 @@ local loc_stuff = {
 			"{X:prestige,C:white}Prestige{} card is used"
         },
       },
-	  
 	  zero_brights_blurb = {
         text = {
           "Counts as each",
@@ -1196,6 +1202,12 @@ local loc_stuff = {
 			"Scoring {V:1}#3#{} have a",
 			"{C:green}#2# in #1#{} chance to",
 			"change {C:attention}enhancement"
+		},
+	  },
+	  zero_q_triangle_storage = {
+		name = "{f:zero_pokemon}←",
+		text = {
+			"{f:zero_pokemon,C:attention}#1#"
 		},
 	  },
     },

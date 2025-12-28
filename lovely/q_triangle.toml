@@ -1,0 +1,19 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# adding a joker will "ignore" Q ◣'s existence
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "table.insert(self.cards, 1, card)"
+position = "after"
+payload = '''elseif self == G.jokers and card.ability.set == "Joker" and next(SMODS.find_card("j_zero_q_triangle")) then
+	for i = 1, #G.jokers.cards do
+		if G.jokers.cards[i].config.center.key == "j_zero_q_triangle" then
+			table.insert(self.cards, i, card)
+		end
+	end'''
+match_indent = true
+overwrite = false

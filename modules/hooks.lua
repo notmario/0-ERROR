@@ -376,3 +376,11 @@ function SMODS.debuff_card(card, debuff, source)
         SMODS_debuff_card(card,debuff,source)
     end
 end
+
+--for Q ◣:
+--adding a context to check if the player attempted to move jokers
+local Node_stop_drag = Node.stop_drag
+function Node:stop_drag()
+	SMODS.calculate_context({ zero_moved = true })
+	return Node_stop_drag(self)
+end

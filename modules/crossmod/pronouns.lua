@@ -10,4 +10,14 @@ if next(SMODS.find_mod('cardpronouns')) then
 		key = "mirror"
 	}
 	
+	CardPronouns.Pronoun {
+		colour = HEX("000000"),
+		text_colour = G.C.WHITE,
+		pronoun_table = { "" },
+		in_pool = function()
+			return false
+		end,
+		key = "empty"
+	}
+	
 end

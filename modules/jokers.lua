@@ -2698,7 +2698,8 @@ SMODS.Joker {
 			}
 			return { message = localize('kkshafjkh'), colour = G.C.SECONDARY_SET[card.ability.extra.consumable[1]], sound = pseudorandom_element(random_sound_effs) }
 		end
-    end
+    end,
+	zero_glitch = true,
 }
 
 SMODS.Joker {
@@ -3061,4 +3062,107 @@ SMODS.Joker {
 			SMODS.destroy_cards(G.consumeables.cards)
 		end
     end,
+}
+
+local srh = save_run
+save_run = function(self)
+  local q_triangle_jokers = {}
+  for i, card in ipairs(G.jokers.cards) do
+    if card.config.center.key == "j_zero_q_triangle" then
+      q_triangle_jokers[i] = {}
+      for _, stored_card in ipairs(card.ability.immutable.stored_jokers) do
+        q_triangle_jokers[i][#q_triangle_jokers[i] + 1] = stored_card:save()
+      end
+    end
+  end
+
+  G.GAME.zero_q_triangle_jokers = q_triangle_jokers
+
+  srh(self)
+end
+local strh = Game.start_run
+Game.start_run = function(self, args)
+  strh(self, args)
+
+  if G.GAME.zero_q_triangle_jokers then
+    for i, cards in pairs(G.GAME.zero_q_triangle_jokers) do
+      G.jokers.cards[i].ability.immutable.stored_jokers = {}
+      for _, stored_card in pairs(cards) do
+        local card = Card(0, 0, 1, 1, G.P_CENTERS.j_joker, G.P_CENTERS.c_base)
+        card.T.x = math.huge
+        card.T.y = math.huge
+        card.T.H = 4
+        card.T.h = 4
+        card.T.w = 4
+        card:load(stored_card)
+        G.jokers.cards[i].ability.immutable.stored_jokers[#G.jokers.cards[i].ability.immutable.stored_jokers + 1] = card
+      end
+    end
+    G.GAME.zero_q_triangle_jokers = nil
+  end
+end
+
+SMODS.Joker {
+    key = "q_triangle",
+	atlas = "zero_jokers",
+    pos = { x = 6, y = 7 },
+    rarity = 3,
+    blueprint_compat = true,
+	eternal_compat = false,
+    cost = 8,
+	unlocked = true,
+	discovered = true,
+	zero_usable = true,
+	zero_stay_in_area = true,
+	config = {
+		immutable = {
+			stored_jokers = {}
+		}
+	},
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = 'zero_q_triangle_storage', set = 'Other', specific_vars = {#card.ability.immutable.stored_jokers} }
+    end,
+	can_use = function(self, card)
+		if #card.ability.immutable.stored_jokers > 0 and ((#G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit) or (card.ability.immutable.stored_jokers[#card.ability.immutable.stored_jokers].edition and card.ability.immutable.stored_jokers[#card.ability.immutable.stored_jokers].edition.key == "e_negative")) then
+			return true
+		end
+	end,
+	use = function(self, card, area, copier)
+		G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+		G.E_MANAGER:add_event(Event({func = function()
+			G.GAME.joker_buffer = 0
+			local returned_card = SMODS.add_card({ set = 'Joker'})
+			copy_card(card.ability.immutable.stored_jokers[#card.ability.immutable.stored_jokers], returned_card)
+			card.ability.immutable.stored_jokers[#card.ability.immutable.stored_jokers] = nil
+		return true end }))
+		draw_card(G.play, G.jokers, nil, 'up', nil, card)
+	end,
+    calculate = function(self, card, context)
+		if context.zero_moved or context.card_added then
+			local found = false
+			for k,v in ipairs(G.jokers.cards) do
+				if found == true then
+					if v.config.center.key ~= "j_zero_q_triangle" then
+						G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+						G.E_MANAGER:add_event(Event({func = function()
+							G.GAME.joker_buffer = 0
+		
+							local copied_card = copy_card(v)
+							copied_card.T.x = math.huge
+							copied_card.T.y = math.huge
+
+							card.ability.immutable.stored_jokers[#card.ability.immutable.stored_jokers + 1] = copied_card
+        
+							card:juice_up(0.8, 0.8)
+							v:remove()
+						return true end }))
+					end
+				elseif v == card then
+					found = true
+				end
+			end
+        end
+    end,
+	zero_glitch = true,
+	pronouns = "empty"
 }
