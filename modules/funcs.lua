@@ -71,3 +71,46 @@ zero_compose_toki_pona = function(number)
     for _ = 1, ones  do table.insert(parts, "wan")  end
     return table.concat(parts, " ")
 end
+
+--for 3trainerpoke and any other future joker that needs to alter joker stats
+--checks a card's ability table, compares it the config table of that card's center
+--and only changes the values that exist in both, iterates through other tables too
+zero_value_multiplier = function(ability, config, multiplier)
+	local result = {}
+    for key, v in pairs(ability) do
+        local filter = config[key]
+        if type(v) == "number" then
+            if filter then
+                result[key] = v * multiplier
+            else
+                result[key] = v
+            end
+        elseif type(v) == "table" then
+            if type(filter) == "table" then
+                result[key] = zero_value_multiplier(v, filter, multiplier)
+            else
+                result[key] = v
+            end
+        else
+            result[key] = v
+        end
+    end
+	return result
+end
+
+--check if a card actually has any editable values
+zero_value_compatible = function(ability, config)
+	for key, v in pairs(config) do
+        local filter = ability[key]
+        if type(v) == "number" then
+            if filter then
+                return true
+            end
+        elseif type(v) == "table" then
+            if type(filter) == "table" then
+                return zero_value_compatible(filter, v)
+            end
+        end
+    end
+	return false
+end

@@ -759,6 +759,22 @@ local loc_stuff = {
 			"{f:zero_pixeldingbats}IYUGZOO{f:zero_pokemon,C:attention}E{f:zero_pixeldingbats}",
         },
       },
+	  j_zero_sharps_bin = {
+        name = "Sharps Bin",
+        text = {
+            "This Joker gains {X:mult,C:white} X#1# {} Mult",
+            "when a {C:attention}Glass{} card",
+            "is destroyed",
+            "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+        },
+      },
+	  j_zero_3trainerpoke = {
+        name = "{f:zero_pokemon}3TrainerPoké $",
+        text = {
+			"{f:zero_pixeldingbats}O{f:zero_pokemon,C:attention}Change{f:zero_pixeldingbats}WMYT{f:zero_pokemon}JokeRight{f:zero_pixeldingbats}YUI",
+			"{f:zero_pixeldingbats}MCY{f:zero_pokemon}values{f:zero_pixeldingbats}PQU{f:zero_pokemon,C:red}Randomly{f:zero_pixeldingbats}QOI"
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {

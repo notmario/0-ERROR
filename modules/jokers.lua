@@ -2718,11 +2718,11 @@ SMODS.Joker {
     calculate = function(self, card, context)
 		if (context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint) or context.forcetrigger then
             card.ability.extra.bloom_rounds = card.ability.extra.bloom_rounds + 1
-			if card.ability.extra.bloom_rounds == card.ability.extra.total_rounds - 1 then
+			if card.ability.extra.bloom_rounds >= card.ability.extra.total_rounds - 1 then
                 local eval = function(card) return not card.REMOVED end
                 juice_card_until(card, eval, true)
             end
-            if card.ability.extra.bloom_rounds == card.ability.extra.total_rounds then
+            if card.ability.extra.bloom_rounds >= card.ability.extra.total_rounds then
 				local plants = {}
 				for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
 					if v.zero_plant then
@@ -3080,6 +3080,7 @@ save_run = function(self)
 
   srh(self)
 end
+
 local strh = Game.start_run
 Game.start_run = function(self, args)
   strh(self, args)
@@ -3108,7 +3109,6 @@ SMODS.Joker {
     pos = { x = 6, y = 7 },
     rarity = 3,
     blueprint_compat = true,
-	eternal_compat = false,
     cost = 8,
 	unlocked = true,
 	discovered = true,
@@ -3165,4 +3165,95 @@ SMODS.Joker {
     end,
 	zero_glitch = true,
 	pronouns = "empty"
+}
+
+SMODS.Joker {
+    key = "sharps_bin",
+	atlas = "zero_jokers",
+    pos = { x = 6, y = 4 },
+    rarity = 2,
+    blueprint_compat = true,
+	perishable_compat = false,
+    cost = 6,
+	unlocked = true,
+	discovered = true,
+	config = {
+		extra = { xmult = 1, xmult_mod = 0.25}
+	},
+	loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
+        return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
+    end,
+    calculate = function(self, card, context)
+        if context.remove_playing_cards and not context.blueprint then
+            local glass = 0
+            for _, removed_card in ipairs(context.removed) do
+                if SMODS.has_enhancement(removed_card, "m_glass") then glass = glass + 1 end
+            end
+            if glass > 0 then
+                card.ability.extra.xmult = card.ability.extra.xmult + glass * card.ability.extra.xmult_mod
+                return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } } }
+            end
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+    end,
+    enhancement_gate = "m_glass",
+}
+
+SMODS.Joker {
+    key = "3trainerpoke",
+	atlas = "zero_jokers",
+    pos = { x = 6, y = 6 },
+    rarity = 3,
+    blueprint_compat = true,
+    cost = 6,
+	unlocked = true,
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		local main_end
+		if card.area and card.area == G.jokers then
+			local other_joker
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 1] end
+			end
+			local compatible = other_joker and other_joker ~= card and zero_value_compatible( other_joker.ability, other_joker.config.center.config )
+			main_end = {
+				{
+					n = G.UIT.C,
+					config = { align = "bm", minh = 0.4 },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+							nodes = {
+								{ n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+							}
+						}
+					}
+				}
+			}
+		end
+		return {main_end = main_end}
+	end,
+    calculate = function(self, card, context)
+		if context.end_of_round and context.main_eval then
+			local other_joker = nil
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 1] end
+			end
+			if other_joker and other_joker.ability and other_joker.config.center.config and zero_value_compatible( other_joker.ability, other_joker.config.center.config ) then
+				local multiply = 1 + ((pseudorandom("3trainerpoke") * 0.8) - 0.4)
+				other_joker.ability = zero_value_multiplier(other_joker.ability, other_joker.config.center.config, multiply)
+				return {
+					message = localize('yghdsuvjdijf'),
+					card = card
+				}
+			end
+		end
+    end,
+	zero_glitch = true
 }
