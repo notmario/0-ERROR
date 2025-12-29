@@ -3258,7 +3258,95 @@ SMODS.Joker {
 	zero_glitch = true
 }
 
+--this joker works in a bit of a wonky way due to Balatro's limitations
+--when it comes to moving cards around in the middle of scoring
+SMODS.Joker {
+	key = "portrait_dragee",
+	pos = {x = 8, y = 6},
+	atlas = "zero_jokers",
+	rarity = 3,
+	cost = 8,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	demicoloncompat = false,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.m_zero_sunsteel
+	end,
+	calculate = function(self, card, context)
+		G.dragee_sunsteels = G.dragee_sunsteels or {}
+		if context.before and #G.dragee_sunsteels == 0 and not context.blueprint then
+			for k, v in pairs(G.deck.cards) do
+				if SMODS.has_enhancement(v, "m_zero_sunsteel") then
+					G.dragee_sunsteels[#G.dragee_sunsteels + 1] = v
+				end
+			end
+		end
+		if context.individual and context.cardarea == G.play and not context.end_of_round and (SMODS.has_enhancement(context.other_card, "m_zero_sunsteel") or context.other_card:is_suit("Hearts")) and #G.dragee_sunsteels > 0 then
+			local randomdraw = pseudorandom_element(G.dragee_sunsteels, "portrait_dragee")
+			for i, v in ipairs(G.dragee_sunsteels) do if v == randomdraw then table.remove(G.dragee_sunsteels, i) break end end
+			return {
+				message = localize('k_draw_ex'),
+				colour = G.ARGS.LOC_COLOURS.diamonds,
+				func = function()
+					draw_card(G.deck, G.hand, nil, "up", nil, randomdraw)
+					local val = randomdraw.ability.extra.xmult + (G.GAME.zero_sunsteel_pow or 0)
+					val = val + (randomdraw.ability.extra.xmult_mod + (G.GAME.zero_sunsteel_pow or 0)) * (G.zero_dragee_count or 0)
+					for k,v in ipairs(G.hand.cards) do
+						if v ~= randomdraw and SMODS.has_enhancement(v, "m_zero_sunsteel") then
+						val = val + randomdraw.ability.extra.xmult_mod + (G.GAME.zero_sunsteel_pow or 0)
+						end
+					end
+					G.zero_dragee_count = (G.zero_dragee_count or 0) + 1
+					SMODS.calculate_effect({
+						xmult = val
+					}, randomdraw)
+				end
+			}
+		end
+		if context.after and not context.blueprint then
+			G.dragee_sunsteels = {}
+			G.zero_dragee_count = 0
+		end
+	end,
+	enhancement_gate = "m_zero_sunsteel",
+	pronouns = "she_her"
+}
 
+SMODS.Joker {
+	key = "portrait_lunchalot",
+	pos = {x = 9, y = 6},
+	atlas = "zero_jokers",
+	rarity = 3,
+	cost = 5,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	demicoloncompat = false,
+	calculate = function(self, card, context)
+		if context.repetition and context.cardarea == G.play and (SMODS.get_enhancements(context.other_card)["m_steel"] == true or SMODS.get_enhancements(context.other_card)["m_gold"] == true) then
+            return {
+                message = localize('k_again_ex'),
+                repetitions = 2,
+                card = card
+            }
+        elseif context.repetition and context.cardarea == G.hand and (SMODS.get_enhancements(context.other_card)["m_steel"] == true or SMODS.get_enhancements(context.other_card)["m_gold"] == true) then
+            return {
+                message = localize('k_again_ex'),
+                repetitions = 1,
+                card = card
+            }
+        end
+	end,
+	in_pool = function(self)
+		for k,v in ipairs(G.playing_cards) do
+			if SMODS.has_enhancement(v,"m_gold") or SMODS.has_enhancement(v,"m_steel") then
+				return true
+			end
+		end
+	end,
+	pronouns = "he_him"
+}
 
 --keep legendary jokers last
 SMODS.Joker {

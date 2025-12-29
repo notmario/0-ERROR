@@ -784,6 +784,22 @@ local loc_stuff = {
 			"{f:zero_pokemon}PKMN{f:zero_pixeldingbats}IYRMZ{f:zero_pokemon}のほ{f:zero_pixeldingbats}IE",
         },
       },
+	  j_zero_portrait_dragee = {
+        name = "Dragee's Portrait",
+        text = {
+			"Draw a {C:attention}Sunsteel Card{} and",
+			"immediately {C:attention}score{} it when",
+			"a {C:attention}Sunsteel Card{} or a card",
+			"with {C:hearts}Heart{} suit scores"
+        },
+      },
+	  j_zero_portrait_lunchalot = {
+        name = "Lunchalot's Portrait",
+        text = {
+			"Retrigger all {C:attention}Gold{} and {C:attention}Steel Cards",
+			"{C:inactive}({C:attention}Once{C:inactive} in hand and {C:attention}twice{C:inactive} in play)"
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -1269,6 +1285,7 @@ local loc_stuff = {
 	  k_bloom_ex = "Bloom!",
 	  k_plus_shop_ex = "+Shop!",
 	  k_sell_value = "Value",
+	  k_draw_ex = "Draw!",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",
