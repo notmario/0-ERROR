@@ -3257,3 +3257,38 @@ SMODS.Joker {
     end,
 	zero_glitch = true
 }
+
+
+
+--keep legendary jokers last
+SMODS.Joker {
+    key = "missingno",
+	atlas = "zero_jokers",
+    pos = { x = 2, y = 2 },
+	soul_pos = { x = 2, y = 3 },
+    rarity = 4,
+    blueprint_compat = false,
+    cost = 20,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { copies = 128 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.copies } }
+    end,
+	add_to_deck = function(self, card, from_debuff)
+		local to_duplicate = G.jokers.cards[6]
+		if to_duplicate and to_duplicate ~= card and to_duplicate.config.center.key ~= "j_zero_missingno" and to_duplicate.config.center.key ~= "j_zero_q_triangle" then
+			for i = 1,card.ability.extra.copies do
+				SMODS.add_card({ set = 'Joker', key = to_duplicate.config.center.key})
+			end
+		end
+	end,
+	in_pool = function(self)
+		if G.jokers and G.jokers.cards[6] and G.jokers.cards[6].config.center.key ~= "j_zero_missingno" and G.jokers.cards[6].config.center.key ~= "j_zero_q_triangle" then
+			return true
+		end
+		return false
+	end,
+	zero_glitch = true,
+	pronouns = "empty"
+}

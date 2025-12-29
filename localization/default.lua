@@ -775,6 +775,15 @@ local loc_stuff = {
 			"{f:zero_pixeldingbats}MCY{f:zero_pokemon}values{f:zero_pixeldingbats}PQU{f:zero_pokemon,C:red}Randomly{f:zero_pixeldingbats}QOI"
         },
       },
+	  j_zero_missingno = {
+        name = "{f:zero_pokemon}MissingNo.",
+        text = {
+			"{f:zero_pixeldingbats}OVCH{f:zero_pokemon}ヂャグ{f:zero_pixeldingbats}QEHEDS",
+			"{f:zero_pixeldingbats}DS{f:zero_pokemon}�№{f:zero_pixeldingbats}ZINHCWANJ",
+			"{f:zero_pixeldingbats}YGZFDBASDS{f:zero_pokemon}?シも",
+			"{f:zero_pokemon}PKMN{f:zero_pixeldingbats}IYRMZ{f:zero_pokemon}のほ{f:zero_pixeldingbats}IE",
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {

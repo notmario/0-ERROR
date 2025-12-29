@@ -614,14 +614,15 @@ SMODS.Consumable{
 		local glitches = {}
 		local foundglitches = {}
 		for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
-			if v.zero_glitch then
+			if v.zero_glitch and (v.key ~= "j_zero_missingno"
+			or (v.key == "j_zero_missingno" and G.jokers and G.jokers.cards[6] and G.jokers.cards[6].config.center.key ~= "j_zero_missingno" and G.jokers.cards[6].config.center.key ~= "j_zero_q_triangle" and pseudorandom('cups_page') < 1 / 4))then
 				glitches[#glitches + 1] = v.key
 			end
 		end
 		for _, v in pairs(G.jokers.cards) do
 			if not v.edition then
 				for _, w in pairs(glitches) do
-					if v.config.center.key == w then
+					if v.config.center.key == w or v.config.center.key == "j_zero_missingno" then
 						foundglitches[#foundglitches + 1] = v
 					end
 				end
