@@ -3387,7 +3387,6 @@ SMODS.Joker {
 				randomcard = pseudorandom_element(nonbrights, "found_a_star")
 				randomcard.zero_secret_bright = link
 				card.ability.extra.placed = link
-				print(randomcard.config)
 			end
 		end
 		if context.individual and context.cardarea == G.play and context.other_card.zero_secret_bright and card.ability.extra.placed and card.ability.extra.placed == context.other_card.zero_secret_bright then
