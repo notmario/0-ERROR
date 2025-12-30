@@ -800,6 +800,15 @@ local loc_stuff = {
 			"{C:inactive}({C:attention}Once{C:inactive} in hand and {C:attention}twice{C:inactive} in play)"
         },
       },
+	  j_zero_found_a_star = {
+        name = "Found a Star!",
+        text = {
+			"{C:attention}One{} random card in your deck",
+			"is secretly {V:1}#1#{} suit,",
+			"score it to {C:attention}reveal{} it",
+			"{C:inactive,s:0.7}({V:1,s:0.7}#1#{C:inactive,s:0.7} count as any regular suit)",
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -1286,6 +1295,7 @@ local loc_stuff = {
 	  k_plus_shop_ex = "+Shop!",
 	  k_sell_value = "Value",
 	  k_draw_ex = "Draw!",
+	  k_stage_clear_upper = "STAGE CLEAR",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",

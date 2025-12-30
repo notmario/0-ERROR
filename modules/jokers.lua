@@ -1046,7 +1046,7 @@ SMODS.Joker {
 	discovered = true,
     config = { extra = { mult = 5, suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, localize(card.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
+        return { vars = { card.ability.extra.mult, localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
@@ -3348,6 +3348,63 @@ SMODS.Joker {
 	pronouns = "he_him"
 }
 
+SMODS.Joker {
+	key = "found_a_star",
+	pos = {x = 5, y = 9},
+	atlas = "zero_jokers",
+	rarity = 1,
+	cost = 1,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	demicoloncompat = false,
+	config = {
+		extra = { placed = nil, suit = 'zero_Brights' }
+	},
+	loc_vars = function(self, info_queue, card)
+        return { vars = { localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
+    end,
+	calculate = function(self, card, context)
+		if context.blueprint then return end
+		if context.remove_playing_cards then
+			for k, v in pairs(context.removed) do
+				if v.zero_secret_bright and card.ability.extra.placed and card.ability.extra.placed == v.zero_secret_bright then
+					card.ability.extra.placed = nil
+					break
+				end
+			end
+		end
+		if not card.ability.extra.placed then
+			local nonbrights = {}
+			local randomcard
+			for k, v in pairs(G.playing_cards) do
+				if v:is_suit(card.ability.extra.suit) == false then
+					nonbrights[#nonbrights + 1] = v
+				end
+			end
+			if #nonbrights > 0 then
+			local link = string.format( "%04d%04d%04d%04d", math.random(0, 9999), math.random(0, 9999), math.random(0, 9999), math.random(0, 9999) )
+				randomcard = pseudorandom_element(nonbrights, "found_a_star")
+				randomcard.zero_secret_bright = link
+				card.ability.extra.placed = link
+				print(randomcard.config)
+			end
+		end
+		if context.individual and context.cardarea == G.play and context.other_card.zero_secret_bright and card.ability.extra.placed and card.ability.extra.placed == context.other_card.zero_secret_bright then
+            card.ability.extra.placed = nil
+			local found = context.other_card
+			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() found:flip();play_sound('card1');found:juice_up(0.3, 0.3);return true end }))
+			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() found:change_suit(card.ability.extra.suit);return true end }))
+			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() found:flip();play_sound('tarot2', nil, 0.6);found:juice_up(0.3, 0.3);found.zero_secret_bright = nil;return true end }))
+			return {
+                message = localize('k_stage_clear_upper'),
+				sound = "zero_hoshisaga_chirin",
+				colour = G.C.SECONDARY_SET.Enhanced
+            }
+        end
+	end
+}
+
 --keep legendary jokers last
 SMODS.Joker {
     key = "missingno",
@@ -3360,9 +3417,6 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	config = { extra = { copies = 128 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.copies } }
-    end,
 	add_to_deck = function(self, card, from_debuff)
 		local to_duplicate = G.jokers.cards[6]
 		if to_duplicate and to_duplicate ~= card and to_duplicate.config.center.key ~= "j_zero_missingno" and to_duplicate.config.center.key ~= "j_zero_q_triangle" then

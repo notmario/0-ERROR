@@ -70,6 +70,13 @@ SMODS.Sound{
     path = "sunsteelpow.ogg",
 }
 
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
+    key = "hoshisaga_chirin", 
+    path = "hoshisaga_chirin.ogg",
+}
+
 SMODS.Shader{
 	key = "gala",
 	path = "gala.fs"
