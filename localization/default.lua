@@ -806,7 +806,7 @@ local loc_stuff = {
 			"{C:attention}One{} random card in your deck",
 			"is secretly {V:1}#1#{} suit,",
 			"score it to {C:attention}reveal{} it",
-			"{C:inactive,s:0.7}({V:1,s:0.7}#1#{C:inactive,s:0.7} count as any regular suit)",
+			"{C:inactive,s:0.7}({V:1,s:0.7}#2#{C:inactive,s:0.7} count as any regular suit)",
         },
       },
     },

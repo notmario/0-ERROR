@@ -1046,7 +1046,7 @@ SMODS.Joker {
 	discovered = true,
     config = { extra = { mult = 5, suit = 'zero_Brights'}, },
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult, localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
+        return { vars = { card.ability.extra.mult, localize(card.ability.extra.suit, 'suits_singular'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
@@ -3362,7 +3362,7 @@ SMODS.Joker {
 		extra = { placed = nil, suit = 'zero_Brights' }
 	},
 	loc_vars = function(self, info_queue, card)
-        return { vars = { localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
+        return { vars = { localize(card.ability.extra.suit, 'suits_singular'), localize(card.ability.extra.suit, 'suits_plural'), colours = {G.C.SUITS[card.ability.extra.suit] } } }
     end,
 	calculate = function(self, card, context)
 		if context.blueprint then return end
