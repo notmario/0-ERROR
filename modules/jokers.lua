@@ -3366,13 +3366,15 @@ SMODS.Joker {
     end,
 	calculate = function(self, card, context)
 		if context.blueprint then return end
-		if context.remove_playing_cards then
-			for k, v in pairs(context.removed) do
-				if v.zero_secret_bright and card.ability.extra.placed and card.ability.extra.placed == v.zero_secret_bright then
-					card.ability.extra.placed = nil
-					break
-				end
+		local exists = false
+		for k, v in pairs(G.playing_cards) do
+			if v.zero_secret_bright and card.ability.extra.placed and card.ability.extra.placed == v.zero_secret_bright then
+				exists = true
+				break
 			end
+		end
+		if exists == false then
+			card.ability.extra.placed = nil
 		end
 		if not card.ability.extra.placed then
 			local nonbrights = {}
@@ -3387,6 +3389,7 @@ SMODS.Joker {
 				randomcard = pseudorandom_element(nonbrights, "found_a_star")
 				randomcard.zero_secret_bright = link
 				card.ability.extra.placed = link
+				--print(randomcard.config)
 			end
 		end
 		if context.individual and context.cardarea == G.play and context.other_card.zero_secret_bright and card.ability.extra.placed and card.ability.extra.placed == context.other_card.zero_secret_bright then
