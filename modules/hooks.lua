@@ -166,7 +166,13 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
 		-- this specifically makes it do the thing for spectrums
 		if suit == "not a suit" then return true end
 	end
-	if self.zero_secret_bright and suit == "zero_Brights" then return true end
+	if self.zero_secret_bright and suit == "zero_Brights" then 
+		for k, v in pairs(G.jokers.cards) do
+			if v.config.center.key == "j_zero_found_a_star" and v.ability.extra.placed and v.ability.extra.placed == self.zero_secret_bright then
+				return true
+			end
+		end
+	end
 	return alias__Card_is_suit(self, suit, bypass_debuff, flush_calc)
 end
 
