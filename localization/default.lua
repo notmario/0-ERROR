@@ -77,6 +77,13 @@ local loc_stuff = {
           "{C:cups}Mega Cups Pack",
 		},
 	  },
+	  tag_zero_alchemical = {
+	    name = "Alchemical Tag",
+		text = {
+          "Gives a free",
+          "{C:elemental}Mega Element Pack",
+		},
+	  },
 	  tag_zero_gala = {
 	    name = "Gala Tag",
 		text = {
@@ -803,9 +810,9 @@ local loc_stuff = {
 	  j_zero_found_a_star = {
         name = "Found a Star!",
         text = {
-			"{C:attention}One{} random card in your deck",
-			"is secretly {V:1}#1#{} suit,",
-			"score it to {C:attention}reveal{} it",
+			"{C:attention}One{} random card in your",
+			"deck is secretly {V:1}#1#",
+			"suit, score it to {C:attention}reveal{} it",
 			"{C:inactive,s:0.7}({V:1,s:0.7}#2#{C:inactive,s:0.7} count as any regular suit)",
         },
       },
@@ -1089,6 +1096,155 @@ local loc_stuff = {
 		},
 	  },
     },
+	Elemental = {
+	  c_zero_fire = {
+        name = "Fire",
+        text = {
+			"Destroys up to",
+			"{C:attention}#1#{} selected cards",
+			"with {C:hearts}Heart{} suit."
+		},
+      },
+	  c_zero_earth = {
+        name = "Earth",
+        text = {
+			"Converts {C:attention}random{} cards equal",
+			"to the number of cards with",
+			"{C:spades}Spade{} suit in hand to {C:attention}Stone Cards"
+		},
+      },
+	  c_zero_water = {
+        name = "Water",
+        text = {
+			"Creates up to {C:attention}#1#{}",
+            "random {C:attention}consumables",
+			"{C:inactive}(Must select {C:attention}#2#{C:inactive} cards with",
+            "{C:clubs}Club{C:inactive} suit and have room)",
+		},
+      },
+	  c_zero_air = {
+        name = "Air",
+        text = {
+			"Draws {C:attention}#1#{} cards",
+			"with {C:diamonds}Diamond{} suit",
+		},
+      },
+	  c_zero_cosmos = {
+        name = "Cosmos",
+        text = {
+			"{C:attention}Splits{} selected card",
+			"with {V:1}Bright{} suit into",
+			"all suits it counts as"
+		},
+      },
+	  c_zero_lava = {
+        name = {"Lava",
+				"{s:0.5}Earth + Fire"},
+        text = {
+			"Destroys any number of cards",
+			"with {C:hearts}Heart{} or {C:spades}Spade{} suit, enhances",
+			"an equal number of cards in deck",
+			"to {C:attention}Steel{}, {C:attention}Gold{} or {C:attention}Sunsteel Cards"
+        },
+      },
+	  c_zero_forest = {
+        name = {"Forest",
+				"{s:0.5}Earth + Water"},
+        text = {
+			"Removes {C:attention}Enhancements{} from up",
+			"to {C:attention}#1#{} cards with {C:spades}Spade{} or {C:clubs}Club",
+			"suit and creates an equal number",
+			"of {C:dark_edition}Negative {C:spectral}Spectral{} cards"
+        },
+      },
+	  c_zero_geyser = {
+        name = {"Geyser",
+				"{s:0.5}Fire + Water"},
+        text = {
+			"Destroys any number of cards",
+			"with {C:hearts}Heart{} or {C:clubs}Club{} suit and",
+			"creates a {C:attention}consumable{} based on",
+			"those card's total {C:chips}chip value",
+			"{C:inactive}({C:chips}#1#{C:inactive} Chips#2#{C:attention}#3#{C:inactive})"
+        },
+      },
+	  c_zero_lightning = {
+        name = {"Lightning",
+				"{s:0.5}Air + Fire"},
+        text = {
+			"Destroys {C:attention}#1#{} random cards",
+			"in deck with {C:hearts}Heart{} or {C:diamonds}Diamond",
+			"suit, gain {C:money}${} equal to those",
+			"card's total {C:chips}chip value"
+        },
+      },
+	  c_zero_rain = {
+        name = {"Rain",
+				"{s:0.5}Air + Water"},
+        text = {
+            "Creates a copy of up to",
+            "{C:attention}#1#{} selected cards with",
+			"{C:diamonds}Diamond{} or {C:clubs}Club{} suit",
+            "in your hand",
+        },
+      },
+	  c_zero_tornado = {
+        name = {"Tornado",
+				"{s:0.5}Air + Earth"},
+        text = {
+            "Draws {C:attention}#1#{} cards with {C:spades}Spade{}",
+			"or {C:diamonds}Diamond{} suit, give a random",
+			"{C:attention}Enhancement{} to any without one"
+        },
+      },
+	  c_zero_star = {
+        name = {"Star",
+				"{s:0.5}Fire + Cosmos"},
+        text = {
+            "{C:dark_edition}Merges {C:attention}4{} cards with",
+			"different base suits into",
+			"a {V:1}Bright{} suit card"
+        },
+      },
+	  c_zero_planets = {
+        name = {"Planets",
+				"{s:0.5}Earth + Cosmos"},
+        text = {
+            "Removes {C:attention}Enhancements{} from all",
+			"cards in hand and converts",
+			"their suit to {V:1}Brights"
+        },
+      },
+	  c_zero_nebulae = {
+        name = {"Nebulae",
+				"{s:0.5}Water + Cosmos"},
+        text = {
+            "Creates {C:attention}#1#{} random {V:1}Bright",
+			"suit cards with {C:blue}Blue{} and",
+			"{C:purple}Purple{} Seals respectively"
+        },
+      },
+	  c_zero_comet = {
+        name = {"Comet",
+				"{s:0.5}Air + Cosmos"},
+        text = {
+            "Adds {C:dark_edition}Gala{} effect to {C:attention}#1#",
+			"selected card in hand with",
+			"{V:1}Bright{} suit, shuffle it in",
+			"deck and draw {C:attention}#2#{} cards"
+        },
+      },
+	  c_zero_wild = {
+        name = {"Wild",
+				"{s:0.5}???"},
+        text = {
+            "Enhances {C:attention}#1#{} selected cards",
+            "to {C:attention}Wild Cards{}, creates {C:attention}2",
+            "random {C:elemental}Base Elements{}",
+			"{C:inactive}(Must have room)"
+        },
+      },
+    },
     Other = {
       p_zero_prestige_normal_1 = {
         name = "Prestige Pack",
@@ -1148,6 +1304,40 @@ local loc_stuff = {
           "Choose {C:attention}#1#{} of up to",
           "{C:attention}#2#{C:cups} Cups{} cards to",
 		  "be used immediately"
+        }
+      },
+	  p_zero_elemental_normal_1 = {
+        name = "Element Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to {C:attention}#2#",
+          "{C:elemental}Base Element{} cards to",
+		  "add to your consumables"
+        }
+      },
+      p_zero_elemental_normal_2 = {
+        name = "Element Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to {C:attention}#2#",
+          "{C:elemental}Base Element{} cards to",
+		  "add to your consumables"
+        }
+      },
+      p_zero_elemental_jumbo_1 = {
+        name = "Jumbo Element Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to {C:attention}#2#",
+          "{C:elemental}Base Element{} cards and",
+		  "{C:attention}#3#{C:elemental} Greater Element{} card#4# to",
+		  "add to your consumables"
+        }
+      },
+      p_zero_elemental_mega_1 = {
+        name = "Mega Element Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to {C:attention}#2#",
+          "{C:elemental}Base Element{} cards and",
+		  "{C:attention}#3#{C:elemental} Greater Element{} card#4# to",
+		  "add to your consumables"
         }
       },
       scaler_explainer = {
@@ -1260,6 +1450,13 @@ local loc_stuff = {
 			"{f:zero_pokemon,C:attention}#1#"
 		},
 	  },
+	  zero_base_elements_reminder = {
+		name = "Elemental Reactions",
+		text = {
+			"{C:attention}2 {C:elemental}Base Elements{} combine",
+			"into a {C:elemental}Greater Element"
+		},
+	  },
     },
   },
   misc = {
@@ -1268,6 +1465,11 @@ local loc_stuff = {
       k_prestige_pack = "Prestige Pack",
 	  b_cups = "Cups",
       k_cups_pack = "Cups Pack",
+	  b_elemental = "Elemental",
+	  k_elemental_base = "Base Element",
+	  k_elemental_mix = "Greater Element",
+	  k_elemental_chaotic = "Chaotic Element",
+      k_elemental_pack = "Element Pack",
       k_plus_prestige = "+1 Prestige",
 	  k_plus_cups = "+1 Cups",
 	  k_plus_suit_yourself = "+1 Suit Yourself",

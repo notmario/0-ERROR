@@ -5,6 +5,7 @@ assert(SMODS.load_file("./modules/funcs.lua"))()
 
 assert(SMODS.load_file("./modules/prestige.lua"))()
 assert(SMODS.load_file("./modules/cups.lua"))()
+assert(SMODS.load_file("./modules/elemental.lua"))()
 assert(SMODS.load_file("./modules/jokers.lua"))()
 assert(SMODS.load_file("./modules/tags.lua"))()
 assert(SMODS.load_file("./modules/enhancements.lua"))()

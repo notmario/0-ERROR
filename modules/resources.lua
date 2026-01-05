@@ -85,11 +85,13 @@ SMODS.Shader{
 --Custom Colors
 G.C.CUPS = HEX("53468A")
 G.C.PRESTIGE = HEX("344245")
+G.C.ELEMENTAL = HEX("D16F3E")
 
 local ref_loc_colour = loc_colour
 function loc_colour(_c, _default)
     ref_loc_colour(_c, _default)
     G.ARGS.LOC_COLOURS.cups = G.C.CUPS
 	G.ARGS.LOC_COLOURS.prestige = G.C.PRESTIGE
+	G.ARGS.LOC_COLOURS.elemental = G.C.ELEMENTAL
     return G.ARGS.LOC_COLOURS[_c] or _default or G.C.UI.TEXT_DARK
 end
