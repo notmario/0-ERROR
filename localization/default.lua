@@ -1102,7 +1102,7 @@ local loc_stuff = {
         text = {
 			"Destroys up to",
 			"{C:attention}#1#{} selected cards",
-			"with {C:hearts}Heart{} suit."
+			"with {C:hearts}Heart{} suit"
 		},
       },
 	  c_zero_earth = {

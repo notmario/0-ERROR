@@ -1207,5 +1207,10 @@ SMODS.Consumable{
         badges[#badges + 1] = create_badge(localize('k_elemental_chaotic'),
             get_type_colour(card.config.center or card.config, card), SMODS.ConsumableTypes.Elemental.text_colour,
             1.2)
+    end,
+	draw = function(self, card, layer)
+        if (layer == 'card' or layer == 'both') and card.sprite_facing == 'front' then
+            card.children.center:draw_shader('booster', nil, card.ARGS.send_to_shader)
+        end
     end
 }
