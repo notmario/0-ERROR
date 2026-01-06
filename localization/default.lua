@@ -1240,7 +1240,7 @@ local loc_stuff = {
         text = {
             "Enhances {C:attention}#1#{} selected cards",
             "to {C:attention}Wild Cards{}, creates {C:attention}2",
-            "random {C:elemental}Base Elements{}",
+            "random {C:elemental}Basic Elements{}",
 			"{C:inactive}(Must have room)"
         },
       },
@@ -1310,7 +1310,7 @@ local loc_stuff = {
         name = "Element Pack",
         text = {
           "Choose {C:attention}#1#{} of up to {C:attention}#2#",
-          "{C:elemental}Base Element{} cards to",
+          "{C:elemental}Basic Element{} cards to",
 		  "add to your consumables"
         }
       },
@@ -1318,7 +1318,7 @@ local loc_stuff = {
         name = "Element Pack",
         text = {
           "Choose {C:attention}#1#{} of up to {C:attention}#2#",
-          "{C:elemental}Base Element{} cards to",
+          "{C:elemental}Basic Element{} cards to",
 		  "add to your consumables"
         }
       },
@@ -1326,7 +1326,7 @@ local loc_stuff = {
         name = "Jumbo Element Pack",
         text = {
           "Choose {C:attention}#1#{} of up to {C:attention}#2#",
-          "{C:elemental}Base Element{} cards and",
+          "{C:elemental}Basic Element{} cards and",
 		  "{C:attention}#3#{C:elemental} Greater Element{} card#4# to",
 		  "add to your consumables"
         }
@@ -1335,7 +1335,7 @@ local loc_stuff = {
         name = "Mega Element Pack",
         text = {
           "Choose {C:attention}#1#{} of up to {C:attention}#2#",
-          "{C:elemental}Base Element{} cards and",
+          "{C:elemental}Basic Element{} cards and",
 		  "{C:attention}#3#{C:elemental} Greater Element{} card#4# to",
 		  "add to your consumables"
         }
@@ -1453,7 +1453,7 @@ local loc_stuff = {
 	  zero_base_elements_reminder = {
 		name = "Elemental Reactions",
 		text = {
-			"{C:attention}2 {C:elemental}Base Elements{} combine",
+			"{C:attention}2 {C:elemental}Basic Elements{} combine",
 			"into a {C:elemental}Greater Element"
 		},
 	  },
@@ -1466,7 +1466,7 @@ local loc_stuff = {
 	  b_cups = "Cups",
       k_cups_pack = "Cups Pack",
 	  b_elemental = "Elemental",
-	  k_elemental_base = "Base Element",
+	  k_elemental_base = "Basic Element",
 	  k_elemental_mix = "Greater Element",
 	  k_elemental_chaotic = "Chaotic Element",
       k_elemental_pack = "Element Pack",
