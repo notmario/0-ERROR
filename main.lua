@@ -12,8 +12,14 @@ assert(SMODS.load_file("./modules/enhancements.lua"))()
 assert(SMODS.load_file("./modules/editions.lua"))()
 assert(SMODS.load_file("./modules/suits.lua"))()
 assert(SMODS.load_file("./modules/tarot.lua"))()
+assert(SMODS.load_file("./modules/vouchers.lua"))()
 
-assert(SMODS.load_file("./modules/crossmod/pronouns.lua"))()
+if next(SMODS.find_mod('cardpronouns')) then
+	assert(SMODS.load_file("./modules/crossmod/pronouns.lua"))()
+end
+if next(SMODS.find_mod('Cryptid')) then
+	assert(SMODS.load_file("./modules/crossmod/cryptid/vouchers.lua"))()
+end
 
 assert(SMODS.load_file("./modules/challenges.lua"))()
 

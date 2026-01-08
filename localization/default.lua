@@ -1245,6 +1245,58 @@ local loc_stuff = {
         },
       },
     },
+	Voucher = {
+	  v_zero_homeworld = {
+		name = "Homeworld",
+		text = {
+			"{X:prestige,C:white}Prestige{} cards may",
+			"appear in any of",
+			"the {C:attention}Celestial Packs",
+        }
+	  },
+	  v_zero_cataclysm = {
+		name = "Cataclysm",
+		text = {
+			"{X:prestige,C:white}Prestige{} cards reduce",
+			"all active {C:dark_edition}Cooldowns",
+			"by {C:attention}1{} when used",
+        }
+	  },
+	  v_zero_better_dead_than_red = {
+		name = {"Better Dead",
+				"than Red"},
+		text = {
+			"Non-{C:dark_edition}Negative{} {X:prestige,C:white}Prestige{}",
+			"cards create a {C:dark_edition}Negative{}",
+			"copy when used",
+        }
+	  },
+	  v_zero_overturned = {
+		name = "Overturned",
+		text = {
+			"{C:cups}Cups{} cards can",
+			"be purchased",
+			"from the shop"
+        }
+	  },
+	  v_zero_fine_wine = {
+		name = "Fine Wine",
+		text = {
+			"Shops after clearing a {C:attention}Blind",
+			"with {C:attention}double{} the required",
+			"score or more contain an",
+			"extra {C:cups}Cups Pack"
+        }
+	  },
+	  v_zero_wine_cellar = {
+		name = "Wine Cellar",
+		text = {
+			"All {C:cups}Cups{} cards and",
+			"{C:cups}Cups Packs{} in the",
+			"shop are {C:attention}free",
+        }
+	  },
+    },
     Other = {
       p_zero_prestige_normal_1 = {
         name = "Prestige Pack",

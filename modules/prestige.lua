@@ -136,7 +136,7 @@ function cooldown_keyword(card, key)
     G.GAME.Prestiges[key] = G.GAME.Prestiges[key] - 1
     if G.GAME.Prestiges[key] == 0 then
       G.GAME.Prestiges[key] = nil
-      G.GAME.PrestigeCooldowns[key] = G.GAME.PrestigeCooldowns[key] + 1
+      G.GAME.PrestigeCooldowns[key] = (G.GAME.PrestigeCooldowns[key] or 1) + 1
     end
     return false
   else
