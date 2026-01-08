@@ -3044,11 +3044,11 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
     add_to_deck = function(self, card, from_debuff)
-		G.GAME.interest_cap = G.GAME.interest_cap + 1e299
+		G.GAME.interest_cap = G.GAME.interest_cap + 1e10
 	end,
 	calculate = function(self, card, context)
         if G.GAME.interest_cap < 1e10 then
-			G.GAME.interest_cap = G.GAME.interest_cap + 1e299
+			G.GAME.interest_cap = G.GAME.interest_cap + 1e10
 		end
     end,
 	remove_from_deck = function(self, card, from_debuff)
