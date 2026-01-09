@@ -5,6 +5,13 @@ SMODS.Atlas {
   path = "zero_jokers.png"
 }
 
+SMODS.Atlas {
+  key = "zero_jokers_2",
+  px = 71,
+  py = 95,
+  path = "zero_jokers_2.png"
+}
+
 SMODS.Joker {
   key = "mad",
   name = "Mutual Assured Destruction",
@@ -3511,6 +3518,119 @@ SMODS.Joker {
             }
         end
 	end
+}
+
+SMODS.Joker {
+	key = "obsessive_elementation",
+	pos = {x = 1, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 2,
+	cost = 7,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	demicoloncompat = false,
+	config = {
+		extra = { odds = 5 },
+		immutable = {
+			conversion = {Hearts = "c_zero_fire",
+				Spades = "c_zero_earth",
+				Clubs = "c_zero_water",
+				Diamonds = "c_zero_air",
+				zero_Brights = "c_zero_cosmos"}
+		}
+	},
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = {set = "Other", key = 'zero_base_elements_reminder'}
+		return { vars = { G.GAME.probabilities.normal, card.ability.extra.odds } }
+    end,
+	calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and SMODS.has_no_suit(context.other_card) == false and card.ability.immutable.conversion[context.other_card.base.suit] and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit and pseudorandom('obsessive_elementation') < G.GAME.probabilities.normal / card.ability.extra.odds then
+			local _suit = context.other_card.base.suit
+			return {
+				message = localize('k_plus_elemental'),
+				colour = G.C.SECONDARY_SET.Elemental,
+				card = card,
+				message_card = card,
+				func = function()
+					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if G.consumeables.config.card_limit > #G.consumeables.cards then
+								play_sound('timpani')
+								SMODS.add_card({ set = 'Elemental', key = card.ability.immutable.conversion[_suit] })
+								card:juice_up(0.3, 0.5)
+								G.GAME.consumeable_buffer = 0
+							end
+							return true
+						end
+					}))
+				end
+			}
+		end
+	end,
+	pronouns = "he_him"
+}
+
+SMODS.Joker {
+    key = "e",
+	atlas = "zero_jokers",
+    pos = { x = 0, y = 5 },
+	soul_pos = { x = 1, y = 5 },
+    rarity = 3,
+    blueprint_compat = true,
+    cost = 9,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { frames = 0, soul_sprite = 1, suit = "", xmult = 1, xmult_mod = 0.05 } },
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
+    end,
+	update = function(self, card)
+		card.ability.extra.frames = math.ceil(card.ability.extra.frames) + 1
+		if card.ability.extra.frames % 40 == 0 then
+			card.ability.extra.frames = 0
+			card.ability.extra.soul_sprite = math.ceil(card.ability.extra.soul_sprite) + 1
+			if card.ability.extra.soul_sprite > 3 or card.ability.extra.soul_sprite < 1 then
+				card.ability.extra.soul_sprite = 1
+			end
+			card.children.floating_sprite:set_sprite_pos({x= card.ability.extra.soul_sprite, y=5})
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		local non_suitless = {}
+		for k, v in pairs(G.playing_cards) do
+			if SMODS.has_no_suit(v) == false and (not v.ability or not v.ability.name or v.ability.name  ~= "Suit Yourself Card") then
+				non_suitless[#non_suitless + 1] = v
+			end
+		end
+		if #non_suitless > 0 then
+			card.ability.extra.suit = pseudorandom_element(non_suitless, "e").base.suit
+		end
+	end,
+	calculate = function(self, card, context)
+		if (context.individual and context.cardarea == G.play and context.other_card:is_suit(card.ability.extra.suit) and not context.blueprint) or context.forcetrigger then
+			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+            return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } }, card = card, message_card = card }
+		end
+		if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+		if context.end_of_round and context.main_eval and not context.blueprint then
+			local non_suitless = {}
+			for k, v in pairs(G.playing_cards) do
+				if SMODS.has_no_suit(v) == false and (not v.ability or not v.ability.name or v.ability.name  ~= "Suit Yourself Card") then
+					non_suitless[#non_suitless + 1] = v
+				end
+			end
+			if #non_suitless > 0 then
+				card.ability.extra.suit = pseudorandom_element(non_suitless, "e").base.suit
+			end
+		end
+	end,
+	pronouns = "it_they_thon"
 }
 
 --keep legendary jokers last

@@ -816,6 +816,25 @@ local loc_stuff = {
 			"{C:inactive,s:0.7}({V:1,s:0.7}#2#{C:inactive,s:0.7} count as any regular suit)",
         },
       },
+	  j_zero_obsessive_elementation = {
+        name = "Obsessive Elementation",
+        text = {
+			"{C:green}#1# in #2#{} chance for played",
+			"cards with a suit to create a",
+			"{C:elemental}Basic Element{} card of their",
+			"{C:attention}original suit{} when scored"
+        },
+      },
+	  j_zero_e = {
+        name = "E",
+        text = {
+			"This Joker {C:attention}secretly{} chooses",
+			"a suit every round and",
+			"gains {X:mult,C:white} X#1# {} Mult when a",
+			"card of that suit is scored",
+			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -1524,6 +1543,7 @@ local loc_stuff = {
       k_elemental_pack = "Element Pack",
       k_plus_prestige = "+1 Prestige",
 	  k_plus_cups = "+1 Cups",
+	  k_plus_elemental = "+1 Element",
 	  k_plus_suit_yourself = "+1 Suit Yourself",
 	  k_plus_sunsteel_pow = "+Sunsteel Power",
       k_poisoned_ex = "Poisoned!",

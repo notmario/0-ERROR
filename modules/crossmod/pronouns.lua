@@ -17,3 +17,13 @@ CardPronouns.Pronoun {
 	end,
 	key = "empty"
 }
+
+CardPronouns.Pronoun {
+	colour = HEX("948066"),
+	text_colour = G.C.WHITE,
+	pronoun_table = { "It", "They", "Thon" },
+	in_pool = function()
+		return false
+	end,
+	key = "it_they_thon"
+}
