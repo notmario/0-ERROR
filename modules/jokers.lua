@@ -3621,7 +3621,7 @@ SMODS.Joker {
 		if context.end_of_round and context.main_eval and not context.blueprint then
 			local non_suitless = {}
 			for k, v in pairs(G.playing_cards) do
-				if SMODS.has_no_suit(v) == false and (not v.ability or not v.ability.name or v.ability.name  ~= "Suit Yourself Card") then
+				if SMODS.has_no_suit(v) == false and (not v.ability or not v.ability.name or v.ability.name ~= "Suit Yourself Card") then
 					non_suitless[#non_suitless + 1] = v
 				end
 			end
@@ -3631,6 +3631,71 @@ SMODS.Joker {
 		end
 	end,
 	pronouns = "it_they_thon"
+}
+
+SMODS.Joker {
+	key = "time_walk",
+	pos = {x = 0, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 3,
+	cost = 8,
+	no_pool_flag = 'zero_time_walked',
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	demicoloncompat = false,
+	eternal_compat = false,
+	config = { extra = { money = 0, currentmoney = 0, target = 30 } },
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.target, card.ability.extra.money } }
+    end,
+	add_to_deck = function(self, card, from_debuff)
+		card.ability.extra.currentmoney = G.GAME.dollars
+		G.GAME.pool_flags.zero_time_walked = true
+	end,
+	update = function(self, card)
+		if card.area == G.jokers and card.ability.extra.currentmoney ~= G.GAME.dollars then
+			if card.ability.extra.currentmoney < G.GAME.dollars then
+				card.ability.extra.money = card.ability.extra.money + G.GAME.dollars - card.ability.extra.currentmoney
+				if card.ability.extra.money >= card.ability.extra.target then
+					card.ability.extra.money = 0
+					SMODS.destroy_cards(card, nil, nil, true)
+				end
+			end
+			card.ability.extra.currentmoney = G.GAME.dollars
+		end
+	end
+}
+
+SMODS.Joker {
+	key = "dazzles",
+	pos = {x = 2, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 1,
+	cost = 3,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	demicoloncompat = false,
+	config = {
+		extra = { mult = 4, times = 3, count = 0},
+	},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult, card.ability.extra.times, card.ability.extra.times > 1 and "s are" or " is" } }
+    end,
+	calculate = function(self, card, context)
+        if (context.individual and context.cardarea == G.play) or context.forcetrigger then
+			card.ability.extra.count = card.ability.extra.count + 1
+			if card.ability.extra.count >= card.ability.extra.times then
+				card.ability.extra.count = 0
+				card.ability.extra.times = pseudorandom_element( {1,2,3,6}, "dazzles" )
+				return {
+					mult = card.ability.extra.mult
+				}
+			end
+		end
+	end,
+	pronouns = "they_them" -- :)
 }
 
 --keep legendary jokers last

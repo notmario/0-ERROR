@@ -835,6 +835,22 @@ local loc_stuff = {
 			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
         },
       },
+	  j_zero_time_walk = {
+        name = "Time Walk",
+        text = {
+			"{C:attention}Ante{} can't change, {C:red}destroyed",
+			"when a total of {C:money}#1#${} is earned",
+			"{C:inactive}(Currently {C:money}#2#${C:inactive})",
+        },
+      },
+	  j_zero_dazzles = {
+        name = "The Dazzles",
+        text = {
+			"{C:mult}+#1#{} Mult after {C:attention}#2#{} card#3#",
+			"scored, then change to a random",
+			"number between {C:attention}1{}, {C:attention}2{}, {C:attention}3{} and {C:attention}6{}",
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -1570,6 +1586,7 @@ local loc_stuff = {
 	  k_sell_value = "Value",
 	  k_draw_ex = "Draw!",
 	  k_stage_clear_upper = "STAGE CLEAR",
+	  k_poof_ex = "Poof!",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",

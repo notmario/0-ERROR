@@ -391,3 +391,11 @@ function Node:stop_drag()
 	SMODS.calculate_context({ zero_moved = true })
 	return Node_stop_drag(self)
 end
+
+--Time Walk prevention
+alias_ease_ante = ease_ante
+function ease_ante(mod)
+	if not next(SMODS.find_card('j_zero_time_walk')) then
+		return alias_ease_ante(mod)
+	end
+end
