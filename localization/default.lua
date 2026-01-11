@@ -145,7 +145,7 @@ local loc_stuff = {
         name = "Energy Supercharge",
         text = {
           {
-            "Once per round, {C:dark_edition,E:1}use{} this joker",
+            "Once per round, {C:dark_edition,E:1}use{} this Joker",
             "to add a random {C:red}temporary{} {C:attention}Enhanced",
             "card of each suit to your hand"
           }
@@ -155,7 +155,7 @@ local loc_stuff = {
         name = "Awesome Face",
         text = {
           {
-            "{C:dark_edition,E:1}Use{} this joker to gain",
+            "{C:dark_edition,E:1}Use{} this Joker to gain",
             "{C:attention}four fifths{} of the blind score",
             "{C:red,E:2}self destructs{}"
           }
@@ -165,7 +165,7 @@ local loc_stuff = {
         name = "Perma-Monster",
         text = {
           {
-            "Once per ante, {C:dark_edition,E:1}use{} this joker",
+            "Once per ante, {C:dark_edition,E:1}use{} this Joker",
             "to destroy the {C:attention}leftmost{}",
             "{C:attention}Joker and permanently copy it",
             "{C:inactive}(Currently copying #1#)"
@@ -177,7 +177,7 @@ local loc_stuff = {
         text = {
           {
             "Once per ante, {C:dark_edition,E:1}use{} this",
-            "joker to {C:dark_edition,E:1}activate{} it.",
+            "Joker to {C:dark_edition,E:1}activate{} it.",
             "{X:mult,C:white}X#2#{} Mult if {C:dark_edition,E:1}active{}",
             "{C:inactive}(Currently {C:attention}#1#{C:inactive})"
           }
@@ -187,7 +187,7 @@ local loc_stuff = {
         name = "Defense Removal",
         text = {
           {
-            "Once per ante, {C:dark_edition,E:1}use{} this joker",
+            "Once per ante, {C:dark_edition,E:1}use{} this Joker",
             "to reduce the {C:attention}blind",
             "requirement by three quarters"
           }
@@ -197,7 +197,7 @@ local loc_stuff = {
         name = "Dream Book",
         text = {
           {
-            "Once per ante, {C:dark_edition,E:1}use{} this joker to draw ",
+            "Once per ante, {C:dark_edition,E:1}use{} this Joker to draw ",
             "a card for each card currently in hand,",
             "and get +1 {C:blue}selection {C:red}limit{} until end of round"
           }
@@ -849,6 +849,45 @@ local loc_stuff = {
 			"{C:mult}+#1#{} Mult after {C:attention}#2#{} card#3#",
 			"scored, then change to a random",
 			"number between {C:attention}1{}, {C:attention}2{}, {C:attention}3{} and {C:attention}6{}",
+        },
+      },
+	  j_zero_cock_king = {
+        name = "Cockatrice King",
+        text = {
+			"Each card held in hand gives",
+			"{C:mult}+#1#{} Mult, Once per ante, {C:dark_edition,E:1}use",
+			"this Joker to gain {C:attention}+#2#{} hand",
+			"size until end of round"
+        },
+      },
+	  j_zero_poison_heal = {
+        name = "Poison Heal",
+        text = {
+			"Once per round, {C:dark_edition,E:1}use{} this",
+			"Joker to lose {C:chips}1{} Hand per",
+			"round and gain {C:white,X:chips}X#1#{} Chips",
+			"{C:inactive}(Currently {C:white,X:chips}X#2#{C:inactive} Chips)",
+        },
+      },
+	  j_zero_stat_wipeout = {
+        name = "Stat Wipeout",
+        text = {
+			"{C:dark_edition,E:1}Use{} this Joker to remove the",
+			"{C:attention}Enhancement{} of one card and gain",
+			"{C:attention}1{} Charge, disables the effects of",
+			"{C:attention}Boss Blinds{} at the cost of {C:attention}1{} Charge",
+			"{C:inactive}(Currently {C:attention}#1#{C:inactive} Charge#2#)"
+			
+        },
+      },
+	  j_zero_holy_symbol = {
+        name = "Holy Symbol",
+        text = {
+			"{C:dark_edition,E:1}Use{} to {C:dark_edition,E:1}activate{}, when {C:dark_edition,E:1}active{}:",
+			"all {C:attention}Jokers{} give {C:white,X:chips}X#1#{} Chips,",
+			"{E:2,C:red}self destructs{} in {C:attention}#2#{} rounds",
+			"{C:inactive}(#3#ctive!)"
+			
         },
       },
     },
@@ -1586,7 +1625,7 @@ local loc_stuff = {
 	  k_sell_value = "Value",
 	  k_draw_ex = "Draw!",
 	  k_stage_clear_upper = "STAGE CLEAR",
-	  k_poof_ex = "Poof!",
+	  k_consumed_ex = "Consumed!",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",
