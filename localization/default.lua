@@ -458,7 +458,7 @@ local loc_stuff = {
         text = {
 			{
 			"{C:chips}+#1#{} Chips,",
-			"{C:attention}use{} to swap",
+			"{C:dark_edition,E:1}use{} to swap",
 			"between modes"
 			}
         },
@@ -468,7 +468,7 @@ local loc_stuff = {
         text = {
 			{
 			"{C:mult}+#1#{} Mult,",
-			"{C:attention}use{} to swap",
+			"{C:dark_edition,E:1}use{} to swap",
 			"between modes"
 			}
         },
@@ -478,7 +478,7 @@ local loc_stuff = {
         text = {
 			{
 			"{X:mult,C:white}X#1#{} Mult,",
-			"{C:attention}use{} to swap",
+			"{C:dark_edition,E:1}use{} to swap",
 			"between modes"
 			}
         },
@@ -488,7 +488,7 @@ local loc_stuff = {
         text = {
 			{
 			"{C:money}+$#1#{},",
-			"{C:attention}use{} to swap",
+			"{C:dark_edition,E:1}use{} to swap",
 			"between modes"
 			}
         },
@@ -498,7 +498,7 @@ local loc_stuff = {
         text = {
 			{
 			"Swap {X:chips,C:white}Chips{} and {X:mult,C:white}Mult{},",
-			"{C:attention}use{} to swap",
+			"{C:dark_edition,E:1}use{} to swap",
 			"between modes"
 			}
         },
@@ -509,7 +509,7 @@ local loc_stuff = {
 			{
 			"Randomly {C:attention}enhance",
 			"a card in play,",
-			"{C:attention}use{} to swap",
+			"{C:dark_edition,E:1}use{} to swap",
 			"between modes"
 			}
         },
@@ -520,7 +520,7 @@ local loc_stuff = {
 			{
 			"{C:green}#2# in #1#{} chance to create",
 			"a random consumable,",
-			"{C:attention}use{} to swap",
+			"{C:dark_edition,E:1}use{} to swap",
 			"between modes"
 			}
         },
@@ -615,7 +615,7 @@ local loc_stuff = {
 	  j_zero_damocles = {
         name = "Damocles",
         text = {
-            "{C:attention}Use{} to receive",
+            "{C:dark_edition,E:1}Use{} to receive",
 			"a {E:1,C:blue}King's Blessing",
 			"and a {E:2,C:red}Curse"
         },
@@ -838,7 +838,7 @@ local loc_stuff = {
 	  j_zero_time_walk = {
         name = "Time Walk",
         text = {
-			"{C:attention}Ante{} can't change, {C:red}destroyed",
+			"{C:attention}Ante{} can't change, {C:red,E:2}destroyed",
 			"when a total of {C:money}#1#${} is earned",
 			"{C:inactive}(Currently {C:money}#2#${C:inactive})",
         },
@@ -873,7 +873,7 @@ local loc_stuff = {
         name = "Stat Wipeout",
         text = {
 			"{C:dark_edition,E:1}Use{} this Joker to remove the",
-			"{C:attention}Enhancement{} of one card and gain",
+			"{C:attention}Enhancement{} of {C:attention}#3#{} cards and gain",
 			"{C:attention}1{} Charge, disables the effects of",
 			"{C:attention}Boss Blinds{} at the cost of {C:attention}1{} Charge",
 			"{C:inactive}(Currently {C:attention}#1#{C:inactive} Charge#2#)"
@@ -1626,6 +1626,7 @@ local loc_stuff = {
 	  k_draw_ex = "Draw!",
 	  k_stage_clear_upper = "STAGE CLEAR",
 	  k_consumed_ex = "Consumed!",
+	  k_zero_l0ck_k3y_warning = "L0ck and K3y card must be played together",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",

@@ -142,7 +142,7 @@ SMODS.Enhancement {
 		end
 		for _, v in pairs(context.full_hand) do
 			if v == card then
-				return { debuff = true }
+				return { debuff = true, debuff_text = localize("k_zero_l0ck_k3y_warning") }
 			end
 		end
 	end
@@ -268,7 +268,7 @@ SMODS.Enhancement {
 		end
 		for _, v in pairs(context.full_hand) do
 			if v == card then
-				return { debuff = true }
+				return { debuff = true, debuff_text = localize("k_zero_l0ck_k3y_warning") }
 			end
 		end
 	end
