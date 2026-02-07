@@ -65,7 +65,7 @@ SMODS.Suit {
 					atlas = self.lc_atlas,
 					pos_style = 'ranks',
 					akyrs_pure_suit = {
-						pos = {x = 15, y = 0,},
+						pos = {x = 16, y = 0,},
 						atlas_key = "zero_brights_lc",
 					},
 				},
@@ -77,7 +77,7 @@ SMODS.Suit {
 					pos_style = 'ranks',
 					hc_default = true,
 					akyrs_pure_suit = {
-						pos = {x = 15, y = 0,},
+						pos = {x = 16, y = 0,},
 						atlas_key = "zero_brights_hc",
 					},
 				},
