@@ -901,68 +901,67 @@ local loc_stuff = {
     j_zero_gemjimbo = {
         name = "Gem Jimbo",
         text = {
-            "{C:mult}+#1#{} Mult if played hand",
-            "contains a {C:attention}Gem{} card",
+            "{C:mult}+#1#{} Mult",
         },
       },
     j_zero_gemred = {
-        name = "Lustrous Joker",
+        name = "Angry Joker",
         text = {
             "Played cards with",
-            "a {C:red}Red{} Gem give",
+            "a {C:red}Red Gem{} give",
             "{C:mult}+#1#{} Mult when scored",
         },
       },
     j_zero_gemorange = {
-        name = "Topaz Joker",
+        name = "Hungry Joker",
         text = {
             "Played cards with",
-            "an {C:attention}Orange{} Gem give",
+            "an {C:attention}Orange Gem{} give",
             "{C:mult}+#1#{} Mult when scored",
         },
       },
     j_zero_gemyellow = {
-        name = "Amber Joker",
+        name = "Frugal Joker",
         text = {
             "Played cards with",
-            "a {C:gold}Yellow{} Gem give",
+            "a {C:gold}Yellow Gem{} give",
             "{C:mult}+#1#{} Mult when scored",
         },
       },
     j_zero_gemgreen = {
-        name = "Emerald Joker",
+        name = "Jealous Joker",
         text = {
             "Played cards with",
-            "a {C:green}Green{} Gem give",
+            "a {C:green}Green Gem{} give",
             "{C:mult}+#1#{} Mult when scored",
         },
       },
     j_zero_gemblue = {
-        name = "Sapphire Joker",
+        name = "Vain Joker",
         text = {
             "Played cards with",
-            "a {C:blue}Blue{} Gem give",
+            "a {C:blue}Blue Gem{} give",
             "{C:mult}+#1#{} Mult when scored",
         },
       },
     j_zero_gemviolet = {
-        name = "Amethyst Joker",
+        name = "Affectionate Joker",
         text = {
             "Played cards with",
-            "a {C:tarot}Violet{} Gem give",
+            "a {C:tarot}Violet Gem{} give",
             "{C:mult}+#1#{} Mult when scored",
         },
       },
     j_zero_gemwhite = {
-        name = "Pearly Joker",
+        name = "Sleepy Joker",
         text = {
             "Played cards with",
-            "a {C:inactive}White{} Gem give",
+            "a {C:inactive}White Gem{} give",
             "{C:mult}+#1#{} Mult when scored",
         },
       },
     j_zero_gempair = {
-        name = "Gem Jolly Joker",
+        name = "Ambivalent Joker",
         text = {
             "{C:red}+#1#{} Mult if played",
             "hand contains",
@@ -970,7 +969,7 @@ local loc_stuff = {
         },
       },
     j_zero_gemspectrum = {
-        name = "Gem Crazy Joker",
+        name = "Downtrodden Joker",
         text = {
             "{C:red}+#1#{} Mult if played",
             "hand contains",
@@ -978,7 +977,7 @@ local loc_stuff = {
         },
       },
     j_zero_gemtwopair = {
-        name = "Gem Mad Joker",
+        name = "Helpless Joker",
         text = {
             "{C:red}+#1#{} Mult if played",
             "hand contains",
@@ -986,7 +985,7 @@ local loc_stuff = {
         },
       },
     j_zero_gemthree = {
-        name = "Gem Zany Joker",
+        name = "Blithe Joker",
         text = {
             "{C:red}+#1#{} Mult if played",
             "hand contains",
@@ -994,7 +993,7 @@ local loc_stuff = {
         },
       },
     j_zero_gemhouse = {
-        name = "Gem Silly Joker",
+        name = "Wishy-Washy Joker",
         text = {
             "{C:red}+#1#{} Mult and {C:chips}+#2#{} Chips",
             "if played hand contains",
@@ -1002,7 +1001,7 @@ local loc_stuff = {
         },
       },
     j_zero_gemfour = {
-        name = "Gem Nutty Joker",
+        name = "Apathetic Joker",
         text = {
             "{C:red}+#1#{} Mult and {C:chips}+#2#{} Chips",
             "if played hand contains",
@@ -1010,7 +1009,7 @@ local loc_stuff = {
         },
       },
     j_zero_gemflush = {
-        name = "Gem Crazy Joker",
+        name = "Unfeeling Joker",
         text = {
             "{C:red}+#1#{} Mult and {C:chips}+#2#{} Chips",
             "if played hand contains",
@@ -1018,11 +1017,34 @@ local loc_stuff = {
         },
       },
     j_zero_hypotenusejoker = {
-        name = "Hypotenuse Joker",
+        name = "Hypotenuse",
         text = {
-          "{s:0.8,C:inactive}(temp art obv)",  
           "Gems can make moves",
           "{C:attention}diagonally{} on the board",
+        },
+      },
+    j_zero_badtrip = {
+       name = "Bad Trip",
+       text = {
+          "Gain {C:red}+#1#{} Discard for",
+          "this round if played hand",
+          "contains a {C:attention}Spectrum{}", -- this should include non-gem Spectrums
+       },
+      },
+    j_zero_deuteranopia = {
+        name = "Deuteranopia",
+        text = {
+          "{C:red}Red Gems{} and {C:green}Green Gems{}",
+          "count as the same gem,",
+          "{C:blue}Blue Gems{} and {C:tarot}Violet Gems{} ",
+          "count as the same gem",
+        },
+      },
+    j_zero_prism = {
+        name = "Prism",
+        text = {
+          "{C:inactive}White Gems{} no longer",
+          "appear on the board",
         },
       },
     },
@@ -1791,6 +1813,7 @@ local loc_stuff = {
 	  zero_alpine_lily_xmult = "X#1# Mult",
 	  zero_alpine_lily_xchips = "X#1# Chips",
 	  zero_alpine_lily_dollars = "+$#1#",
+    zero_a_discards = "+#1# Discards",
 	},
 	suits_singular = {
 	  zero_Brights = "Bright",

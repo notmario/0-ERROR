@@ -63,7 +63,7 @@ function get_X_same_jewel(num, hand, or_more)
 
         for _, card in ipairs(hand) do
             for _, jwl in pairs(jewel_list) do
-                if card.ability['zero_'..jwl] then
+                if is_jewel_colour(card, 'zero_'..jwl, 'card') then
                     colours_count[jwl] = colours_count[jwl] + 1
                 end
             end
@@ -74,7 +74,7 @@ function get_X_same_jewel(num, hand, or_more)
             if (or_more and colours_count[jwl] >= num) or (colours_count[jwl] == num) then
                 num_x_sames = num_x_sames + 1
                 for __, card in ipairs(hand) do
-                    if card.ability['zero_'..jwl] then
+                    if is_jewel_colour(card, 'zero_'..jwl, 'card') then
                         eligible_cards[#eligible_cards + 1] = card
                     end
                 end
@@ -100,7 +100,7 @@ function get_spectrum_jewels(hand)
         for _, card in ipairs(hand) do --determine all cards with multiple jewels
             card.jewel_count = 0
             for _, jwl in pairs(jewel_list) do
-                if card.ability['zero_'..jwl] then
+                if is_jewel_colour(card, 'zero_'..jwl, 'card') then
                     card.jewel_count = card.jewel_count + 1
                 end
             end
@@ -109,7 +109,7 @@ function get_spectrum_jewels(hand)
         for _, card in ipairs(hand) do --go through all single-jewel cards
             if card.jewel_count == 1 then
                 for _, jwl in pairs(jewel_list) do
-                    if colours_count[jwl] == 0 and card.ability['zero_'..jwl] then
+                    if colours_count[jwl] == 0 and is_jewel_colour(card, 'zero_'..jwl, 'card') then
                         eligible_cards[#eligible_cards + 1] = card
                         colours_count[jwl] = 1
                         colours_counting = colours_counting + 1
@@ -122,7 +122,7 @@ function get_spectrum_jewels(hand)
         for _, card in ipairs(hand) do -- go through all multi-jewel cards
             if card.jewel_count > 1 then
                 for _, jwl in pairs(jewel_list) do
-                    if colours_count[jwl] == 0 and card.ability['zero_'..jwl] then
+                    if colours_count[jwl] == 0 and is_jewel_colour(card, 'zero_'..jwl, 'card') then
                         eligible_cards[#eligible_cards + 1] = card
                         colours_count[jwl] = 1
                         colours_counting = colours_counting + 1

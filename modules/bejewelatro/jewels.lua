@@ -26,6 +26,48 @@ SMODS.ConsumableType ({
 local jewel_list = {
     'redjewel', 'orangejewel', 'yellowjewel', 'greenjewel', 'bluejewel', 'violetjewel', 'whitejewel',
 }
+local jewel_list_prism = {
+    'redjewel', 'orangejewel', 'yellowjewel', 'greenjewel', 'bluejewel', 'violetjewel',
+}
+--[[Bejewelatro.weighted_jewel_list = {
+    ['redjewel'] = {
+        weight = 1,
+    },
+    ['orangejewel'] = {
+        weight = 1,
+    },
+    ['yellowjewel'] = {
+        weight = 1,
+    },
+    ['greenjewel'] = {
+        weight = 1,
+    },
+    ['bluejewel'] = {
+        weight = 1,
+    },
+    ['violetjewel'] = {
+        weight = 1,
+    },
+    ['whitejewel'] = {
+        weight = 1,
+    },
+}
+
+function Bejewelatro.f.select_weighted_jewel(items)
+    local total_weight = 0
+    for key, item in ipairs(items) do
+        total_weight = total_weight + item.weight
+    end
+    local random_value = math.random() * total_weight
+    for key, item in ipairs(items) do
+        random_value = random_value - item.weight
+        if random_value <= 0 then
+            return key
+        end
+    end
+    return nil 
+end]]
+
 
 for i = 1, #jewel_list do
     SMODS.Consumable({
@@ -64,10 +106,11 @@ function Bejewelatro.f.create_row(row_num, empty)
 
     if not empty then
         for i = 1,8 do
+            local jwl_list = next(SMODS.find_card('j_zero_prism')) and jewel_list_prism or jewel_list
             local card_jewel = SMODS.create_card({
                 set = 'jewel', 
                 --key = 'c_zero_redjewel',
-                key = 'c_zero_'..pseudorandom_element(jewel_list),
+                key = 'c_zero_'..pseudorandom_element(jwl_list),
                 skip_materialize = true,
             })
             Bejewelatro.jewel_rows[row_num]:emplace(card_jewel)
@@ -95,6 +138,53 @@ function Bejewelatro.f.destroy_jewels_board(jewels_only)
         if not jewels_only then
             Bejewelatro.jewel_rows[i] = nil
         end
+    end
+end
+
+-- advanced jewel colour checking
+function is_jewel_colour(jewel, col, area)
+    if area == 'card' then
+        if col == 'zero_redjewel' and (jewel.ability['zero_redjewel'] 
+        or (next(SMODS.find_card('j_zero_deuteranopia')) and jewel.ability['zero_greenjewel'])) then
+            return true
+        elseif col == 'zero_orangejewel' and jewel.ability['zero_orangejewel'] then
+            return true
+        elseif col == 'zero_yellowjewel' and jewel.ability['zero_yellowjewel'] then
+            return true
+        elseif col == 'zero_greenjewel' and (jewel.ability['zero_greenjewel'] 
+        or (next(SMODS.find_card('j_zero_deuteranopia')) and jewel.ability['zero_redjewel'])) then
+            return true
+        elseif col == 'zero_bluejewel' and (jewel.ability['zero_bluejewel'] 
+        or (next(SMODS.find_card('j_zero_deuteranopia')) and jewel.ability['zero_violetjewel']))then
+            return true
+        elseif col == 'zero_violetjewel' and (jewel.ability['zero_violetjewel'] 
+        or (next(SMODS.find_card('j_zero_deuteranopia')) and jewel.ability['zero_bluejewel']))then
+            return true
+        elseif col == 'zero_whitejewel' and jewel.ability['zero_whitejewel'] then
+            return true
+        end
+        return false
+    elseif area == 'board' then
+        if col == 'c_zero_redjewel' and (jewel.config.center.key == 'c_zero_redjewel' 
+        or (next(SMODS.find_card('j_zero_deuteranopia')) and jewel.config.center.key == 'c_zero_greenjewel')) then
+            return true
+        elseif col == 'c_zero_orangejewel' and jewel.config.center.key == 'c_zero_orangejewel' then
+            return true
+        elseif col == 'c_zero_yellowjewel' and jewel.config.center.key == 'c_zero_yellowjewel' then
+            return true
+        elseif col == 'c_zero_greenjewel' and (jewel.config.center.key == 'c_zero_greenjewel'
+        or (next(SMODS.find_card('j_zero_deuteranopia')) and jewel.config.center.key == 'c_zero_redjewel')) then
+            return true
+        elseif col == 'c_zero_bluejewel' and (jewel.config.center.key == 'c_zero_bluejewel'
+        or (next(SMODS.find_card('j_zero_deuteranopia')) and jewel.config.center.key == 'c_zero_violetjewel'))then
+            return true
+        elseif col == 'c_zero_violetjewel' and (jewel.config.center.key == 'c_zero_violetjewel'
+        or (next(SMODS.find_card('j_zero_deuteranopia')) and jewel.config.center.key == 'c_zero_bluejewel'))then
+            return true
+        elseif col == 'c_zero_whitejewel' and jewel.config.center.key == 'c_zero_whitejewel' then
+            return true
+        end
+        return false
     end
 end
 
@@ -374,10 +464,11 @@ function Bejewelatro.f.jewel_refill(initial) -- drop jewels downward after other
             
             for j = destroy_count, 1, -1 do -- going upwards, replace dissolved jewels with new jewels
                 Bejewelatro.jewel_rows[j].cards[i]:remove()
+                local jwl_list = next(SMODS.find_card('j_zero_prism')) and jewel_list_prism or jewel_list
                 local card_jewel = SMODS.create_card({
                     set = 'jewel', 
                     --key = 'c_zero_bluejewel',
-                    key = 'c_zero_'..pseudorandom_element(jewel_list),
+                    key = 'c_zero_'..pseudorandom_element(jwl_list),
                     skip_materialize = true,
                 })
                 Bejewelatro.jewel_rows[j]:emplace_2(card_jewel, i)
@@ -458,7 +549,8 @@ function Bejewelatro.f.check_line(get_jewel)
     
         for j = i + 1, 8 do
             local next_jewel = get_jewel(j)
-            if next_jewel.config.center.key == colour then
+            --print(is_jewel_colour(next_jewel, colour, 'board'))
+            if is_jewel_colour(next_jewel, colour, 'board') then
                 flush = flush + 1
             else
                 break

@@ -16,7 +16,7 @@ local function has_a_jewel(card)
     return false
 end
 
--- Gem Jimbo
+-- Joker (Bejeweled Mode ver)
 SMODS.Joker {
     key = "gemjimbo",
     atlas = "zero_jokersBejeweled",
@@ -25,7 +25,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 2,
     discovered = true,
-    config = { extra = { mult = 5 }, },
+    config = { extra = { mult = 4 }, },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
     end,
@@ -34,22 +34,14 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.joker_main then
-            local contains_jewel = false
-            for _, v in ipairs(context.scoring_hand) do
-                if has_a_jewel(card) then
-                    contains_jewel = true
-                end
-            end
-            if contains_jewel then
-                return {
-                    mult = card.ability.extra.mult
-                }
-            end
+            return {
+                mult = card.ability.extra.mult
+            }
         end
     end
 }
 
--- Lustrous Joker
+-- Angry Joker
 SMODS.Joker {
     key = "gemred",
     atlas = "zero_jokersBejeweled",
@@ -64,7 +56,7 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-            context.other_card.ability['zero_redjewel'] then
+        is_jewel_colour(context.other_card, 'zero_redjewel', 'card') then
             return {
                 mult = card.ability.extra.mult
             }
@@ -72,7 +64,7 @@ SMODS.Joker {
     end
 }
 
--- Topaz Joker
+-- Hungry Joker
 SMODS.Joker {
     key = "gemorange",
     atlas = "zero_jokersBejeweled",
@@ -87,7 +79,7 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-            context.other_card.ability['zero_orangejewel'] then
+        is_jewel_colour(context.other_card, 'zero_orangejewel', 'card') then
             return {
                 mult = card.ability.extra.mult
             }
@@ -95,7 +87,7 @@ SMODS.Joker {
     end
 }
 
--- Amber Joker
+-- Frugal Joker
 SMODS.Joker {
     key = "gemyellow",
     atlas = "zero_jokersBejeweled",
@@ -110,7 +102,7 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-            context.other_card.ability['zero_yellowjewel'] then
+        is_jewel_colour(context.other_card, 'zero_yellowjewel', 'card') then
             return {
                 mult = card.ability.extra.mult
             }
@@ -118,7 +110,7 @@ SMODS.Joker {
     end
 }
 
--- Emerald Joker
+-- Jealous Joker
 SMODS.Joker {
     key = "gemgreen",
     atlas = "zero_jokersBejeweled",
@@ -133,7 +125,7 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-            context.other_card.ability['zero_greenjewel'] then
+        is_jewel_colour(context.other_card, 'zero_greenjewel', 'card') then
             return {
                 mult = card.ability.extra.mult
             }
@@ -141,7 +133,7 @@ SMODS.Joker {
     end
 }
 
--- Sapphire Joker
+-- Vain Joker
 SMODS.Joker {
     key = "gemblue",
     atlas = "zero_jokersBejeweled",
@@ -156,7 +148,7 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-            context.other_card.ability['zero_bluejewel'] then
+        is_jewel_colour(context.other_card, 'zero_bluejewel', 'card') then
             return {
                 mult = card.ability.extra.mult
             }
@@ -164,7 +156,7 @@ SMODS.Joker {
     end
 }
 
--- Amethyst Joker
+-- Affectionate Joker
 SMODS.Joker {
     key = "gemviolet",
     atlas = "zero_jokersBejeweled",
@@ -179,7 +171,7 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-            context.other_card.ability['zero_violetjewel'] then
+        is_jewel_colour(context.other_card, 'zero_violetjewel', 'card') then
             return {
                 mult = card.ability.extra.mult
             }
@@ -187,7 +179,7 @@ SMODS.Joker {
     end
 }
 
--- Pearly Joker
+-- Sleepy Joker
 SMODS.Joker {
     key = "gemwhite",
     atlas = "zero_jokersBejeweled",
@@ -202,7 +194,7 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-            context.other_card.ability['zero_whitejewel'] then
+        is_jewel_colour(context.other_card, 'zero_whitejewel', 'card') then
             return {
                 mult = card.ability.extra.mult
             }
@@ -210,7 +202,7 @@ SMODS.Joker {
     end
 }
 
--- Gem Jolly Joker
+-- Ambivalent Joker
 SMODS.Joker {
     key = "gempair",
     atlas = "zero_jokersBejeweled",
@@ -232,7 +224,7 @@ SMODS.Joker {
     end
 }
 
--- Gem Crazy Joker
+-- Downtrodden Joker
 SMODS.Joker {
     key = "gemspectrum",
     atlas = "zero_jokersBejeweled",
@@ -254,9 +246,9 @@ SMODS.Joker {
     end
 }
 
--- Gem Mad Joker
+-- Helpless Joker
 SMODS.Joker {
-    key = "gemspectrum",
+    key = "gemtwopair",
     atlas = "zero_jokersBejeweled",
     pos = { x = 3, y = 0 },
     rarity = 1,
@@ -276,7 +268,7 @@ SMODS.Joker {
     end
 }
 
--- Gem Zany Joker
+-- Blithe Joker
 SMODS.Joker {
     key = "gemthree",
     atlas = "zero_jokersBejeweled",
@@ -298,7 +290,7 @@ SMODS.Joker {
     end
 }
 
--- Gem Silly Joker
+-- Wishy-Washy Joker
 SMODS.Joker {
     key = "gemhouse",
     atlas = "zero_jokersBejeweled",
@@ -321,7 +313,7 @@ SMODS.Joker {
     end
 }
 
--- Gem Nutty Joker
+-- Apathetic Joker
 SMODS.Joker {
     key = "gemfour",
     atlas = "zero_jokersBejeweled",
@@ -344,7 +336,7 @@ SMODS.Joker {
     end
 }
 
--- Gem Droll Joker
+-- Unfeeling Joker
 SMODS.Joker {
     key = "gemflush",
     atlas = "zero_jokersBejeweled",
@@ -367,13 +359,130 @@ SMODS.Joker {
     end
 }
 
--- Hypotenuse Joker
+-- Hypotenuse
 SMODS.Joker {
     key = "hypotenusejoker",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 9, y = 1 },
+    rarity = 1,
+    blueprint_compat = false,
+    cost = 5,
+    discovered = true,
+}
+
+-- Deuteranopia
+SMODS.Joker {
+    key = "deuteranopia",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 9, y = 0 },
+    rarity = 2,
+    blueprint_compat = false,
+    cost = 6,
+    discovered = true,
+}
+
+-- Bad Trip
+SMODS.Joker {
+    key = "badtrip",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 8, y = 0 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 4,
+    discovered = true,
+    config = { extra = { discards_mod = 1 }, },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.discards_mod } }
+    end,
+    calculate = function(self, card, context)
+        if context.after and next(context.poker_hands["zero_jewel_spectrum"]) then 
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    ease_discard(card.ability.extra.discards_mod, nil, true)
+                    card_eval_status_text(card, 'extra', nil, nil, nil, 
+                        {
+                            message = localize { 
+                                type = 'variable', 
+                                key = 'zero_a_discards', 
+                                vars = { card.ability.extra.discards_mod }
+                            },
+                            colour = G.C.RED
+                        }
+                    )
+                    return true
+                end
+            }))
+        end
+    end
+}
+
+-- Prism
+SMODS.Joker {
+    key = "prism",
     atlas = "zero_jokersBejeweled",
     pos = { x = 0, y = 0 },
     rarity = 1,
     blueprint_compat = false,
     cost = 5,
     discovered = true,
+    --[[add_to_deck = function(self, card, from_debuff)
+        if #SMODS.find_card('j_deuteranopia') <= 1 then
+            Bejewelatro.weighted_jewel_list['whitejewel'].weight = 0
+        end
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        if #SMODS.find_card('j_deuteranopia') <= 1 then
+            Bejewelatro.weighted_jewel_list['whitejewel'].weight = 1
+        end
+    end,]]
 }
+
+local banned_jokers = {
+    'j_jimbo',
+    'j_greedy_joker',
+    'j_lusty_joker',
+    'j_wrathful_joker',
+    'j_gluttenous_joker',
+    --'j_jolly',
+    --'j_zany',
+    --'j_mad',
+    --'j_crazy',
+    --'j_droll',
+    --'j_sly',
+    --'j_wily',
+    --'j_crazy',
+    --'j_devious',
+    --'j_crafty',
+    'j_four_fingers',
+    'j_todo_list',
+    'j_blackboard',
+    'j_shortcut',
+    'j_smeared', 
+    --'j_seeing_double',
+    'j_zero_despondent_joker',
+    --'j_zero_star_sapphire',
+    --'j_zero_konpeito',
+}
+
+local brights_locked_jokers = {
+    'j_rough_gem',
+    'j_bloodstone',
+    'j_arrowhead',
+    'j_onyx_agate',
+}
+
+for k,v in pairs(banned_jokers) do
+    SMODS.Joker:take_ownership(v, {
+        in_pool = function(self, args)
+            return not do_bejewelatro()
+        end,
+    }, true)
+end
+
+for k,v in pairs(brights_locked_jokers) do
+    SMODS.Joker:take_ownership(v, {
+        in_pool = function(self, args)
+            return not do_bejewelatro() or zero_brights_in_deck()
+        end,
+    }, true)
+end
