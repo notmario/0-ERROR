@@ -719,24 +719,51 @@ function create_UIBox_current_prestige(simple)
 end
 
 -- apply score bonuses
-local scalcieff = SMODS.calculate_individual_effect
-SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, from_edition)
-  local mod = G.GAME.PrestigeValues
-  local t = {}
-  t.chips_extra = 0
-  t.mult_extra = 0
-  t.xmult_extra = 0
-  if not G.GAME.PrestigeValues then
-    mod = t
-  end
-  if key == "chips" or key == "h_chips" or key == "chip_mod" then
-    amount = amount + mod.chips_extra
-  end
-  if key == "mult" or key == "h_mult" or key == "mult_mod" then
-    amount = amount + mod.mult_extra
-  end
-  if key == "x_mult" or key == "xmult" or key == "Xmult" or key == "x_mult_mod" or key == "Xmult_mod" then
-    amount = amount + mod.xmult_extra
-  end
-  return scalcieff(effect, scored_card, key, amount, from_edition)
+if not (SMODS.Mods["MyDreamJournal"] or {}).can_load then
+	local scalcieff = SMODS.calculate_individual_effect
+	SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, from_edition)
+	  local mod = G.GAME.PrestigeValues
+	  local t = {}
+	  t.chips_extra = 0
+	  t.mult_extra = 0
+	  t.xmult_extra = 0
+	  if not G.GAME.PrestigeValues then
+	    mod = t
+	  end
+	  if key == "chips" or key == "h_chips" or key == "chip_mod" then
+	    amount = amount + mod.chips_extra
+	  end
+	  if key == "mult" or key == "h_mult" or key == "mult_mod" then
+	    amount = amount + mod.mult_extra
+	  end
+	  if key == "x_mult" or key == "xmult" or key == "Xmult" or key == "x_mult_mod" or key == "Xmult_mod" then
+	    amount = amount + mod.xmult_extra
+	  end
+	  return scalcieff(effect, scored_card, key, amount, from_edition)
+	end
+else
+	function SMODS.current_mod.calculate(self, context)
+		if context.MDJ_mod_key_and_amount then
+			local key = context.MDJ_key
+			local amount = context.MDJ_amount
+			local og_key = context.MDJ_og_key
+			local mod = G.GAME.PrestigeValues
+			local t = {}
+			t.chips_extra = 0
+			t.mult_extra = 0
+			t.xmult_extra = 0
+			if not G.GAME.PrestigeValues then
+				mod = t
+			end
+			if MyDreamJournal.pluschipstoxchips[key] and not MyDreamJournal.equals_key[og_key] then
+				amount = amount + mod.chips_extra
+			elseif MyDreamJournal.plusmulttoxmult[key] and not MyDreamJournal.equals_key[og_key] then
+				amount = amount + mod.mult_extra
+			elseif MyDreamJournal.xmulttoemult[key] and not MyDreamJournal.equals_key[og_key] then
+				amount = amount + mod.xmult_extra
+			end
+			return {
+				MDJ_amount = amount
+			}
+	end
 end
