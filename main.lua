@@ -3,6 +3,13 @@ assert(SMODS.load_file("./modules/resources.lua"))()
 assert(SMODS.load_file("./modules/hooks.lua"))()
 assert(SMODS.load_file("./modules/funcs.lua"))()
 
+SMODS.current_mod.optional_features = function()
+    return { retrigger_joker = true, post_trigger = true }
+end
+
+zero_config = SMODS.current_mod.config
+assert(SMODS.load_file("./modules/config_ui.lua"))()
+
 assert(SMODS.load_file("./modules/prestige.lua"))()
 assert(SMODS.load_file("./modules/cups.lua"))()
 assert(SMODS.load_file("./modules/elemental.lua"))()
@@ -12,6 +19,7 @@ assert(SMODS.load_file("./modules/enhancements.lua"))()
 assert(SMODS.load_file("./modules/editions.lua"))()
 assert(SMODS.load_file("./modules/suits.lua"))()
 assert(SMODS.load_file("./modules/tarot.lua"))()
+assert(SMODS.load_file("./modules/planet.lua"))()
 assert(SMODS.load_file("./modules/vouchers.lua"))()
 
 if next(SMODS.find_mod('cardpronouns')) then

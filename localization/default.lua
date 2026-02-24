@@ -119,6 +119,44 @@ local loc_stuff = {
 		},
 	  },
 	},
+	Planet = {
+	  c_zero_ievea = {
+	    name = "Iev'ea",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+	  c_zero_id = {
+	       name = "Id",
+	    text = {
+               "({V:1}lvl.#1#{}) Level up",
+               "{C:attention}#2#",
+               "{C:mult}+#3#{} Mult and",
+               "{C:chips}+#4#{} chips",
+           },
+	  },
+	  c_zero_false_vacuum = {
+	       name = "False Vacuum",
+	    text = {
+               "({V:1}lvl.#1#{}) Level up",
+               "{C:attention}#2#",
+               "{C:mult}+#3#{} Mult and",
+               "{C:chips}+#4#{} chips",
+           },
+	  },
+	  c_zero_everblaze_isles = {
+	       name = "Everblaze Isles",
+	    text = {
+               "({V:1}lvl.#1#{}) Level up",
+               "{C:attention}#2#",
+               "{C:mult}+#3#{} Mult and",
+               "{C:chips}+#4#{} chips",
+           },
+	  },
+	},
     Joker = {
       j_zero_mad = {
         name = "Mutual Assured Destruction",
