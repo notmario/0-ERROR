@@ -890,6 +890,30 @@ local loc_stuff = {
 			
         },
       },
+	  j_zero_rewards_card = {
+        name = "Joker Rewards Card",
+        text = {
+			"Retriggers random {C:attention}Jokers{} and cards in",
+			"play, total retriggers equal number of",
+			"{C:attention}Gold Stickers{} in your collection",
+			"{C:inactive}(Currently {C:attention}#1#{C:inactive})"
+			
+        },
+		unlock = {
+            "Win a run on {C:attention}Gold",
+            "{C:attention}Stake{} difficulty",
+            "with any {C:attention}Joker",
+        }
+      },
+	  j_zero_consortium = {
+        name = "Character Consortium",
+        text = {
+			"When {C:attention}Blind{} is selected,",
+            "create {C:attention}#1# {C:blue}Common{C:attention} Jokers",
+			"{C:inactive}(Prioritizes {C:dark_edition}Mods{C:inactive} you own no",
+            "{C:attention}Jokers {C:inactive}of, must have room)",
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
