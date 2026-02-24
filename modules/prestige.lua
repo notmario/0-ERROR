@@ -765,5 +765,6 @@ else
 			return {
 				MDJ_amount = amount
 			}
+		end
 	end
 end
