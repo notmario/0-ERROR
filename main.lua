@@ -27,6 +27,7 @@ if next(SMODS.find_mod('cardpronouns')) then
 end
 if next(SMODS.find_mod('Cryptid')) then
 	assert(SMODS.load_file("./modules/crossmod/cryptid/vouchers.lua"))()
+	assert(SMODS.load_file("./modules/crossmod/cryptid/bg_music.lua"))()
 end
 
 assert(SMODS.load_file("./modules/challenges.lua"))()
