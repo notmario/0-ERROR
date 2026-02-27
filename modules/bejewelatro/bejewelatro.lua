@@ -7,6 +7,9 @@ Bejewelatro = {
     },
     f = {}, -- functions
     jewel_rows = {}, -- board rows
+    jewel_list = {
+        'redjewel', 'orangejewel', 'yellowjewel', 'greenjewel', 'bluejewel', 'violetjewel', 'whitejewel',
+    }
 }
 
 function do_bejewelatro()
@@ -23,3 +26,5 @@ assert(SMODS.load_file("./modules/bejewelatro/board.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/stickers.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/pokerhands.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/jokers.lua"))()
+assert(SMODS.load_file("./modules/bejewelatro/blinds.lua"))()
+assert(SMODS.load_file("./modules/bejewelatro/raregems.lua"))()

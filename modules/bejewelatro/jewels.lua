@@ -188,6 +188,28 @@ function is_jewel_colour(jewel, col, area)
     end
 end
 
+function Bejewelatro.f.draw_random_jewelless_card()
+    local random_card = nil
+    local jewelless_cards = {}
+    for k,v in ipairs(G.deck.cards) do
+        local is_jewelless = true
+        for i=1,#jewel_list do
+            if v.ability['zero_'..jewel_list[i]] then
+                is_jewelless = false
+                break
+            end
+        end
+        if is_jewelless then
+            jewelless_cards[#jewelless_cards+1] = v
+            break
+        end
+    end
+    random_card = pseudorandom_element(jewelless_cards, pseudoseed('in_deck'))
+    if random_card then
+        draw_card(G.deck, G.hand, 90,'up', nil, random_card)
+    end
+end
+
 -- card emplace 2 - allows for cards to swap positions
 function Bejewelatro.f.jewel_swap(card1, card2, destroyed_swap)
     if not card1 or not card2 then return end
@@ -257,9 +279,103 @@ function Bejewelatro.f.jewel_drag(card1, card2)
                         Bejewelatro.new_colour_list[vv] = true
                     end
                 end
-                if #G.hand.cards < G.hand.config.card_limit then
-                    SMODS.draw_cards(1)
+                
+                local jewel_colours_in_deck = {}
+
+                for kk, vv in pairs(Bejewelatro.new_colour_list) do
+                    for _, v in ipairs(G.deck.cards) do
+                        if kk and v.ability[kk] then
+                            jewel_colours_in_deck[#jewel_colours_in_deck+1] = kk
+                            break
+                        end
+                    end
                 end
+
+                if #jewel_colours_in_deck > 0 then -- there exists a card in deck with corresponding jewel(s)
+                    local valid_jewels = {}
+                    local random_jewelled_card = nil
+                    for _, v in ipairs(G.deck.cards) do
+                        for kk, vv in pairs(Bejewelatro.new_colour_list) do
+                            if kk and v.ability[kk] then
+                                valid_jewels[#valid_jewels+1] = v
+                                break
+                            end
+                        end
+                    end
+                    random_jewelled_card = pseudorandom_element(valid_jewels, pseudoseed('in_deck'))
+                    if random_jewelled_card then
+                        local new_colour_list_length = 0
+                        for kk, vv in pairs(Bejewelatro.new_colour_list) do
+                            if Bejewelatro.new_colour_list[kk] then
+                                new_colour_list_length = new_colour_list_length + 1
+                            end
+                        end
+                        if new_colour_list_length >= 2 then -- add multijewel to card if multiple jewels was matched
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                blockable = false,
+                                func = (function() 
+                                    for kk, vv in pairs(Bejewelatro.new_colour_list) do
+                                        random_jewelled_card.ability[kk] = true
+                                        G.GAME.blind:debuff_card(random_jewelled_card)
+                                    end
+                                    return true 
+                                end)
+                            }))
+                        end
+                        if #G.hand.cards < G.hand.config.card_limit then
+                            draw_card(G.deck, G.hand, 90,'up', nil, random_jewelled_card)
+                        else
+                            local leftmost_card = nil
+                            for k,v in ipairs(G.hand.cards) do
+                                local is_jewelless = true
+                                for i=1,#jewel_list do
+                                    if v.ability['zero_'..jewel_list[i]] then
+                                        is_jewelless = false
+                                        break
+                                    end
+                                end
+                                if is_jewelless then
+                                    leftmost_card = v
+                                    break
+                                end
+                            end
+                            if leftmost_card then
+                                draw_card(G.hand, G.deck, 90,'up', nil, leftmost_card)
+                                draw_card(G.deck, G.hand, 90,'up', nil, random_jewelled_card)
+                            end
+                        end
+                        Bejewelatro.draw_multijewel = nil
+                    end
+
+                else -- no cards in deck have a corresponding jewel
+                    local leftmost_card = nil
+                    for k,v in ipairs(G.hand.cards) do
+                        local is_jewelless = true
+                        for i=1,#jewel_list do
+                            if v.ability['zero_'..jewel_list[i]] then
+                                is_jewelless = false
+                                break
+                            end
+                        end
+                        if is_jewelless then
+                            leftmost_card = v
+                            break
+                        end
+                    end
+                    if leftmost_card then
+                        for k,v in pairs(Bejewelatro.new_colour_list) do
+                            leftmost_card.ability[k] = true
+                            G.GAME.blind:debuff_card(leftmost_card)
+                            leftmost_card:juice_up()
+                        end
+                    end
+
+                    if #G.hand.cards < G.hand.config.card_limit then
+                        Bejewelatro.f.draw_random_jewelless_card()
+                    end
+                end
+
                 card1.states.drag.can = true
                 card2.states.drag.can = true
                 G.E_MANAGER:add_event(Event({
@@ -316,23 +432,47 @@ function Moveable:drag(offset)
         local row = Bejewelatro.jewel_rows[self.position.y]
         if math.abs(mouse_dy) < req_dist then
             if mouse_dx > req_dist and self.position.x < 8 then -- when a jewel is dragged right
-                local other_jewel = row.cards[self.position.x + 1]
-                Bejewelatro.f.jewel_drag(self, other_jewel)
+                if G.GAME.blind.config.blind.key == 'bl_zero_thedescent' and G.GAME.blind.disabled == false then
+                    SMODS.juice_up_blind()
+                    play_sound('cancel', 0.7 + 0.05, 0.7)
+                    G.CONTROLLER:L_cursor_release()
+                else
+                    local other_jewel = row.cards[self.position.x + 1]
+                    Bejewelatro.f.jewel_drag(self, other_jewel)
+                end
             elseif mouse_dx < -req_dist and self.position.x > 1 then -- when a jewel is dragged left
-                local other_jewel = row.cards[self.position.x - 1]
-                Bejewelatro.f.jewel_drag(self, other_jewel)
+                if G.GAME.blind.config.blind.key == 'bl_zero_thedescent' and G.GAME.blind.disabled == false then
+                    SMODS.juice_up_blind()
+                    play_sound('cancel', 0.7 + 0.05, 0.7)
+                    G.CONTROLLER:L_cursor_release()
+                else
+                    local other_jewel = row.cards[self.position.x - 1]
+                    Bejewelatro.f.jewel_drag(self, other_jewel)
+                end
             end
         end
         if math.abs(mouse_dx) < req_dist then
             if mouse_dy > req_dist and self.position.y < 8 then -- when a jewel is dragged down
-                local other_jewel = Bejewelatro.jewel_rows[self.position.y + 1].cards[self.position.x]
-                Bejewelatro.f.jewel_drag(self, other_jewel)
+                if G.GAME.blind.config.blind.key == 'bl_zero_thepanel' and G.GAME.blind.disabled == false then
+                    SMODS.juice_up_blind()
+                    play_sound('cancel', 0.7 + 0.05, 0.7)
+                    G.CONTROLLER:L_cursor_release()
+                else
+                    local other_jewel = Bejewelatro.jewel_rows[self.position.y + 1].cards[self.position.x]
+                    Bejewelatro.f.jewel_drag(self, other_jewel)
+                end
             elseif mouse_dy < -req_dist and self.position.y > 1 then -- when a jewel is dragged up
-                local other_jewel = Bejewelatro.jewel_rows[self.position.y - 1].cards[self.position.x]
-                Bejewelatro.f.jewel_drag(self, other_jewel)
+                if G.GAME.blind.config.blind.key == 'bl_zero_thepanel' and G.GAME.blind.disabled == false then
+                    SMODS.juice_up_blind()
+                    play_sound('cancel', 0.7 + 0.05, 0.7)
+                    G.CONTROLLER:L_cursor_release()
+                else
+                    local other_jewel = Bejewelatro.jewel_rows[self.position.y - 1].cards[self.position.x]
+                    Bejewelatro.f.jewel_drag(self, other_jewel)
+                end
             end
         end
-        if not SMODS.find_card('j_zero_hypotenusejoker') then
+        if not next(SMODS.find_card('j_zero_hypotenusejoker')) then
             if math.abs(mouse_dx) > req_dist and math.abs(mouse_dy) > req_dist then -- when a jewel is dragged too far diagonally
                 G.CONTROLLER:L_cursor_release()
             end

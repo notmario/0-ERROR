@@ -51,6 +51,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 4 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
     end,
@@ -74,6 +77,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 4 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
     end,
@@ -97,6 +103,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 4 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
     end,
@@ -120,6 +129,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 4 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
     end,
@@ -143,6 +155,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 4 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
     end,
@@ -166,6 +181,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 4 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
     end,
@@ -189,6 +207,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 4 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult } }
     end,
@@ -212,6 +233,9 @@ SMODS.Joker {
     cost = 3,
     discovered = true,
     config = { extra = { mult = 10, type = 'zero_jewel_pair' }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, localize(card.ability.extra.type, 'poker_hands') } }
     end,
@@ -234,6 +258,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 10, type = 'zero_jewel_spectrum' }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, localize(card.ability.extra.type, 'poker_hands') } }
     end,
@@ -256,6 +283,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 12, type = 'zero_jewel_twopair' }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, localize(card.ability.extra.type, 'poker_hands') } }
     end,
@@ -278,6 +308,9 @@ SMODS.Joker {
     cost = 4,
     discovered = true,
     config = { extra = { mult = 16, type = 'zero_jewel_three' }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, localize(card.ability.extra.type, 'poker_hands') } }
     end,
@@ -300,6 +333,9 @@ SMODS.Joker {
     cost = 5,
     discovered = true,
     config = { extra = { mult = 20, chips = 75, type = 'zero_jewel_house' }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.chips, localize(card.ability.extra.type, 'poker_hands') } }
     end,
@@ -323,6 +359,9 @@ SMODS.Joker {
     cost = 5,
     discovered = true,
     config = { extra = { mult = 24, chips = 120, type = 'zero_jewel_four' }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.chips, localize(card.ability.extra.type, 'poker_hands') } }
     end,
@@ -346,6 +385,9 @@ SMODS.Joker {
     cost = 5,
     discovered = true,
     config = { extra = { mult = 28, chips = 150, type = 'zero_jewel_flush' }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.chips, localize(card.ability.extra.type, 'poker_hands') } }
     end,
@@ -354,6 +396,188 @@ SMODS.Joker {
             return {
                 mult = card.ability.extra.mult,
                 chips = card.ability.extra.chips,
+            }
+        end
+    end
+}
+
+-- Scarlet Fire
+SMODS.Joker {
+    key = "scarletfire",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 0, y = 2 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+    discovered = true,
+    config = { extra = { mult = 9 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+        is_jewel_colour(context.other_card, 'zero_redjewel', 'card') then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end
+}
+
+-- Amber Star
+SMODS.Joker {
+    key = "amberstar",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 1, y = 2 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+    discovered = true,
+    config = { extra = { mult = 9 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+        is_jewel_colour(context.other_card, 'zero_orangejewel', 'card') then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end
+}
+
+-- Golden Twilight
+SMODS.Joker {
+    key = "goldentwilight",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 2, y = 2 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+    discovered = true,
+    config = { extra = { mult = 9 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+        is_jewel_colour(context.other_card, 'zero_yellowjewel', 'card') then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end
+}
+
+-- Chartreuse Spring
+SMODS.Joker {
+    key = "chartreusespring",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 3, y = 2 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+    discovered = true,
+    config = { extra = { mult = 9 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+        is_jewel_colour(context.other_card, 'zero_greenjewel', 'card') then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end
+}
+
+-- Azure Wave
+SMODS.Joker {
+    key = "azurewave",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 4, y = 2 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+    discovered = true,
+    config = { extra = { mult = 9 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+        is_jewel_colour(context.other_card, 'zero_bluejewel', 'card') then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end
+}
+
+-- Fuschia Rose
+SMODS.Joker {
+    key = "fuschiarose",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 5, y = 2 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+    discovered = true,
+    config = { extra = { mult = 9 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+        is_jewel_colour(context.other_card, 'zero_violetjewel', 'card') then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+    end
+}
+
+-- Ivory Bloom
+SMODS.Joker {
+    key = "ivorybloom",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 6, y = 2 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+    discovered = true,
+    config = { extra = { mult = 9 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and
+        is_jewel_colour(context.other_card, 'zero_whitejewel', 'card') then
+            return {
+                mult = card.ability.extra.mult
             }
         end
     end
@@ -368,6 +592,9 @@ SMODS.Joker {
     blueprint_compat = false,
     cost = 5,
     discovered = true,
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
 }
 
 -- Deuteranopia
@@ -379,6 +606,9 @@ SMODS.Joker {
     blueprint_compat = false,
     cost = 6,
     discovered = true,
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
 }
 
 -- Bad Trip
@@ -390,7 +620,10 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 4,
     discovered = true,
-    config = { extra = { discards_mod = 1 }, },
+    config = { extra = { discards_mod = 2 }, },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.discards_mod } }
     end,
@@ -420,11 +653,14 @@ SMODS.Joker {
 SMODS.Joker {
     key = "prism",
     atlas = "zero_jokersBejeweled",
-    pos = { x = 0, y = 0 },
+    pos = { x = 8, y = 1 },
     rarity = 1,
     blueprint_compat = false,
     cost = 5,
     discovered = true,
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
     --[[add_to_deck = function(self, card, from_debuff)
         if #SMODS.find_card('j_deuteranopia') <= 1 then
             Bejewelatro.weighted_jewel_list['whitejewel'].weight = 0

@@ -4,10 +4,77 @@ local loc_stuff = {
       b_zero_bejeweled = {
         name = "Bejeweled Deck",
         text = {
-          "Make poker hands with",
-          "{C:attention}match 3{}",
+          "Make poker hands",
+          "with {E:1,C:attention}match 3{C:inactive}..?",
+          "{s:0.8,C:red}#1#{s:0.8} hand size, {s:0.8,C:red}+#2#{s:0.8} Discards",
+          "{s:0.8}Win after Ante #3#",
         }
       },
+    },
+    Blind = {
+        bl_zero_redjewelblind = {
+            name = "The Clover",
+            text = {
+                "All Red Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_orangejewelblind = {
+            name = "The Wave",
+            text = {
+                "All Orange Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_yellowjewelblind = {
+            name = "The Royalty",
+            text = {
+                "All Yellow Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_greenjewelblind = {
+            name = "The Cleave",
+            text = {
+                "All Green Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_bluejewelblind = {
+            name = "The Radiance",
+            text = {
+                "All Blue Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_violetjewelblind = {
+            name = "The Cost",
+            text = {
+                "All Violet Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_whitejewelblind = {
+            name = "The Ink",
+            text = {
+                "All White Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_thepanel = {
+            name = "The Panel",
+            text = {
+                "Gems on Board cannot",
+                "be moved vertically",
+            },
+        },
+        bl_zero_thedescent = {
+            name = "The Descent",
+            text = {
+                "Gems on Board cannot",
+                "be moved horizontally",
+            },
+        },
     },
     Edition = {
       e_zero_gala = {
@@ -899,7 +966,7 @@ local loc_stuff = {
         }
       },
     j_zero_gemjimbo = {
-        name = "Gem Jimbo",
+        name = "Joker",
         text = {
             "{C:mult}+#1#{} Mult",
         },
@@ -1016,6 +1083,62 @@ local loc_stuff = {
             "a {C:attention}#3#",
         },
       },
+    j_zero_scarletfire = {
+        name = "Scarlet Fire",
+        text = {
+            "Played cards with",
+            "a {C:red}Red Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_amberstar = {
+        name = "Amber Star",
+        text = {
+            "Played cards with",
+            "an {C:attention}Orange Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_goldentwilight = {
+        name = "Golden Twilight",
+        text = {
+            "Played cards with",
+            "a {C:gold}Yellow Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_chartreusespring = {
+        name = "Chartreuse Spring",
+        text = {
+            "Played cards with",
+            "a {C:green}Green Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_azurewave = {
+        name = "Azure Wave",
+        text = {
+            "Played cards with",
+            "a {C:blue}Blue Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_fuschiarose = {
+        name = "Fuschia Rose",
+        text = {
+            "Played cards with",
+            "a {C:tarot}Violet Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_ivorybloom = {
+        name = "Ivory Bloom",
+        text = {
+            "Played cards with",
+            "a {C:inactive}White Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
     j_zero_hypotenusejoker = {
         name = "Hypotenuse",
         text = {
@@ -1026,7 +1149,7 @@ local loc_stuff = {
     j_zero_badtrip = {
        name = "Bad Trip",
        text = {
-          "Gain {C:red}+#1#{} Discard for",
+          "Gain {C:red}+#1#{} Discards for",
           "this round if played hand",
           "contains a {C:attention}Spectrum{}", -- this should include non-gem Spectrums
        },
@@ -1623,6 +1746,38 @@ local loc_stuff = {
 		  "add to your consumables"
         }
       },
+      p_zero_raregems_normal_1 = {
+        name = "Rare Gem Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:spectral} Rare Gem{} cards to",
+		      "be used immediately"
+        }
+      },
+      p_zero_raregems_normal_2 = {
+        name = "Rare Gem Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:spectral} Rare Gem{} cards to",
+		      "be used immediately"
+        }
+      },
+      p_zero_raregems_jumbo_1 = {
+        name = "Jumbo Rare Gem Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:spectral} Rare Gem{} cards to",
+		      "be used immediately"
+        }
+      },
+      p_zero_raregems_mega_1 = {
+        name = "Mega Rare Gem Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:spectral} Rare Gem{} cards to",
+		      "be used immediately"
+        }
+      },
       scaler_explainer = {
         name = "Scaler",
         text = {
@@ -1753,6 +1908,7 @@ local loc_stuff = {
 	  k_elemental_mix = "Greater Element",
 	  k_elemental_chaotic = "Chaotic Element",
       k_elemental_pack = "Element Pack",
+    k_zero_raregem_pack = "Rare Gems Pack",
       k_plus_prestige = "+1 Prestige",
 	  k_plus_cups = "+1 Cups",
 	  k_plus_elemental = "+1 Element",
