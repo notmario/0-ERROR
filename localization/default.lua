@@ -195,6 +195,44 @@ local loc_stuff = {
 		},
 	  },
 	},
+	Planet = {
+	  c_zero_ievea = {
+	    name = "Iev'ea",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+	  c_zero_id = {
+	       name = "Id",
+	    text = {
+               "({V:1}lvl.#1#{}) Level up",
+               "{C:attention}#2#",
+               "{C:mult}+#3#{} Mult and",
+               "{C:chips}+#4#{} chips",
+           },
+	  },
+	  c_zero_false_vacuum = {
+	       name = "False Vacuum",
+	    text = {
+               "({V:1}lvl.#1#{}) Level up",
+               "{C:attention}#2#",
+               "{C:mult}+#3#{} Mult and",
+               "{C:chips}+#4#{} chips",
+           },
+	  },
+	  c_zero_everblaze_isles = {
+	       name = "Everblaze Isles",
+	    text = {
+               "({V:1}lvl.#1#{}) Level up",
+               "{C:attention}#2#",
+               "{C:mult}+#3#{} Mult and",
+               "{C:chips}+#4#{} chips",
+           },
+	  },
+	},
     Joker = {
       j_zero_mad = {
         name = "Mutual Assured Destruction",
@@ -1168,6 +1206,30 @@ local loc_stuff = {
         text = {
           "{C:inactive}White Gems{} no longer",
           "appear on the board",
+        },
+      },
+	  j_zero_rewards_card = {
+        name = "Joker Rewards Card",
+        text = {
+			"Retriggers random {C:attention}Jokers{} and cards in",
+			"play, total retriggers equal number of",
+			"{C:attention}Gold Stickers{} in your collection",
+			"{C:inactive}(Currently {C:attention}#1#{C:inactive})"
+			
+        },
+		unlock = {
+            "Win a run on {C:attention}Gold",
+            "{C:attention}Stake{} difficulty",
+            "with any {C:attention}Joker",
+        }
+      },
+	  j_zero_consortium = {
+        name = "Character Consortium",
+        text = {
+			"When {C:attention}Blind{} is selected,",
+            "create {C:attention}#1# {C:blue}Common{C:attention} Jokers",
+			"{C:inactive}(Prioritizes {C:dark_edition}Mods{C:inactive} you own no",
+            "{C:attention}Jokers {C:inactive}of, must have room)",
         },
       },
     },

@@ -2729,7 +2729,7 @@ SMODS.Joker {
 		if G.jokers then
 			for k, v in ipairs(G.jokers.cards) do
 				if v.config.center.mod and v.config.center.mod.id == "zeroError" then
-				count = count + 1
+					count = count + 1
 				end
 			end
 		else
@@ -3957,6 +3957,161 @@ SMODS.Joker {
 		end
 	end,
 	pronouns = "they_them" -- :)
+}
+
+SMODS.Joker {
+	key = "rewards_card",
+	pos = {x = 4, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 3,
+	cost = 8,
+	unlocked = false,
+	discovered = true,
+	blueprint_compat = true,
+	demicoloncompat = false,
+	config = {
+		extra = { id = "" },
+	},
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] ={key = 'gold_sticker', set = 'Other'}
+		local gold_sticker_count = 0
+		for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+			if get_joker_win_sticker(v, true) >= 8 then
+				gold_sticker_count = gold_sticker_count + 1
+			end
+		end
+		return { vars = { gold_sticker_count } }
+    end,
+	set_ability = function(self, card, initial, delay_sprites)
+		if card.ability.extra.id == "" then
+			card.ability.extra.id = string.format( "%04d%04d%04d%04d", math.random(0, 9999), math.random(0, 9999), math.random(0, 9999), math.random(0, 9999) )
+		end
+	end,
+	calculate = function(self, card, context)
+        if context.initial_scoring_step then
+			local validtargets = {}
+			for _, w in pairs({G.jokers.cards,context.scoring_hand}) do
+				for _, v in pairs(w) do
+					if v.config.center.key ~= "j_zero_rewards_card" then
+						v["rewards_retrigger_" .. card.ability.extra.id] = 0
+						validtargets[#validtargets + 1] = v
+					end
+				end
+			end
+			local gold_sticker_count = 0
+			for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+				if get_joker_win_sticker(v, true) >= 8 then
+					gold_sticker_count = gold_sticker_count + 1
+				end
+			end
+			for i = 1, gold_sticker_count do
+				local target = pseudorandom_element(validtargets, pseudoseed('rewards_card'))
+				target["rewards_retrigger_" .. card.ability.extra.id] = target["rewards_retrigger_" .. card.ability.extra.id] + 1
+			end
+		end
+		if ((context.repetition and context.cardarea == G.play) or (context.retrigger_joker_check and not context.retrigger_joker)) and context.other_card and context.other_card["rewards_retrigger_" .. card.ability.extra.id] and context.other_card["rewards_retrigger_" .. card.ability.extra.id] > 0 then
+			return {
+				message = localize("k_again_ex"),
+				repetitions = context.other_card["rewards_retrigger_" .. card.ability.extra.id],
+				card = card
+			}
+		end
+	end,
+	in_pool = function(self)
+		for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+			if get_joker_win_sticker(v, true) >= 8 then
+				return true
+			end
+		end
+		return false
+	end,
+	check_for_unlock = function(self, args)
+        for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+			if get_joker_win_sticker(v, true) >= 8 then
+				return true
+			end
+		end
+		return false
+    end
+}
+
+SMODS.Joker {
+    key = "consortium",
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 7,
+    pos = { x = 3, y = 0 },
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	atlas = "zero_jokers_2",
+    config = { extra = { creates = 2 } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.creates } }
+    end,
+    calculate = function(self, card, context)
+        if (context.setting_blind or context.forcetrigger) and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+            local jokers_to_create = math.min(card.ability.extra.creates,
+                G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+            G.GAME.joker_buffer = G.GAME.joker_buffer + jokers_to_create
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    for _ = 1, jokers_to_create do
+						local owned_mods = {}
+						local valid_jokers = {}
+						local stopped
+						for _, v in pairs(G.jokers.cards) do
+							if v ~= card and v.config.center.mod and v.config.center.mod.id then
+								stopped = false
+								for _, w in pairs(owned_mods) do
+									if w == v.config.center.mod.id then
+										stopped = true
+										break
+									end
+								end
+								if not stopped then
+									owned_mods[#owned_mods + 1] = v.config.center.mod.id
+								end
+							end
+						end
+						for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+							if (v.rarity == 1 or v.rarity == "Common") and v.mod and v.mod.id then
+								stopped = false
+								for _, w in pairs(owned_mods) do
+									if w == v.mod.id then
+										stopped = true
+										break
+									end
+								end
+								if not stopped then
+									valid_jokers[#valid_jokers + 1] = v.key
+								end
+							end
+						end
+						if #valid_jokers > 0 then
+							SMODS.add_card {
+								set = 'Joker',
+								key = pseudorandom_element(valid_jokers, pseudoseed('zero_consortium'))
+							}
+						else
+							SMODS.add_card {
+								set = 'Joker',
+								rarity = 'Common',
+								key_append = 'zero_consortium'
+							}
+						end
+                        G.GAME.joker_buffer = 0
+                    end
+                    return true
+                end
+            }))
+            return {
+                message = localize('k_plus_joker'),
+                colour = G.C.BLUE,
+            }
+        end
+    end,
 }
 
 --keep legendary jokers last
