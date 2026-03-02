@@ -984,7 +984,7 @@ local loc_stuff = {
         name = {"Milquetoast Eigengrau",
 				"{s:0.5}Sage of Gratification"},
         text = {
-			"Adds a full suite of {V:1}Brigths{} to deck,",
+			"Adds a full set of {V:1}Brights{} to deck,",
 			"creates {C:elemental}Fire{} when {C:attention}Boss Blind{} is defeated",
 			"scales {X:chips,C:white}Chips{} and {X:mult,C:white}Mult{} to match ratio of",
 			"{V:1}Brights{} and non-{V:1}Brights{} in deck",
