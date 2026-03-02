@@ -1788,8 +1788,12 @@ SMODS.Joker {
 		for _, v in pairs(G.play.cards) do
 			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
 				draw_card(G.play, G.deck, nil, nil, nil, v)
+				G.deck:shuffle()
 			return true end }))
 		end
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 1.5, blocking = false, func = function()
+			G.deck:shuffle()
+		return true end }))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		for _, v in pairs(G.jokers.cards) do
@@ -4142,4 +4146,314 @@ SMODS.Joker {
 	end,
 	zero_glitch = true,
 	pronouns = "empty"
+}
+
+SMODS.Joker {
+    key = "vonllery",
+	atlas = "zero_jokers",
+    pos = { x = 5, y = 2 },
+	soul_pos = { x = 5, y = 3 },
+    rarity = 4,
+    blueprint_compat = true,
+    cost = 20,
+	unlocked = true,
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.c_zero_air
+    end,
+	add_to_deck = function(self, card, from_debuff)
+		for _, v in pairs(G.playing_cards) do
+			if v:is_suit("Diamonds") and not (v.edition and v.edition.negative) then
+				v:set_edition({negative = true})
+				v.zhorie = true
+			end
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if not next(SMODS.find_card('j_zero_vonllery')) then
+			for _, v in pairs(G.playing_cards) do
+				if v.edition and v.edition.negative and v.zhorie then
+					v:set_edition({base = true})
+					v.zhorie = nil
+				end
+			end
+		end
+	end,
+	calculate = function(self, card, context)
+        if context.beat_boss and context.main_eval and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.add_card {
+                                set = 'Elemental',
+                                key = 'c_zero_air'
+                            }
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    }))
+                    SMODS.calculate_effect({ message = localize('k_plus_elemental'), colour = G.C.SECONDARY_SET.Elemental },
+                        context.blueprint_card or card)
+                    return true
+                end)
+            }))
+            return nil, true
+		end
+		if context.blueprint then return end
+		if context.playing_card_added and context.cards then
+			for _, v in pairs(context.cards) do
+				if v:is_suit("Diamonds") and not (card.edition and card.edition.negative) then
+					v:set_edition({negative = true})
+					v.zhorie = true
+				end
+			end
+		end
+		if (context.change_suit and (context.new_suit == 'Diamonds' or context.new_suit == 'zero_Brights')) or (context.setting_ability and G.P_CENTERS[context.new].key == "m_wild") then
+			if not (context.other_card.edition and context.other_card.edition.negative) then
+				context.other_card:set_edition({negative = true})
+				context.other_card.zhorie = true
+			end
+		end
+		if ((context.change_suit and (context.new_suit ~= 'Diamonds' and context.new_suit ~= 'zero_Brights')) or (context.setting_ability and G.P_CENTERS[context.old].key == "m_wild" and G.P_CENTERS[context.new].key ~= "m_wild")) and context.other_card.edition and context.other_card.edition.negative and context.other_card.zhorie then
+			context.other_card:set_edition({base = true})
+			context.other_card.zhorie = nil
+		end
+	end,
+	pronouns = "he_him"
+}
+
+SMODS.Joker {
+    key = "hartwell",
+	atlas = "zero_jokers",
+    pos = { x = 6, y = 2 },
+	soul_pos = { x = 6, y = 3 },
+    rarity = 4,
+    blueprint_compat = true,
+    cost = 20,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { repetitions = 2} },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.c_zero_water
+        return { vars = { card.ability.extra.repetitions } }
+    end,
+	calculate = function(self, card, context)
+        if context.beat_boss and context.main_eval and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.add_card {
+                                set = 'Elemental',
+                                key = 'c_zero_water'
+                            }
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    }))
+                    SMODS.calculate_effect({ message = localize('k_plus_elemental'), colour = G.C.SECONDARY_SET.Elemental },
+                        context.blueprint_card or card)
+                    return true
+                end)
+            }))
+            return nil, true
+		end
+		if context.repetition and context.cardarea == G.play then
+			local _works = true
+			for _, v in pairs(context.scoring_hand) do
+				if not v:is_suit("Clubs") then
+					_works = false
+					break
+				end
+			end
+			if _works then
+				return {
+					repetitions = card.ability.extra.repetitions
+				}
+			end
+        end
+	end,
+	pronouns = "she_her"
+}
+
+SMODS.Joker {
+    key = "eigengrau",
+	atlas = "zero_jokers",
+    pos = { x = 7, y = 2 },
+	soul_pos = { x = 7, y = 3 },
+    rarity = 4,
+    blueprint_compat = true,
+    cost = 20,
+	unlocked = true,
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.c_zero_cosmos
+        return { vars = { colours = {G.C.SUITS.zero_Brights} } }
+    end,
+	add_to_deck = function(self, card, from_debuff)
+		for _, v in pairs({'A', 'K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2'}) do
+			SMODS.add_card { set = "Base", area = G.play, rank = v, suit = "zero_Brights" }
+		end
+		for _, v in pairs(G.play.cards) do
+			G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.05, func = function()
+				draw_card(G.play, G.deck, nil, nil, nil, v)
+				G.deck:shuffle()
+			return true end }))
+		end
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 1.5, blocking = false, func = function()
+			G.deck:shuffle()
+		return true end }))
+	end,
+	calculate = function(self, card, context)
+        if context.beat_boss and context.main_eval and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.add_card {
+                                set = 'Elemental',
+                                key = 'c_zero_cosmos'
+                            }
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    }))
+                    SMODS.calculate_effect({ message = localize('k_plus_elemental'), colour = G.C.SECONDARY_SET.Elemental },
+                        context.blueprint_card or card)
+                    return true
+                end)
+            }))
+            return nil, true
+		end
+		if context.joker_main then
+			local brights = 0
+			local nonbrights = 0
+			for k,v in ipairs(G.playing_cards) do
+				if v:is_suit("zero_Brights") then
+					brights = brights + 1
+				else
+					nonbrights = nonbrights + 1
+				end
+			end
+			if brights == 0 or nonbrights == 0 then return end
+			local total_cards = brights + nonbrights
+			local total_value = hand_chips + mult
+			return {
+				message = localize('k_ratioed_ex'),
+				mult_mod = -mult + total_value * (nonbrights / total_cards),
+				chip_mod = -hand_chips + total_value * (brights / total_cards),
+			}
+		end
+	end,
+	pronouns = "any_all"
+}
+
+SMODS.Joker {
+    key = "lovejoy",
+	atlas = "zero_jokers",
+    pos = { x = 8, y = 2 },
+	soul_pos = { x = 8, y = 3 },
+    rarity = 4,
+    blueprint_compat = true,
+    cost = 20,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { xmult = 1, xmult_mod = 0.5 } },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.c_zero_fire
+        return { vars = { card.ability.extra.xmult, card.ability.extra.xmult_mod } }
+    end,
+	calculate = function(self, card, context)
+        if context.beat_boss and context.main_eval and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.add_card {
+                                set = 'Elemental',
+                                key = 'c_zero_fire'
+                            }
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    }))
+                    SMODS.calculate_effect({ message = localize('k_plus_elemental'), colour = G.C.SECONDARY_SET.Elemental },
+                        context.blueprint_card or card)
+                    return true
+                end)
+            }))
+            return nil, true
+		end
+		if context.remove_playing_cards and not context.blueprint then
+            local _hearts = 0
+            for _, removed_card in ipairs(context.removed) do
+                if removed_card:is_suit("Hearts") then _hearts = _hearts + 1 end
+            end
+            if _hearts > 0 then
+                card.ability.extra.xmult = card.ability.extra.xmult + _hearts * card.ability.extra.xmult_mod
+                return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } } }
+            end
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+	end,
+	pronouns = "they_them"
+}
+
+SMODS.Joker {
+    key = "skye", --A dubious little creature, getting up to mischief. This is no good.
+	atlas = "zero_jokers",
+    pos = { x = 9, y = 2 },
+	soul_pos = { x = 9, y = 3 },
+    rarity = 4,
+    blueprint_compat = true,
+    cost = 20,
+	unlocked = true,
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.c_zero_earth
+    end,
+	calculate = function(self, card, context)
+        if context.beat_boss and context.main_eval and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.add_card {
+                                set = 'Elemental',
+                                key = 'c_zero_earth'
+                            }
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    }))
+                    SMODS.calculate_effect({ message = localize('k_plus_elemental'), colour = G.C.SECONDARY_SET.Elemental },
+                        context.blueprint_card or card)
+                    return true
+                end)
+            }))
+            return nil, true
+		end
+		if context.check_enhancement and context.other_card.config.center.key ~= "c_base" then
+			local ret = {}
+			for _, w in pairs({G.hand.cards, G.play.cards}) do
+				for _, v in pairs(w) do
+					if v ~= context.other_card and v.config.center.key ~= "c_base" then
+						ret[v.config.center.key] = true
+					end
+				end
+			end
+			return ret
+		end
+	end,
+	pronouns = "any_all"
 }

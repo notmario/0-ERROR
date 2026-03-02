@@ -173,7 +173,7 @@ function G.UIDEF.card_focus_ui(card)
 	base_background = G_UIDEF_card_focus_ui_ref(card)
 	local card_width = card.T.w + (card.ability.consumeable and -0.1 or card.ability.set == 'Voucher' and -0.16 or 0)
 	local base_attach = base_background:get_UIE_by_ID('ATTACH_TO_ME')
-	if ((card.area == G.pack_cards and G.pack_cards)) and card.ability.consumeable and card.ability.set == "Elemental" then
+	if ((card.area == G.pack_cards and G.pack_cards)) and card.ability.consumeable and (card.ability.set == "Elemental" or card.config.center.key == "c_zero_philosopher_stone")  then
 		base_attach.children.use = G.UIDEF.card_focus_button{
 		card = card, parent = base_attach, type = 'select',
 		func = 'can_take_card', button = 'use_card', card_width = card_width
@@ -185,7 +185,7 @@ end
 local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
 	if (card.area == G.pack_cards and G.pack_cards) and card.ability.consumeable then
-	  if card.ability.set == "Elemental" then
+	  if card.ability.set == "Elemental" or card.config.center.key == "c_zero_philosopher_stone" then
 		return {
 		  n = G.UIT.ROOT,
 		  config = { padding = -0.1, colour = G.C.CLEAR },

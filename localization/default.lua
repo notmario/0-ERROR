@@ -148,15 +148,25 @@ local loc_stuff = {
            },
 	  },
 	  c_zero_everblaze_isles = {
-	       name = "Everblaze Isles",
-	    text = {
-               "({V:1}lvl.#1#{}) Level up",
-               "{C:attention}#2#",
-               "{C:mult}+#3#{} Mult and",
-               "{C:chips}+#4#{} chips",
-           },
+	    name = "Everblaze Isles",
+		text = {
+           "({V:1}lvl.#1#{}) Level up",
+           "{C:attention}#2#",
+           "{C:mult}+#3#{} Mult and",
+           "{C:chips}+#4#{} chips",
+        },
 	  },
 	},
+	Spectral = {
+        c_zero_philosopher_stone = {
+            name = "Philosopher's Stone",
+            text = {
+                "Combines any number of",
+                "cards into a {C:attention}Joker",
+                "{C:inactive}(Creating {C:attention}#1#{C:inactive})",
+            },
+        },
+    },
     Joker = {
       j_zero_mad = {
         name = "Mutual Assured Destruction",
@@ -952,6 +962,55 @@ local loc_stuff = {
             "{C:attention}Jokers {C:inactive}of, must have room)",
         },
       },
+	  j_zero_vonllery = {
+        name = {"Zhorie von Llery",
+				"{s:0.5}Sage of Resilience"},
+        text = {
+			"Creates {C:elemental}Air{} when {C:attention}Boss Blind{} is defeated,",
+			"cards with {C:diamonds}Diamond{} suit become",
+            "{C:dark_edition}Negative{} as long as you own this Joker",
+        },
+      },
+	  j_zero_hartwell = {
+        name = {"Anise Hartwell",
+				"{s:0.5}Sage of Reliance"},
+        text = {
+			"Creates {C:elemental}Water{} when {C:attention}Boss Blind{} is defeated,",
+			"retrigger cards in scoring hand {C:attention}#1#{} times if",
+            "it's entirely made up of cards with {C:clubs}Club{} suit",
+        },
+      },
+	  j_zero_eigengrau = {
+        name = {"Milquetoast Eigengrau",
+				"{s:0.5}Sage of Gratification"},
+        text = {
+			"Adds a full suite of {V:1}Brigths{} to deck,",
+			"creates {C:elemental}Fire{} when {C:attention}Boss Blind{} is defeated",
+			"scales {X:chips,C:white}Chips{} and {X:mult,C:white}Mult{} to match ratio of",
+			"{V:1}Brights{} and non-{V:1}Brights{} in deck",
+			"{C:inactive,s:0.7}({V:1,s:0.7}Brights{C:inactive,s:0.7} count as any regular suit)",
+        },
+      },
+	  j_zero_lovejoy = {
+        name = {"Phil Lovejoy",
+				"{s:0.5}Sage of Empathy"},
+        text = {
+			"Creates {C:elemental}Fire{} when {C:attention}Boss Blind{} is defeated",
+			"and gains {X:mult,C:white} X#2# {} Mult when a card",
+            "with {C:hearts}Heart{} suit is destroyed",
+            "{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
+        },
+      },
+	  j_zero_skye = {
+        name = {"Cottle Skye",
+				"{s:0.5}Sage of Wanderlust"},
+        text = {
+			"Creates {C:elemental}Earth{} when {C:attention}Boss Blind{} is defeated,",
+			"{C:attention}Enhanced cards{} are treated as",
+            "{C:spades}Spades{} and all other {C:attention}Enhancements",
+            "in hand or play",
+        },
+      },
     },
     Prestige = {
       c_zero_plasmid = {
@@ -1329,7 +1388,7 @@ local loc_stuff = {
 				"{s:0.5}Air + Earth"},
         text = {
             "Draws {C:attention}#1#{} cards with {C:spades}Spade{}",
-			"or {C:diamonds}Diamond{} suit, give a random",
+			"or {C:diamonds}Diamond{} suit, gives a random",
 			"{C:attention}Enhancement{} to any without one"
         },
       },
@@ -1689,6 +1748,7 @@ local loc_stuff = {
 	  k_stage_clear_upper = "STAGE CLEAR",
 	  k_consumed_ex = "Consumed!",
 	  k_zero_l0ck_k3y_warning = "L0ck and K3y card must be played together",
+	  k_ratioed_ex = "Ratioed!",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",
