@@ -985,7 +985,7 @@ local loc_stuff = {
 				"{s:0.5}Sage of Gratification"},
         text = {
 			"Adds a full set of {V:1}Brights{} to deck,",
-			"creates {C:elemental}Cosmos{} when {C:attention}Boss Blind{} is defeated",
+			"creates {C:elemental}Cosmos{} when {C:attention}Boss Blind{} is defeated,",
 			"scales {X:chips,C:white}Chips{} and {X:mult,C:white}Mult{} to match ratio of",
 			"{V:1}Brights{} and non-{V:1}Brights{} in deck",
 			"{C:inactive,s:0.7}({V:1,s:0.7}Brights{C:inactive,s:0.7} count as any regular suit)",
