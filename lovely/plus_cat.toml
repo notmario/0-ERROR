@@ -1,0 +1,21 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 1
+
+[[patches]]
+[patches.pattern]
+target = 'main.lua'
+pattern = '''local catimg = NFS.getInfo(SMODS.path.."assets/cat.png") and love.graphics.newImage(love.filesystem.newFileData(NFS.read(SMODS.path.."assets/cat.png")))'''
+position = 'before'
+payload = '''local catpath = {SMODS.Mods.zeroError.path.."assets/cat.png",SMODS.path.."assets/cat.png"}
+	local chosencat = math.random(1,#catpath)'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'main.lua'
+pattern = '''local catimg = NFS.getInfo(SMODS.path.."assets/cat.png") and love.graphics.newImage(love.filesystem.newFileData(NFS.read(SMODS.path.."assets/cat.png")))'''
+position = 'at'
+payload = '''local catimg = NFS.getInfo(catpath[chosencat]) and love.graphics.newImage(love.filesystem.newFileData(NFS.read(catpath[chosencat])))'''
+match_indent = true
