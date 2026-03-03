@@ -109,43 +109,6 @@ local function match_recipe(hand_cards, recipe_comps)
     return search(1, 0)
 end
 
-local function generate_guaranteed_recipe(rarity, fallback_key)
-    local min_len, max_len, min_enh, max_enh
-    if rarity == 4 then
-        min_len, max_len = 5, 5; min_enh, max_enh = 3, 5
-    elseif rarity == 3 then
-        min_len, max_len = 3, 5; min_enh, max_enh = 1, 3
-    elseif rarity == 2 then
-        min_len, max_len = 2, 4; min_enh, max_enh = 0, 2
-    elseif rarity <= 1 then
-        min_len, max_len = 1, 3; min_enh, max_enh = 0, 1
-    end
-    local len = min_len + math.floor(pseudorandom('zero_craft_len_' .. fallback_key) * (max_len - min_len + 1))
-    local num_enh = min_enh + math.floor(pseudorandom('zero_craft_enh_' .. fallback_key) * (max_enh - min_enh + 1))
-    if num_enh > len then num_enh = len end
-    local suits = {}
-    for _, bit_val in pairs(zero_card_masks_ref) do table.insert(suits, bit_val) end
-    local enhs = {}
-    if G.P_CENTER_POOLS.Enhanced then
-        for _, v in ipairs(G.P_CENTER_POOLS.Enhanced) do
-			if v.key ~= "m_zero_l0ck" and v.key ~= "m_zero_k3y" then
-			table.insert(enhs, v.key)
-			end
-		end
-    end
-    local comps = {}
-    for i = 1, len do
-        local s = pseudorandom_element(suits, pseudoseed('zero_craft_suit_' .. fallback_key))
-        local e = "c_base"
-        if i <= num_enh then
-            e = pseudorandom_element(enhs, pseudoseed('zero_craft_enh_pick_' .. fallback_key))
-        end
-        table.insert(comps, s .. "_" .. e)
-    end
-    table.sort(comps)
-    return comps
-end
-
 local function build_fixed_recipes()
     local fixed = {}
     local used_keys = {}
@@ -175,28 +138,7 @@ end
 
 local function zero_build_recipe_table()
     local fixed, used_keys, item_has_fixed_recipe = build_fixed_recipes()
-    local guaranteed = {}
-    local jokers = {}
-    for i, j in ipairs(G.P_CENTER_POOLS["Joker"]) do jokers[i] = j end
-    table.sort(jokers, function(a, b) return a.key < b.key end)
-    for _, item in ipairs(jokers) do
-        if not item_has_fixed_recipe[item.key] then
-            local comps = generate_guaranteed_recipe(zero_rarity_weight(item.rarity), item.key)
-            local key = table.concat(comps, "-")
-            
-            -- Reroll in the rare event of a duplicate recipe collision
-            local attempts = 0
-            while used_keys[key] and attempts < 100 do
-                comps = generate_guaranteed_recipe(zero_rarity_weight(item.rarity), item.key .. attempts)
-                key = table.concat(comps, "-")
-                attempts = attempts + 1
-            end
-            
-            table.insert(guaranteed, { comps = comps, item = item.key })
-            used_keys[key] = true
-        end
-    end
-    return { fixed = fixed, guaranteed = guaranteed }
+    return { fixed = fixed }
 end
 
 local function stateless_random_element(pool, string_seed)
@@ -238,12 +180,8 @@ end
 local function zero_craft(cards, recipes)
     if not cards or #cards == 0 then return nil end
     local check_cards = {}
-	for i = 1, #cards do if cards[i].config.center.key == "m_zero_l0ck" or cards[i].config.center.key == "m_zero_k3y" then return nil end end
     for i = 1, math.min(#cards, zero_MAX_RECIPE_LEN) do table.insert(check_cards, cards[i]) end
     for _, recipe in ipairs(recipes.fixed) do
-        if match_recipe(check_cards, recipe.comps) then return recipe.item end
-    end
-    for _, recipe in ipairs(recipes.guaranteed) do
         if match_recipe(check_cards, recipe.comps) then return recipe.item end
     end
     return zero_get_procedural_fallback(check_cards)
@@ -295,8 +233,8 @@ SMODS.Consumable {
 }
 
 function update_philosopherstone_atlas(self, new_atlas, new_pos)
-    if not self.children.front then
-        self.children.front = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[new_atlas.name], new_pos)
+	if not self.children.front then
+        self.children.front = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[new_atlas and new_atlas.name or "Joker"], new_pos)
         self.children.front.states.hover = self.states.hover
         self.children.front.states.click = self.states.click
         self.children.front.states.drag = self.states.drag
@@ -305,5 +243,5 @@ function update_philosopherstone_atlas(self, new_atlas, new_pos)
     end
     self.children.front.sprite_pos = new_pos
     self.children.front.atlas.name = new_atlas and (new_atlas.key or new_atlas.name) or 'Joker'
-    self.children.front:reset() 
+    self.children.front:reset()
 end
