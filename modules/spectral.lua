@@ -31,7 +31,8 @@ end
 -- ==========================================================
 -- FIXED RECIPES
 -- Define custom Philosopher's Stone recipes here. 
--- "suit" defaults to "ANY". "enh" defaults to "ANY". "count" defaults to 1.
+-- "suit", "enh", "edition", and "seal" all default to "ANY". 
+-- "count" defaults to 1.
 -- ==========================================================
 local zero_FIXED_RECIPES = {
     {
@@ -54,13 +55,12 @@ local zero_FIXED_RECIPES = {
         item = "j_zero_hartwell",
         recipe = { { suit = "Clubs", count = 5 } }
     },
-    --[[ Example recipe:
+    --[[ example recipe:
     {
         item = "j_my_awesome_joker",
         recipe = {
-            { suit = "Spades", enh = "m_mult", count = 2 },     -- Exactly 2 Mult Spades
-            { suit = "ANY", enh = "m_bonus", count = 1 },       -- Exactly 1 Bonus card of any suit
-            { suit = "Hearts", count = 1 }                      -- Exactly 1 Heart with any enhancement
+            { suit = "Spades", enh = "m_mult", edition = "e_foil", seal = "Red", count = 2 }, 
+            { suit = "ANY", count = 3 }                      
         }
     }
     ]]
@@ -73,9 +73,11 @@ end
 --evaluates if a single card fits a recipe's requirement component
 local function card_satisfies_comp(card, comp_str)
     local parts = {}
-    for p in comp_str:gmatch("[^_]+") do table.insert(parts, p) end
+    for p in comp_str:gmatch("[^|]+") do table.insert(parts, p) end
     local req_suit = parts[1]
     local req_enh = parts[2]
+    local req_edition = parts[3]
+    local req_seal = parts[4]
     if req_suit ~= "ANY" then
         local req_mask = tonumber(req_suit)
         local card_mask = zero_card_to_mask(card)
@@ -85,7 +87,14 @@ local function card_satisfies_comp(card, comp_str)
         local card_enh = card.config.center.key or "c_base"
         if card_enh ~= req_enh then return false end
     end
-
+    if req_edition ~= "ANY" then
+        local card_edition = (card.edition and card.edition.key) or "NONE"
+        if card_edition ~= req_edition then return false end
+    end
+    if req_seal ~= "ANY" then
+        local card_seal = card.seal or "NONE"
+        if card_seal ~= req_seal then return false end
+    end
     return true
 end
 
@@ -122,10 +131,12 @@ local function build_fixed_recipes()
             end
 
             local enh_str = req.enh or "ANY"
+            local edition_str = req.edition or "ANY"
+            local seal_str = req.seal or "ANY"
             local count = req.count or 1
 
             for i = 1, count do
-                table.insert(comps, suit_str .. "_" .. enh_str)
+                table.insert(comps, suit_str .. "|" .. enh_str .. "|" .. edition_str .. "|" .. seal_str)
             end
         end
         table.sort(comps)
@@ -149,42 +160,61 @@ local function stateless_random_element(pool, string_seed)
     return pool[(hash % #pool) + 1]
 end
 
-local function zero_get_procedural_fallback(cards)
-    local cost = 0
+local function zero_get_procedural_fallback(cards, modifier)
+    local cost = modifier
     local key_parts = {}
     for _, card in ipairs(cards) do
         local mask = zero_card_to_mask(card)
         local enh = (card.config and card.config.center and card.config.center.key) or "c_base"
+        local edition = (card.edition and card.edition.key) or "NONE"
+        local seal = card.seal or "NONE"
         cost = cost + (enh == "c_base" and 1 or 2)
-        table.insert(key_parts, mask .. "_" .. enh)
+        if edition ~= "NONE" then cost = cost + 1 end
+        if seal ~= "NONE" then cost = cost + 1 end
+        
+        table.insert(key_parts, mask .. "|" .. enh .. "|" .. edition .. "|" .. seal)
     end
     table.sort(key_parts)
+    
     local run_seed = (G.GAME and G.GAME.pseudorandom and G.GAME.pseudorandom.seed) or "seed"
     local seed_str = run_seed .. "-" .. table.concat(key_parts, "-")
+    
     local rarity = 1
     if cost >= 8 then rarity = 4
     elseif cost >= 5 then rarity = 3
     elseif cost >= 3 then rarity = 2 end
+    
     local pool = {}
     for _, j in ipairs(G.P_CENTER_POOLS.Joker) do
-        if zero_rarity_weight(j.rarity) == rarity then
+        if j.unlocked and zero_rarity_weight(j.rarity) == rarity then
             table.insert(pool, j.key)
         end
     end
     if #pool == 0 then
-        for _, j in ipairs(G.P_CENTER_POOLS.Joker) do table.insert(pool, j.key) end
+        for _, j in ipairs(G.P_CENTER_POOLS.Joker) do 
+            if j.unlocked then table.insert(pool, j.key) end
+        end
     end
+    if #pool == 0 then
+        table.insert(pool, "j_joker")
+    end
+    
     return stateless_random_element(pool, seed_str)
 end
 
-local function zero_craft(cards, recipes)
+local function zero_craft(cards, recipes, modifier) --reminder that the modifier value is here in case i want to make another joker/consumable that can craft but be less powerful than philosopher's stone
     if not cards or #cards == 0 then return nil end
     local check_cards = {}
     for i = 1, math.min(#cards, zero_MAX_RECIPE_LEN) do table.insert(check_cards, cards[i]) end
+    
     for _, recipe in ipairs(recipes.fixed) do
-        if match_recipe(check_cards, recipe.comps) then return recipe.item end
+        if match_recipe(check_cards, recipe.comps) then 
+            if G.P_CENTERS[recipe.item] and G.P_CENTERS[recipe.item].unlocked then
+                return recipe.item 
+            end
+        end
     end
-    return zero_get_procedural_fallback(check_cards)
+    return zero_get_procedural_fallback(check_cards, modifier or 0)
 end
 
 local old_start_run = Game.start_run
@@ -206,7 +236,7 @@ SMODS.Consumable {
     pos = { x = 1, y = 0 },
     soul_pos = { x = 1, y = 1 },
     cost = 4,
-	loc_vars = function(self, info_queue, card)
+    loc_vars = function(self, info_queue, card)
         return { vars = { G.hand and G.hand.highlighted and zero_craft(G.hand.highlighted, G.GAME.zero_recipes) and localize({type = "name_text", set = "Joker", key = zero_craft(G.hand.highlighted, G.GAME.zero_recipes)}) or "nothing" } }
     end,
     use = function(self, card, context, copier)
@@ -222,7 +252,7 @@ SMODS.Consumable {
     can_use = function(self, card)
         return G.hand and G.hand.highlighted and zero_craft(G.hand.highlighted, G.GAME.zero_recipes) and true or false
     end,
-    update = function(self, card, dt) --ortalab was an absolute savior for this
+    update = function(self, card, dt) 
         local crafted_joker = G.hand and #G.hand.highlighted > 0 and zero_craft(G.hand.highlighted, G.GAME.zero_recipes)
         if crafted_joker then
             update_philosopherstone_atlas(card, G.ASSET_ATLAS[G.P_CENTERS[crafted_joker].atlas], G.P_CENTERS[crafted_joker].pos)
@@ -233,7 +263,7 @@ SMODS.Consumable {
 }
 
 function update_philosopherstone_atlas(self, new_atlas, new_pos)
-	if not self.children.front then
+    if not self.children.front then
         self.children.front = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[new_atlas and new_atlas.name or "Joker"], new_pos)
         self.children.front.states.hover = self.states.hover
         self.children.front.states.click = self.states.click
