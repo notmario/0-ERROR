@@ -232,6 +232,69 @@ local loc_stuff = {
            "{C:chips}+#4#{} chips",
         },
 	  },
+    c_zero_gemfall = {
+	    name = "Gem Fall",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_spectrum = {
+	    name = "Spectrum",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_coalmine = {
+	    name = "Coal Mine",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_chainreaction = {
+	    name = "Chain Reaction",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_arsenal = {
+	    name = "Arsenal",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_firestorm = {
+	    name = "Firestorm",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_preserver = {
+	    name = "Preserver",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
 	},
 	Spectral = {
         c_zero_philosopher_stone = {
@@ -2112,6 +2175,15 @@ local loc_stuff = {
     zero_violetjewel = 'Violet Gem',
     zero_whitejewel = 'White Gem',
 	},
+  poker_hands = {
+      zero_jewel_flush = "Gem Flush",
+      zero_jewel_four = "Gem Four",
+      zero_jewel_house = "Gem House",
+      zero_jewel_three = "Gem Three",
+      zero_jewel_twopair = "Gem Two Pair",
+      zero_jewel_spectrum = "Gem Spectrum",
+      zero_jewel_pair = "Gem Pair",
+  },
   }
 }
 

@@ -209,7 +209,7 @@ SMODS.PokerHand { -- Gem Four
     mult = 7,
     chips = 60,
     l_mult = 3,
-    l_chips = 30,
+    l_chips = 25,
     example = {
         { '', true, jewel = { zero_redjewel = true } },
         { '', true, jewel = { zero_redjewel = true } },
@@ -337,8 +337,8 @@ SMODS.PokerHand { -- Gem Spectrum
     },
     mult = 2,
     chips = 15,
-    l_mult = 1,
-    l_chips = 15,
+    l_mult = 2,
+    l_chips = 10,
     example = {
         { '', true, jewel = { zero_redjewel = true } },
         { '', true, jewel = { zero_yellowjewel = true } },
