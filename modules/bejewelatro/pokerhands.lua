@@ -533,6 +533,19 @@ SMODS.PokerHand:take_ownership ('Five of a Kind',{
     end
 })
 
+-- Spectrum (Spectrum Framework)
+if SMODS.PokerHands['spectrum_Spectrum'] then
+    SMODS.PokerHand:take_ownership ('Spectrum',{
+        evaluate = function(parts, hand)
+            if not do_bejewelatro() then
+                return parts.spectrum_spectrum
+            else
+                return get_spectrum_jewels(hand) or parts.spectrum_spectrum
+            end
+        end
+    })
+end
+
 -- Spectrum (Paperback)
 if SMODS.PokerHands['paperback_Spectrum'] then
     SMODS.PokerHand:take_ownership ('Spectrum',{
@@ -540,7 +553,7 @@ if SMODS.PokerHands['paperback_Spectrum'] then
             if not do_bejewelatro() then
                 return parts.paperback_spectrum
             else
-                return get_spectrum_jewels(hand) or parts.paperback_spectrum
+                return get_spectrum_jewels(hand) or parts.spectrum_spectrum
             end
         end
     })
