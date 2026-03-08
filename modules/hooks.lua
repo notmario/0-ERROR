@@ -158,6 +158,9 @@ end
 -- look here for Suit Yourself cards later
 local alias__Card_is_suit = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
+	if next(SMODS.find_card('j_zero_skye')) and suit == "Spades" and self.config.center.key ~= "c_base" then
+		return true
+	end
 	if zero_has_any_regular_suit(self) then
 		if suit == "Spades" or suit == "Hearts" or suit == "Clubs" or suit == "Diamonds" then
 			return true
