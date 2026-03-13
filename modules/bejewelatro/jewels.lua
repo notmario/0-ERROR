@@ -715,7 +715,7 @@ end
 
 local save_run_ref = save_run -- Hooks saving to save the state of all jewels
 function save_run()
-    if Bejewelatro.jewel_rows[1] and Bejewelatro.jewel_rows[1].cards[1] then
+    if Bejewelatro.jewel_rows and Bejewelatro.jewel_rows[1] and Bejewelatro.jewel_rows[1].cards and Bejewelatro.jewel_rows[1].cards[1] then
         G.GAME.Bejewelatro_jewels = {}
         for row = 1,8 do
             G.GAME.Bejewelatro_jewels[row] = {}

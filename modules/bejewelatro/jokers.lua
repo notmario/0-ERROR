@@ -52,7 +52,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 4,
     discovered = true,
-    config = { extra = { mult = 4 }, },
+    config = { extra = { mult = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
@@ -79,7 +79,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 4,
     discovered = true,
-    config = { extra = { mult = 4 }, },
+    config = { extra = { mult = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
@@ -106,7 +106,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 4,
     discovered = true,
-    config = { extra = { mult = 4 }, },
+    config = { extra = { mult = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
@@ -133,7 +133,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 4,
     discovered = true,
-    config = { extra = { mult = 4 }, },
+    config = { extra = { mult = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
@@ -160,7 +160,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 4,
     discovered = true,
-    config = { extra = { mult = 4 }, },
+    config = { extra = { mult = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
@@ -187,7 +187,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 4,
     discovered = true,
-    config = { extra = { mult = 4 }, },
+    config = { extra = { mult = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
@@ -214,7 +214,7 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 4,
     discovered = true,
-    config = { extra = { mult = 4 }, },
+    config = { extra = { mult = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
@@ -425,18 +425,18 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 7,
     discovered = true,
-    config = { extra = { mult = 9 }, },
+    config = { extra = { Xmult = 1.5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult } }
+        return { vars = { card.ability.extra.Xmult } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
         is_jewel_colour(context.other_card, 'zero_redjewel', 'card') then
             return {
-                mult = card.ability.extra.mult
+                xmult = card.ability.extra.Xmult
             }
         end
     end
@@ -448,21 +448,36 @@ SMODS.Joker {
     atlas = "zero_jokersBejeweled",
     pos = { x = 1, y = 2 },
     rarity = 2,
-    blueprint_compat = true,
+    blueprint_compat = false,
     cost = 7,
     discovered = true,
-    config = { extra = { mult = 9 }, },
+    config = { extra = { hand_size_mod = 1, hand_size = 0 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult } }
+        return { vars = { card.ability.extra.hand_size_mod, card.ability.extra.hand_size } }
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        G.hand:change_size(-card.ability.extra.hand_size)
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-        is_jewel_colour(context.other_card, 'zero_orangejewel', 'card') then
+        is_jewel_colour(context.other_card, 'zero_orangejewel', 'card') and 
+        not context.other_card.debuff then
+            card.ability.extra.hand_size = card.ability.extra.hand_size + card.ability.extra.hand_size_mod
+            G.hand:change_size(card.ability.extra.hand_size_mod)
             return {
-                mult = card.ability.extra.mult
+                message = localize('k_upgrade_ex'),
+                message_card = card
+            }
+        end
+        if context.setting_blind and not context.joker_retrigger and card.ability.extra.hand_size ~= 0 then
+            G.hand:change_size(-card.ability.extra.hand_size)
+            card.ability.extra.hand_size = 0
+            return {
+                message = localize('k_reset'),
+                colour = G.C.RED,
             }
         end
     end
@@ -477,18 +492,22 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 7,
     discovered = true,
-    config = { extra = { mult = 9 }, },
+    config = { extra = { odds = 2, dollars = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult } }
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'zero_goldentwilight')
+        return { vars = { numerator, denominator, card.ability.extra.dollars } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-        is_jewel_colour(context.other_card, 'zero_yellowjewel', 'card') then
-            return {
-                mult = card.ability.extra.mult
+        is_jewel_colour(context.other_card, 'zero_yellowjewel', 'card') and
+        SMODS.pseudorandom_probability(card, 'zero_goldentwilight', 1, card.ability.extra.odds) then
+            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
+            G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+			return {
+                dollars = card.ability.extra.dollars,
             }
         end
     end
@@ -503,18 +522,20 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 7,
     discovered = true,
-    config = { extra = { mult = 9 }, },
+    config = { extra = { odds = 2, Xchips = 2 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult } }
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'zero_chartreusespring')
+        return { vars = { numerator, denominator, card.ability.extra.Xchips } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-        is_jewel_colour(context.other_card, 'zero_greenjewel', 'card') then
+        is_jewel_colour(context.other_card, 'zero_greenjewel', 'card') and
+        SMODS.pseudorandom_probability(card, 'zero_chartreusespring', 1, card.ability.extra.odds) then
             return {
-                mult = card.ability.extra.mult
+                xchips = card.ability.extra.Xchips
             }
         end
     end
@@ -529,18 +550,18 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 7,
     discovered = true,
-    config = { extra = { mult = 9 }, },
+    config = { extra = { chips = 80 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult } }
+        return { vars = { card.ability.extra.chips } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
         is_jewel_colour(context.other_card, 'zero_bluejewel', 'card') then
             return {
-                mult = card.ability.extra.mult
+                chips = card.ability.extra.chips
             }
         end
     end
@@ -555,19 +576,39 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 7,
     discovered = true,
-    config = { extra = { mult = 9 }, },
+    config = { extra = { odds = 3 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult } }
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'zero_fuschiarose')
+        return { vars = { numerator, denominator } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-        is_jewel_colour(context.other_card, 'zero_violetjewel', 'card') then
-            return {
-                mult = card.ability.extra.mult
-            }
+        #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+            if is_jewel_colour(context.other_card, 'zero_violetjewel', 'card') and
+            SMODS.pseudorandom_probability(card, 'zero_fuschiarose', 1, card.ability.extra.odds) then
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                return {
+                    extra = {
+                        message = localize('k_plus_cups'),
+                        message_card = card,
+                        func = function()
+                            G.E_MANAGER:add_event(Event({
+                                func = (function()
+                                    SMODS.add_card {
+                                        set = 'Cups',
+                                        key_append = 'zero_fuschiarose'
+                                    }
+                                    G.GAME.consumeable_buffer = 0
+                                    return true
+                                end)
+                            }))
+                        end
+                    },
+                }
+            end
         end
     end
 }
@@ -581,19 +622,39 @@ SMODS.Joker {
     blueprint_compat = true,
     cost = 7,
     discovered = true,
-    config = { extra = { mult = 9 }, },
+    config = { extra = { odds = 5 }, },
     in_pool = function(self, args)
         return do_bejewelatro()
     end,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.mult } }
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, 'zero_ivorybloom')
+        return { vars = { numerator, denominator } }
     end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play and
-        is_jewel_colour(context.other_card, 'zero_whitejewel', 'card') then
-            return {
-                mult = card.ability.extra.mult
-            }
+        #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+            if is_jewel_colour(context.other_card, 'zero_whitejewel', 'card') and
+            SMODS.pseudorandom_probability(card, 'zero_ivorybloom', 1, card.ability.extra.odds) then
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                return {
+                    extra = {
+                        message = localize('k_plus_prestige'),
+                        message_card = card,
+                        func = function()
+                            G.E_MANAGER:add_event(Event({
+                                func = (function()
+                                    SMODS.add_card {
+                                        set = 'Prestige',
+                                        key_append = 'zero_ivorybloom'
+                                    }
+                                    G.GAME.consumeable_buffer = 0
+                                    return true
+                                end)
+                            }))
+                        end
+                    },
+                }
+            end
         end
     end
 }

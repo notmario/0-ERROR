@@ -1199,31 +1199,34 @@ local loc_stuff = {
         text = {
             "Played cards with",
             "a {C:red}Red Gem{} give",
-            "{C:mult}+#1#{} Mult when scored",
+            "{X:mult,C:white} X#1# {} Mult when scored",
         },
       },
     j_zero_amberstar = {
         name = "Amber Star",
         text = {
-            "Played cards with",
-            "an {C:attention}Orange Gem{} give",
-            "{C:mult}+#1#{} Mult when scored",
+            "{C:attention}+#1#{} hand size for",
+            "each played card with an ",
+            "{C:attention}Orange Gem{} scored {C:attention}this round{}",
+            "{C:inactive}(Currently {}{C:attention}+#2#{}{C:inactive} hand size)",
         },
       },
     j_zero_goldentwilight = {
         name = "Golden Twilight",
         text = {
-            "Played cards with",
-            "a {C:gold}Yellow Gem{} give",
-            "{C:mult}+#1#{} Mult when scored",
+            "{C:green}#1# in #2#{} chance for",  
+            "played cards with",
+            "a {C:gold}Yellow Gem{}",
+            "give {C:money}$#3#{} when scored",
         },
       },
     j_zero_chartreusespring = {
         name = "Chartreuse Spring",
         text = {
-            "Played cards with",
+            "{C:green}#1# in #2#{} chance for",  
+            "played cards with",
             "a {C:green}Green Gem{} give",
-            "{C:mult}+#1#{} Mult when scored",
+            "{C:white,X:chips}X#3#{} Chips when scored",
         },
       },
     j_zero_azurewave = {
@@ -1231,23 +1234,27 @@ local loc_stuff = {
         text = {
             "Played cards with",
             "a {C:blue}Blue Gem{} give",
-            "{C:mult}+#1#{} Mult when scored",
+            "{C:chips}+#1#{} Chips when scored",
         },
       },
     j_zero_fuschiarose = {
         name = "Fuschia Rose",
         text = {
-            "Played cards with",
-            "a {C:tarot}Violet Gem{} give",
-            "{C:mult}+#1#{} Mult when scored",
+            "{C:green}#1# in #2#{} chance for",  
+            "played cards with",
+            "a {C:tarot}Violet Gem{} to create",
+            "a {C:cups}Cups{} card when scored",
+            "{C:inactive}(Must have room)"
         },
       },
     j_zero_ivorybloom = {
         name = "Ivory Bloom",
         text = {
-            "Played cards with",
-            "a {C:inactive}White Gem{} give",
-            "{C:mult}+#1#{} Mult when scored",
+            "{C:green}#1# in #2#{} chance for",  
+            "played cards with",
+            "a {C:inactive}White Gem{} to create a",
+            "{X:prestige,C:white}Prestige{} card when scored",
+            "{C:inactive}(Must have room)"
         },
       },
     j_zero_hypotenusejoker = {
