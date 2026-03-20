@@ -101,7 +101,6 @@ end
 --check if a group of cards exactly fulfills a recipe's requirements
 local function match_recipe(hand_cards, recipe_comps)
     if #hand_cards ~= #recipe_comps then return false end
-    
     local function search(card_idx, used_mask)
         if card_idx > #hand_cards then return true end
         for i = 1, #recipe_comps do
@@ -129,12 +128,10 @@ local function build_fixed_recipes()
             if req.suit and req.suit ~= "ANY" then
                 suit_str = tostring(zero_card_masks_ref[req.suit] or "ANY")
             end
-
             local enh_str = req.enh or "ANY"
             local edition_str = req.edition or "ANY"
             local seal_str = req.seal or "ANY"
             local count = req.count or 1
-
             for i = 1, count do
                 table.insert(comps, suit_str .. "|" .. enh_str .. "|" .. edition_str .. "|" .. seal_str)
             end
@@ -171,19 +168,15 @@ local function zero_get_procedural_fallback(cards, modifier)
         cost = cost + (enh == "c_base" and 1 or 2)
         if edition ~= "NONE" then cost = cost + 1 end
         if seal ~= "NONE" then cost = cost + 1 end
-        
         table.insert(key_parts, mask .. "|" .. enh .. "|" .. edition .. "|" .. seal)
     end
     table.sort(key_parts)
-    
     local run_seed = (G.GAME and G.GAME.pseudorandom and G.GAME.pseudorandom.seed) or "seed"
     local seed_str = run_seed .. "-" .. table.concat(key_parts, "-")
-    
     local rarity = 1
     if cost >= 8 then rarity = 4
     elseif cost >= 5 then rarity = 3
     elseif cost >= 3 then rarity = 2 end
-    
     local pool = {}
     for _, j in ipairs(G.P_CENTER_POOLS.Joker) do
         if j.unlocked and zero_rarity_weight(j.rarity) == rarity then
@@ -202,18 +195,19 @@ local function zero_get_procedural_fallback(cards, modifier)
     return stateless_random_element(pool, seed_str)
 end
 
-local function zero_craft(cards, recipes, modifier) --reminder that the modifier value is here in case i want to make another joker/consumable that can craft but be less powerful than philosopher's stone
+function zero_craft(cards, recipes, modifier) --reminder that the modifier value is here in case i want to make another joker/consumable that can craft but be less powerful than philosopher's stone
     if not cards or #cards == 0 then return nil end
     local check_cards = {}
     for i = 1, math.min(#cards, zero_MAX_RECIPE_LEN) do table.insert(check_cards, cards[i]) end
-    
-    for _, recipe in ipairs(recipes.fixed) do
-        if match_recipe(check_cards, recipe.comps) then 
-            if G.P_CENTERS[recipe.item] and G.P_CENTERS[recipe.item].unlocked then
-                return recipe.item 
-            end
-        end
-    end
+    if recipes then
+		for _, recipe in ipairs(recipes.fixed) do
+			if match_recipe(check_cards, recipe.comps) then 
+				if G.P_CENTERS[recipe.item] and G.P_CENTERS[recipe.item].unlocked then
+					return recipe.item 
+				end
+			end
+		end
+	end
     return zero_get_procedural_fallback(check_cards, modifier or 0)
 end
 
@@ -226,7 +220,7 @@ function Game:start_run(args)
 end
 
 SMODS.Consumable {
-    key = 'philosopher_stone',
+    key = 'philosopher_stone', --big thanks to Ortalab's chameleon to get the sprite-updating stuff working
     name = "Philosopher's Stone",
     set = 'Spectral',
     hidden = true,

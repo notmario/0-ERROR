@@ -62,7 +62,7 @@ SMODS.current_mod.extra_tabs = function()
                 n = G.UIT.R,
                 config = { align = 'cm' },
                 nodes = {
-                  { n = G.UIT.T, config = { text = "missingnumber (main artist)\ncassknows (gala edition)", colour = G.C.WHITE, scale = 0.4 } },
+                  { n = G.UIT.T, config = { text = "missingnumber (lead artist)\ncassknows (edition shaders)", colour = G.C.WHITE, scale = 0.4 } },
                 }
               },
             }
@@ -95,7 +95,7 @@ SMODS.current_mod.extra_tabs = function()
                 n = G.UIT.R,
                 config = { align = 'cm' },
                 nodes = {
-                  { n = G.UIT.T, config = { text = "missingnumber\n(booster pack themes)", colour = G.C.WHITE, scale = 0.4 } },
+                  { n = G.UIT.T, config = { text = "missingnumber\n(lead composer)", colour = G.C.WHITE, scale = 0.4 } },
                 }
               },
             }
@@ -110,6 +110,14 @@ SMODS.current_mod.extra_tabs = function()
       tab_definition_function = function()
         return credits_tab
       end
-    }
+    },
+	{
+      label = '???',
+      tab_definition_function = function()
+		G.zero_soshi_page = 1
+		G.zero_soshi_condition_met = false
+        return G.UIDEF.zero_soshi_wrapper()
+      end
+    },
   }
 end
