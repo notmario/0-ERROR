@@ -769,6 +769,7 @@ local banned_jokers = {
     'j_four_fingers',
     'j_todo_list',
     'j_blackboard',
+    'j_seance',
     'j_shortcut',
     'j_smeared', 
     --'j_seeing_double',
