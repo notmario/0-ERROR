@@ -4223,7 +4223,7 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-	key = "smoke_bomb",
+	key = "smoke_bomb", --code referenced from cryptid, entropy and baltswarehouse
 	pos = {x = 7, y = 0},
 	atlas = "zero_jokers_2",
 	rarity = 3,
