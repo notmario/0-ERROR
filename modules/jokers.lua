@@ -820,7 +820,7 @@ SMODS.Joker {
                 xchips = card.ability.extra.xchips
             }
         end
-		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+		if context.end_of_round and not context.individual and not context.repetition and card.ability.extra.active and not context.blueprint then
 			card.ability.extra.rounds = card.ability.extra.rounds - 1
 			if card.ability.extra.rounds == 1 then
                 local eval = function(card) return not card.REMOVED end
@@ -2585,7 +2585,6 @@ SMODS.Joker {
         return { vars = { card.ability.extra.boost * (( not card.ability.extra.unused and 0.5) or 1) }, key = _key, set = 'Joker',}
     end,
 	set_ability = function(self, card, initial, delay_sprites)
-
 		if G.GAME.zero_sacred_pyre_revived == true then
 			card.ability.extra.unused = nil
 			card.children.center:set_sprite_pos({x=1, y=2})
@@ -2814,9 +2813,9 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.xmult } }
     end,
-	update = function(self, card)
-        ease_background_colour{new_colour = G.C.BLACK, special_colour = G.C.WHITE, contrast = 2}
-    end,
+	--update = function(self, card)
+    --    ease_background_colour{new_colour = G.C.BLACK, special_colour = G.C.WHITE, contrast = 2}
+    --end,
     calculate = function(self, card, context)
 		if context.joker_main then
             for _, v in ipairs(context.full_hand) do
@@ -3103,7 +3102,7 @@ SMODS.Joker {
             if card.ability.extra.bloom_rounds >= card.ability.extra.total_rounds then
 				local plants = {}
 				for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
-					if v.zero_plant then
+					if v.zero_plant and (not next(SMODS.find_card(v.key, true)) or next(SMODS.find_card(j_ring_master))) then
 						plants[#plants + 1] = v.key
 					end
 				end
@@ -4116,6 +4115,408 @@ SMODS.Joker {
             }
         end
     end,
+}
+
+SMODS.Joker {
+	key = "paragon_rod",
+	pos = {x = 5, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 2,
+	cost = 3,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	eternal_compat = false,
+	demicoloncompat = false,
+	zero_usable = true,
+	config = { extra = { active = false } },
+	calculate = function(self, card, context)
+        if context.after and not context.blueprint then
+			local weaker_crafted_joker = zero_craft(G.play.cards, nil, -5)
+			if weaker_crafted_joker then
+				G.E_MANAGER:add_event(Event({
+				trigger = 'before',
+				func = (function()
+					SMODS.add_card {
+						set = 'Joker',
+						key = weaker_crafted_joker
+					}
+				return true end)}))
+				SMODS.destroy_cards(G.play.cards)
+				SMODS.destroy_cards(card)
+			end
+		end
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+	use = function(self, card, area, copier)
+		card.ability.extra.active = not card.ability.extra.active
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay = 0.4,
+			func = (function()
+				play_sound('tarot1')
+				card:juice_up(0.3, 0.5)
+			return true end)}))
+		delay(0.5)
+		draw_card(G.play, G.jokers, nil, 'up', nil, card)
+		local eval = function(card) return card.ability.extra.active end
+		juice_card_until(card, eval, true)
+	end,
+}
+
+SMODS.Joker {
+	key = "mana_tank",
+	pos = {x = 6, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 2,
+	cost = 4,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	demicoloncompat = false,
+	zero_usable = true,
+	config = { extra = { active = true } },
+	can_use = function(self, card)
+		return card.ability.extra.active
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and context.main_eval and not context.blueprint and G.GAME.blind.boss then
+			card.ability.extra.active = true
+			return {
+				message = localize("k_charged_ex")
+			}
+		end
+	end,
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+		trigger = 'after',
+		delay = 0.4,
+		func = (function()
+			play_sound('tarot1')
+			card:juice_up(0.3, 0.5)
+		return true end)}))
+		for k, v in pairs(G.jokers.cards) do
+			if v.config.center.use and ((not v.ability.extra.active and v.ability.extra.active ~= nil) or v.ability.extra.disables) then
+				if not v.ability.extra.active and v.ability.extra.active ~= nil then
+					v.ability.extra.active = true
+				elseif v.ability.extra.disables then
+					v.ability.extra.disables = v.ability.extra.disables + 1
+				end
+				SMODS.calculate_effect({ message = localize("k_charged_ex") },
+                v)
+			end
+		end
+		card.ability.extra.active = false
+		delay(0.5)
+		draw_card(G.play, G.jokers, nil, 'up', nil, card)
+	end,
+	in_pool = function(self)
+		for k, v in pairs(G.jokers.cards) do
+			if v.config.center.use then
+				return true
+			end
+		end
+		return false
+	end,
+}
+
+SMODS.Joker {
+	key = "smoke_bomb", --code referenced from cryptid, entropy and baltswarehouse
+	pos = {x = 7, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 3,
+	cost = 6,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	demicoloncompat = false,
+	zero_usable = true,
+	config = { extra = { active = true, used = false } },
+	can_use = function(self, card)
+		return card.ability.extra.active and G.STATE == G.STATES.SELECTING_HAND
+	end,
+	calculate = function(self, card, context)
+		if context.blueprint then return end
+		if context.end_of_round and context.main_eval and not context.repetition and G.GAME.blind.boss then
+			card.ability.extra.active = true
+			return {
+				message = localize("k_charged_ex")
+			}
+		end
+		if context.game_over and card.ability.extra.used then
+			card.ability.extra.used = false
+			return {
+				saved = 'ph_zero_retreat'
+			}
+		end
+	end,
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+		trigger = 'after',
+		delay = 0.4,
+		func = (function()
+			play_sound('tarot1')
+			card:juice_up(0.3, 0.5)
+		return true end)}))
+		card.ability.extra.active = false
+		delay(0.5)
+		draw_card(G.play, G.jokers, nil, 'up', nil, card)
+		for i, v in pairs(G.GAME.round_resets.blind_states) do
+            if v == "Current" then v = "Upcoming" end
+        end
+        G.E_MANAGER:add_event(Event({
+			trigger = "immediate",
+			func = function()
+                G.STATE = 7
+				G.STATE_COMPLETE = false
+                G.GAME.ZERO_ESCAPING = true
+                break_timer = 0
+                G.FUNCS.draw_from_hand_to_deck()
+				return true
+			end,
+		}))
+        if G.blind_select then        
+            G.blind_select:remove()
+            G.blind_prompt_box:remove()
+        end
+	end
+}
+
+local uibox_ref = create_UIBox_blind_select
+function create_UIBox_blind_select()
+    if G.GAME.ZERO_ESCAPING then
+        G.E_MANAGER:add_event(Event({
+			trigger = "after",
+            blocking = false,
+            delay = 3,
+			func = function()
+                G.STATE = 7
+                G.FUNCS.draw_from_hand_to_deck()
+				return true
+			end,
+		}))
+		G.GAME.ZERO_ESCAPING = nil
+		G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+		blocking = false,
+        delay = 3,
+		func = function()
+			if G.GAME.ZERO_ESCAPING then
+				return false
+			else
+				if G.blind_select then
+					G.blind_select:remove()
+					G.blind_prompt_box:remove()
+					G.blind_select = nil
+				end
+				G:save_settings()
+				G.FILE_HANDLER.force = true
+				G.STATE_COMPLETE = false
+			
+				G.FUNCS.draw_from_hand_to_discard()
+				G.FUNCS.draw_from_discard_to_deck()
+			
+				if G.GAME.round_resets.temp_handsize then
+					G.hand:change_size(-G.GAME.round_resets.temp_handsize); G.GAME.round_resets.temp_handsize = nil
+				end
+				if G.GAME.round_resets.temp_reroll_cost then
+					G.GAME.round_resets.temp_reroll_cost = nil; calculate_reroll_cost(true)
+				end
+			
+				reset_idol_card()
+				reset_mail_rank()
+				reset_ancient_card()
+				reset_castle_card()
+				for _, mod in ipairs(SMODS.mod_list) do
+					if mod.reset_game_globals and type(mod.reset_game_globals) == 'function' then
+						mod.reset_game_globals(false)
+					end
+				end
+				for k, v in ipairs(G.playing_cards) do
+					v.ability.discarded = nil
+					v.ability.forced_selection = nil
+				end
+			
+				stop_use()
+				G.deck:hard_set_T()
+				G.GAME.blind:defeat()
+			
+				G.STATE = G.STATES.SHOP
+				G.STATE_COMPLETE = false
+			
+				if card then
+					card.ability.extra.done = true
+				end
+			
+				G.E_MANAGER:add_event(Event({
+					trigger = 'immediate',
+					func = function()
+						G.GAME.current_round.jokers_purchased = 0
+						G.GAME.current_round.discards_left = math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards)
+						G.GAME.current_round.hands_left = (math.max(1, G.GAME.round_resets.hands + G.GAME.round_bonus.next_hands))
+						G.GAME.shop_free = nil
+						G.GAME.shop_d6ed = nil
+						ease_chips(0)
+						G.deck:shuffle('cashout' .. G.GAME.round_resets.ante)
+						return true
+					end
+				}))
+				reset_blinds()
+				return true
+			end
+        end}))
+    end
+    return uibox_ref()
+end
+
+SMODS.Joker {
+	key = "elemental_fuel",
+	pos = {x = 8, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 2,
+	cost = 5,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	demicoloncompat = false,
+	zero_usable = true,
+	config = { extra = { active = true } },
+	can_use = function(self, card)
+		return G.STATE == G.STATES.SELECTING_HAND and card.ability.extra.active
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and context.main_eval and not context.blueprint and G.GAME.blind.boss then
+			card.ability.extra.active = true
+			return {
+				message = localize("k_charged_ex")
+			}
+		end
+	end,
+	use = function(self, card, area, copier)
+		G.hand:unhighlight_all()
+		local to_spread = {}
+		for i = 1, #G.hand.cards do
+			if G.hand.cards[i].config.center.key ~= "c_base" then
+				to_spread[#to_spread+1] = G.hand.cards[i]
+			end
+		end
+		G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('tarot1')
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+		for i = 1, #G.hand.cards do
+            local percent = 1.15 - (i - 0.999) / (#G.hand.cards - 0.998) * 0.3
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.15,
+                func = function()
+                    G.hand.cards[i]:flip()
+                    play_sound('card1', percent)
+                    G.hand.cards[i]:juice_up(0.3, 0.3)
+                    return true
+                end
+            }))
+        end
+        delay(0.2)
+        for i = 1, #G.hand.cards do
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.1,
+                func = function()
+					for _, v in pairs(to_spread) do
+						if v == G.hand.cards[i] then
+							if G.hand.cards[i+1] then
+								G.hand.cards[i+1]:set_ability(G.hand.cards[i].config.center.key)
+							end
+							if G.hand.cards[i-1] then
+								G.hand.cards[i-1]:set_ability(G.hand.cards[i].config.center.key)
+							end
+							break
+						end
+					end
+                    return true
+                end
+            }))
+        end
+        for i = 1, #G.hand.cards do
+            local percent = 0.85 + (i - 0.999) / (#G.hand.cards - 0.998) * 0.3
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.15,
+                func = function()
+                    G.hand.cards[i]:flip()
+                    play_sound('tarot2', percent, 0.6)
+                    G.hand.cards[i]:juice_up(0.3, 0.3)
+                    return true
+                end
+            }))
+        end
+		card.ability.extra.active = false
+		delay(0.5)
+		draw_card(G.play, G.jokers, nil, 'up', nil, card)
+	end,
+}
+
+SMODS.Joker {
+	key = "watering_can",
+	pos = {x = 9, y = 0},
+	atlas = "zero_jokers_2",
+	rarity = 2,
+	cost = 7,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	eternal_compat = false,
+	demicoloncompat = false,
+	zero_usable = true,
+	config = { extra = { active = true } },
+	calculate = function(self, card, context)
+		if context.end_of_round and context.main_eval and not context.blueprint and G.GAME.blind.boss then
+			card.ability.extra.active = true
+			return {
+				message = localize("k_charged_ex")
+			}
+		end
+	end,
+	can_use = function(self, card)
+		return card.ability.extra.active
+	end,
+	use = function(self, card, area, copier)
+		for i = 1, G.jokers.config.card_limit - #G.jokers.cards - (card.edition == "e_negative" and 0 or 1) do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+				play_sound('timpani')
+				SMODS.add_card({ set = 'Consumeables', area = G.jokers })
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+			}))
+		end
+		for i = 1, G.consumeables.config.card_limit - #G.consumeables.cards - G.GAME.consumeable_buffer do
+			G.E_MANAGER:add_event(Event({
+				trigger = 'after',
+				delay = 0.4,
+				func = function()
+				play_sound('timpani')
+				SMODS.add_card({ set = 'Consumeables', area = G.consumeables })
+				card:juice_up(0.3, 0.5)
+				return true
+			end
+			}))
+		end
+		card.ability.extra.active = false
+		delay(0.5)
+		draw_card(G.play, G.jokers, nil, 'up', nil, card)
+	end,
 }
 
 --keep legendary jokers last

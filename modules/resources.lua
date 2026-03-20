@@ -62,6 +62,31 @@ SMODS.Sound{
 SMODS.Sound{
      vol = 1.0,
     pitch = 1.0, 
+    key = "music_for_soshi", 
+    path = "for_soshi.ogg",
+	sync = false,
+    select_music_track = function() 
+        if G.zero_soshi_area and G.zero_soshi_area.cards then
+			return 1e10
+		end
+	end
+}
+
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
+    key = "music_all_secrets_revealed", 
+    path = "all_secrets_revealed.ogg",
+    select_music_track = function() 
+        if G.zero_soshi_area and G.zero_secret_unlocks_area and G.zero_secret_unlocks_area[1].cards then
+			return 1e10
+		end
+	end
+}
+
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
     key = "music_silence", 
     path = "silence.ogg",
     select_music_track = function() 
@@ -79,6 +104,13 @@ SMODS.Sound{
 SMODS.Sound{
      vol = 1.0,
     pitch = 1.0, 
+    key = "occultsfx", 
+    path = "occultsfx.ogg",
+}
+
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
     key = "sunsteelpow", 
     path = "sunsteelpow.ogg",
 }
@@ -90,15 +122,46 @@ SMODS.Sound{
     path = "hoshisaga_chirin.ogg",
 }
 
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
+    key = "infinity_fanfare", 
+    path = "infinity_fanfare.ogg",
+}
+
+SMODS.Sound{
+     vol = 1.0,
+    pitch = 1.0, 
+    key = "meow", 
+    path = "meow.ogg",
+}
+
 SMODS.Shader{
 	key = "gala",
 	path = "gala.fs"
 }
 
+SMODS.Shader{
+	key = "occult",
+	path = "occult.fs"
+}
+
+SMODS.ScreenShader({
+	key = 'greyscale',
+	path = 'greyscale.fs',
+	should_apply = function()
+		return next(SMODS.find_card("j_zero_dotdotdotdotdotdot", true))
+	end,
+})
+
 --Custom Colors
 G.C.CUPS = HEX("53468A")
 G.C.PRESTIGE = HEX("344245")
 G.C.ELEMENTAL = HEX("D16F3E")
+G.C.RAINBOW = SMODS.Gradient {
+    key = 'rainbow',
+    colours = { HEX("FFB0B2"), HEX("FFD7B0"), HEX("FFFAB0"), HEX("BFFFB0"), HEX("B0FFED"), HEX("B0E7FF"), HEX("B0B0FF"), HEX("E0B0FF") }
+}
 
 local ref_loc_colour = loc_colour
 function loc_colour(_c, _default)
@@ -106,5 +169,6 @@ function loc_colour(_c, _default)
     G.ARGS.LOC_COLOURS.cups = G.C.CUPS
 	G.ARGS.LOC_COLOURS.prestige = G.C.PRESTIGE
 	G.ARGS.LOC_COLOURS.elemental = G.C.ELEMENTAL
+	G.ARGS.LOC_COLOURS.secret_rare = G.C.RAINBOW
     return G.ARGS.LOC_COLOURS[_c] or _default or G.C.UI.TEXT_DARK
 end

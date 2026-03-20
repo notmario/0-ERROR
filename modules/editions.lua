@@ -31,7 +31,7 @@ SMODS.Edition {
     in_shop = true,
     weight = 3,
     extra_cost = 5,
-    sound = { sound = "zero_galasfx", per = 1.2, vol = 0.7 },
+    sound = { sound = "zero_galasfx", per = 1, vol = 0.7 },
     get_weight = function(self)
         return (G.GAME.edition_rate - 1) * G.P_CENTERS["e_negative"].weight + G.GAME.edition_rate * self.weight
     end,
@@ -304,3 +304,30 @@ SMODS.Edition {
 		end
 	end
 }
+
+SMODS.Edition {
+    key = 'occult',
+    shader = 'zero_occult',
+    in_shop = true,
+    weight = 5,
+    extra_cost = 3,
+    sound = { sound = "zero_occultsfx", per = 1.2, vol = 0.7 },
+    get_weight = function(self)
+        return (G.GAME.edition_rate - 1) * G.P_CENTERS["e_negative"].weight + G.GAME.edition_rate * self.weight
+    end,
+    on_apply = function(card)
+		G.GAME.common_mod = G.GAME.common_mod / 2
+    end,
+	on_remove = function(card)
+		G.GAME.common_mod = G.GAME.common_mod * 2
+	end
+}
+
+local old_card_remove = Card.remove
+function Card:remove()
+    local ret = old_card_remove(self)
+    if self.edition and self.edition.type == "zero_occult" then
+        G.GAME.common_mod = G.GAME.common_mod * 2
+    end
+    return ret
+end

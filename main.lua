@@ -22,6 +22,7 @@ assert(SMODS.load_file("./modules/tarot.lua"))()
 assert(SMODS.load_file("./modules/planet.lua"))()
 assert(SMODS.load_file("./modules/spectral.lua"))()
 assert(SMODS.load_file("./modules/vouchers.lua"))()
+assert(SMODS.load_file("./modules/secret.lua"))()
 
 if next(SMODS.find_mod('cardpronouns')) then
 	assert(SMODS.load_file("./modules/crossmod/pronouns.lua"))()
