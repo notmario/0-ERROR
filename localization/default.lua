@@ -17,6 +17,13 @@ local loc_stuff = {
 			"{s:0.15} ",
         }
       },
+	  e_zero_occult = {
+        name = "Occult",
+        text = {
+			"Rarer {C:attention}Jokers",
+			"appear more often"
+        }
+      },
 	},
     Enhanced = {
 	  m_wild = {
@@ -903,7 +910,7 @@ local loc_stuff = {
         name = "Cockatrice King",
         text = {
 			"Each card held in hand gives",
-			"{C:mult}+#1#{} Mult, Once per ante, {C:dark_edition,E:1}use",
+			"{C:mult}+#1#{} Mult. Once per ante, {C:dark_edition,E:1}use",
 			"this Joker to gain {C:attention}+#2#{} hand",
 			"size until end of round"
         },
@@ -962,6 +969,48 @@ local loc_stuff = {
             "{C:attention}Jokers {C:inactive}of, must have room)",
         },
       },
+	  j_zero_paragon_rod = {
+        name = "Paragon Rod",
+        text = {
+			"{C:dark_edition,E:1}Use{} this Joker to {C:dark_edition,E:1}activate{} it,",
+            "if {C:dark_edition,E:1}active{}, combines played hand",
+			"into a {C:attention}Joker{} after scoring",
+            "{C:red,E:2}self destructs"
+        },
+      },
+	  j_zero_mana_tank = {
+        name = "Mana Tank",
+        text = {
+            "Once per ante, {C:dark_edition,E:1}use{} this",
+            "Joker to {C:attention}Recharge{} all other",
+            "{C:dark_edition,E:1}Usable Jokers{} you own",
+        }
+      },
+	  j_zero_smoke_bomb = {
+        name = "Magic Smoke Bomb",
+        text = {
+            "Once per ante, {C:dark_edition,E:1}use{} this",
+            "Joker to {C:attention}abort{} the current",
+            "{C:attention}blind{} and return to shop",
+        }
+      },
+	  j_zero_elemental_fuel = {
+        name = "Elemental Fuel",
+        text = {
+            "Once per ante, {C:dark_edition,E:1}use{} this Joker",
+            "to have {C:attention}Enhanced cards{} in hand",
+            "spread their {C:attention}Enhancement{}",
+            "onto adjacent cards "
+        }
+      },
+	  j_zero_watering_can = {
+        name = "Watering Can",
+        text = {
+            "Once per ante, {C:dark_edition,E:1}use{} this Joker",
+            "to fill {C:attention}Joker{} and {C:attention}consumable{} slots",
+            "with random {C:attention}consumables"
+        }
+      },
 	  j_zero_vonllery = {
         name = {"Zhorie von Llery",
 				"{s:0.5}Sage of Resilience"},
@@ -1010,6 +1059,61 @@ local loc_stuff = {
             "{C:spades}Spades{} and all other {C:attention}Enhancements",
             "in hand or play",
         },
+      },
+	  j_zero_soshi = {
+        name = "Soshi",
+        text = {
+			"Prevents Death {C:attention}#3#{} time#4#,",
+			"{X:mult,C:white}X#2#{} Mult for every time",
+			"previous effect activated",
+			"{C:inactive}(Currently {X:mult,C:white}X#1#{C:inactive} Mult)"
+			--it also has a secret effect, random person viewing these files :)
+        },
+		unlock = {
+            "Pet Soshi and",
+            "discover the",
+            "{C:secret_rare}Secret Menu"
+        }
+      },
+	  j_zero_jericho = {
+        name = {"Blossom of Jericho",
+				"{s:0.5}Iev'a Quixota"},
+        text = {
+			"Bought cards have a",
+			"{C:green}#2# in #1#{} chance of",
+			"becoming {C:dark_edition}Negative"
+		},
+		unlock = {
+            "Own all {C:attention}6",
+            "{C:green}Magic Plants",
+            "at once"
+        }
+      },
+	  j_zero_oulala = {
+        name = "OuLaLa",
+        text = {
+			"{C:mult}+#1#{} Mult before first card scores,",
+			"last played card gives {X:mult,C:white}X#2#{} Mult,",
+			"{X:mult,C:white}XMult{} equal to difference in {C:attention}digits {X:mult,C:white}Mult",
+			"had between first and second trigger"
+			
+        },
+		unlock = {
+            "Score {C:dark_edition}Naneinf",
+        }
+      },
+	  j_zero_darkasso = {
+        name = "Darkasso",
+        text = {
+			"{C:attention}+#1#{} consumable slots,",
+			"create an {C:dark_edition}Occult {C:tarot}Tarot",
+            "card when {C:attention}Blind{} is selected",
+            "{C:inactive}(Must have room)"
+        },
+		unlock = {
+            "Find an old {C:attention}password",
+			"lost to time"
+        }
       },
     },
     Prestige = {
@@ -1749,6 +1853,7 @@ local loc_stuff = {
 	  k_consumed_ex = "Consumed!",
 	  k_zero_l0ck_k3y_warning = "L0ck and K3y card must be played together",
 	  k_ratioed_ex = "Ratioed!",
+	  k_gift_ex = "Gift!",
 	  
 	  k_ankimo_nil = "No valid hands",
 	  k_ankimo_one = " is in the lead",
@@ -1770,7 +1875,14 @@ local loc_stuff = {
       k_c_zero_bloodstone = "Blood Stone",
 	  k_j_zero_valdi = "Valdi",
 	  
-	  ph_zero_sacred_pyre = "Saved by Sacred Pyre"
+	  ph_zero_sacred_pyre = "Saved by Sacred Pyre",
+	  ph_zero_soshi = "Saved by Soshi",
+	  ph_zero_retreat = "Retreated",
+	  
+	  zero_sc_hint_soshi = "A cat might\nhelp you",
+	  zero_sc_hint_jericho = "Seek the fabled\nflora 6",
+	  zero_sc_hint_oulala = "Infinity is\nsuch a fragile\nthing",
+	  zero_sc_hint_ =       "The password\nis found where\nAncient Magic\nmeets its end",
     },
 	v_dictionary = {
 	  zero_alpine_lily_mult = "+#1# Mult",
@@ -1790,6 +1902,7 @@ local loc_stuff = {
 	},
 	labels = {
 		zero_gala = "Gala",
+		zero_occult = "Occult",
 	},
   }
 }
