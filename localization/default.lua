@@ -1902,7 +1902,7 @@ local loc_stuff = {
 	},
 	labels = {
 		zero_gala = "Gala",
-		zero_occult = "Ocuult",
+		zero_occult = "Occult",
 	},
   }
 }
