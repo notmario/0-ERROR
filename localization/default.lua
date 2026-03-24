@@ -825,8 +825,8 @@ local loc_stuff = {
         name = "Sharps Bin",
         text = {
             "This Joker gains {X:mult,C:white} X#1# {} Mult",
-            "when a {C:attention}Glass{} card",
-            "is destroyed",
+            "when a {C:attention}Glass{} card is added,",
+            "destroyed or enhanced",
             "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
         },
       },
