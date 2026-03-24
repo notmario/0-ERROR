@@ -27,6 +27,7 @@
 --
 --
 -- you have been warned
+
 SMODS.Atlas {
   key = "zero_secret_jokers",
   px = 71,

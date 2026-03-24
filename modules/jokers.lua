@@ -3555,7 +3555,7 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	config = {
-		extra = { xmult = 1, xmult_mod = 0.25}
+		extra = { xmult = 1, xmult_mod = 0.5}
 	},
 	loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
@@ -3572,6 +3572,20 @@ SMODS.Joker {
                 return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } } }
             end
         end
+		if context.playing_card_added and context.cards then
+			local glass = 0
+			for _, v in pairs(context.cards) do
+				if SMODS.has_enhancement(v, "m_glass") then glass = glass + 1 end
+			end
+			if glass > 0 then
+                card.ability.extra.xmult = card.ability.extra.xmult + glass * card.ability.extra.xmult_mod
+                return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } } }
+            end
+		end
+		if context.setting_ability and (G.P_CENTERS[context.new].key == "m_glass" or G.P_CENTERS[context.old].key == "m_glass") then
+			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+            return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } } }
+		end
         if context.joker_main then
             return {
                 xmult = card.ability.extra.xmult
