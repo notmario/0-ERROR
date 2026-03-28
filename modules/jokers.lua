@@ -4487,7 +4487,7 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	blueprint_compat = false,
-	eternal_compat = false,
+	eternal_compat = true,
 	demicoloncompat = false,
 	zero_usable = true,
 	config = { extra = { active = true } },
@@ -4531,6 +4531,53 @@ SMODS.Joker {
 		delay(0.5)
 		draw_card(G.play, G.jokers, nil, 'up', nil, card)
 	end,
+}
+
+SMODS.Joker {
+    key = "fucking_nothing",
+    unlocked = true,
+	discovered = true,
+    blueprint_compat = false,
+	atlas = "zero_jokers_2",
+    rarity = 2,
+    cost = 3,
+    pos = { x = 2, y = 1 },
+    calculate = function(self, card, context)
+        if context.mod_probability and not context.blueprint then
+            return {
+                numerator = 0
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+	key = "kill_this_man",
+	pos = {x = 6, y = 9},
+	atlas = "zero_jokers",
+	rarity = 1,
+	cost = 4,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = false,
+	demicoloncompat = false,
+	config = { extra = { payout = {-1,0,1,2}, killed = 10 } },
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.payout[1], card.ability.extra.payout[4], card.ability.extra.killed } }
+    end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+            return {
+                dollars = pseudorandom_element(card.ability.extra.payout, pseudoseed('kill_this_man'))
+            }
+        end
+		if context.joker_type_destroyed and context.card == card then
+			return {
+                dollars = card.ability.extra.killed
+            }
+		end
+	end
 }
 
 --keep legendary jokers last

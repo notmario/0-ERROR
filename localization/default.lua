@@ -99,6 +99,14 @@ local loc_stuff = {
           "becomes {C:dark_edition}Gala",
 		},
 	  },
+	  tag_zero_occult = {
+	    name = "Occult Tag",
+		text = {
+          "Next base edition shop",
+          "Joker is free and",
+          "becomes {C:dark_edition}Occult",
+		},
+	  },
 	},
     Tarot = {
 	  c_zero_light = {
@@ -1011,6 +1019,21 @@ local loc_stuff = {
             "with random {C:attention}consumables"
         }
       },
+	  j_zero_fucking_nothing = {
+        name = "Wow! It's Fucking Nothing",
+        text = {
+            "Sets all {C:attention}listed{}",
+            "{C:green}probabilities{} to {C:green}0{}"
+        }
+      },
+	  j_zero_kill_this_man = {
+        name = "mods, kill this man",
+        text = {
+            "Gain between {C:money}$#1#{} and {C:money}$#2#",
+            "every hand, Gain {C:money}$#3#",
+			"when destroyed"
+        }
+      },
 	  j_zero_vonllery = {
         name = {"Zhorie von Llery",
 				"{s:0.5}Sage of Resilience"},
@@ -1877,12 +1900,11 @@ local loc_stuff = {
 	  
 	  ph_zero_sacred_pyre = "Saved by Sacred Pyre",
 	  ph_zero_soshi = "Saved by Soshi",
-	  ph_zero_retreat = "Retreated",
 	  
 	  zero_sc_hint_soshi = "A cat might\nhelp you",
 	  zero_sc_hint_jericho = "Seek the fabled\nflora 6",
 	  zero_sc_hint_oulala = "Infinity is\nsuch a fragile\nthing",
-	  zero_sc_hint_ =       "The password\nis found where\nAncient Magic\nmeets its end",
+	  zero_sc_hint_ = "The password\nis found where\nAncient Magic\nmeets its end",
     },
 	v_dictionary = {
 	  zero_alpine_lily_mult = "+#1# Mult",
@@ -1890,6 +1912,9 @@ local loc_stuff = {
 	  zero_alpine_lily_xmult = "X#1# Mult",
 	  zero_alpine_lily_xchips = "X#1# Chips",
 	  zero_alpine_lily_dollars = "+$#1#",
+	},
+	v_text = {
+	  ch_c_zero_no_shop = {"No {C:attention}shops"}
 	},
 	suits_singular = {
 	  zero_Brights = "Bright",
@@ -1899,6 +1924,7 @@ local loc_stuff = {
 	},
 	challenge_names = {
 		c_zero_alpine_garden = "Alpine Garden",
+		c_zero_self_made_fortune = "Self-Made Fortune",
 	},
 	labels = {
 		zero_gala = "Gala",
