@@ -1034,6 +1034,42 @@ local loc_stuff = {
 			"when destroyed"
         }
       },
+	  j_zero_wall = {
+        name = "The Wall",
+        text = {
+			"{C:attention}+#1#{} consumable slot,",
+			"face {C:cups}The Wall{} as an {C:attention}Additional",
+			"{C:attention}Blind{} every ante, create a",
+            "{C:cups}Cups{} card every time you",
+            "play a hand against it",
+        },
+      },
+	  j_zero_witness = {
+        name = "Witness",
+        text = {
+			"Gives {C:green}random {C:chips}Chips{}, but does",
+            "so with a bunch of needlessly",
+			"complex {C:dark_edition}calculations{} to appear",
+			"smarter than it actually is"
+        },
+      },
+	  j_zero_majesty_colors = {
+        name = "Majesty of Colors",
+        text = {
+			"{C:green}#2# in #1#{} chances to create",
+            "a random {C:attention}Consumable",
+			"if played hand contains",
+			"a {C:attention}Spectrum"
+        },
+      },
+	  j_zero_group_photo = {
+        name = "Group Photo",
+        text = {
+			"{C:attention}Face{} cards give {C:white,X:mult}X#1#{} Mult",
+            "if played hand contains",
+			"a {C:attention}Spectrum"
+        },
+      },
 	  j_zero_vonllery = {
         name = {"Zhorie von Llery",
 				"{s:0.5}Sage of Resilience"},
@@ -1847,6 +1883,7 @@ local loc_stuff = {
       k_plus_prestige = "+1 Prestige",
 	  k_plus_cups = "+1 Cups",
 	  k_plus_elemental = "+1 Element",
+	  k_plus_consumeable = "+1 Consumable",
 	  k_plus_suit_yourself = "+1 Suit Yourself",
 	  k_plus_sunsteel_pow = "+Sunsteel Power",
       k_poisoned_ex = "Poisoned!",
