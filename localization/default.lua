@@ -1223,7 +1223,7 @@ local loc_stuff = {
         text = {
             "{C:green}#1# in #2#{} chance for",  
             "played cards with",
-            "a {C:gold}Yellow Gem{}",
+            "a {C:gold}Yellow Gem{} to",
             "give {C:money}$#3#{} when scored",
         },
       },
@@ -1232,7 +1232,7 @@ local loc_stuff = {
         text = {
             "{C:green}#1# in #2#{} chance for",  
             "played cards with",
-            "a {C:green}Green Gem{} give",
+            "a {C:green}Green Gem{} to give",
             "{C:white,X:chips}X#3#{} Chips when scored",
         },
       },
@@ -1267,8 +1267,8 @@ local loc_stuff = {
     j_zero_hypotenusejoker = {
         name = "Hypotenuse",
         text = {
-          "Gems can make moves",
-          "{C:attention}diagonally{} on the board",
+          "Gems on the board",
+          "can be moved {C:attention}diagonally{}",
         },
       },
     j_zero_badtrip = {

@@ -5,6 +5,16 @@ SMODS.Atlas {
     py = 95
 }
 
+local hidden_hands = {
+    ["spectrum_Spectrum"] = true,
+    ["paperback_Spectrum"] = true,
+    ["Straight Flush"] = true,
+    ["Four of a Kind"] = true,
+    ["Full House"] = true,
+    ["Flush"] = true,
+    ["Straight"] = true,
+}
+
 SMODS.Back {
     key = "bejeweled",
     pos = { x = 4, y = 0 },
@@ -15,9 +25,12 @@ SMODS.Back {
     end,
     apply = function(self, back)
         G.GAME.win_ante = (G.GAME.win_ante or 8) + self.config.win_ante_mod 
-        for k,v in pairs(G.GAME.hands) do -- shows jewel hands
-            if string.find(k, 'jewel') then
+        for k,v in pairs(G.GAME.hands) do
+            if string.find(k, 'jewel') then -- shows jewel hands
                 v.visible = true
+            end
+            if hidden_hands[k] then
+                G.GAME.hands[k].visible = false
             end
         end
         

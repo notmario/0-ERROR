@@ -13,7 +13,7 @@ Bejewelatro = {
 }
 
 function do_bejewelatro()
-    if G.GAME and G.GAME.selected_back.name == 'b_zero_bejeweled' then
+    if G.GAME and G.GAME.selected_back and G.GAME.selected_back.name == 'b_zero_bejeweled' then
         return true
     else
         return false
@@ -24,6 +24,7 @@ assert(SMODS.load_file("./modules/bejewelatro/deck.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/jewels.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/board.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/stickers.lua"))()
+assert(SMODS.load_file("./modules/bejewelatro/newdeckpeek.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/pokerhands.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/jokers.lua"))()
 assert(SMODS.load_file("./modules/bejewelatro/blinds.lua"))()

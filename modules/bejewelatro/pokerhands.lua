@@ -394,10 +394,15 @@ SMODS.PokerHand:take_ownership ('Pair',{
         if not do_bejewelatro() then
             return parts._2
         else
-            return get_X_same_jewel(2, hand, true) or parts._2
+            local ret, pair_count = get_X_same_jewel(2, hand, true)
+            if ret and #ret > 1 then
+                return ret
+            else
+                return parts._2
+            end
         end
     end
-})
+}, false)
 
 -- Two Pair
 SMODS.PokerHand:take_ownership ('Two Pair',{
@@ -415,7 +420,7 @@ SMODS.PokerHand:take_ownership ('Two Pair',{
             end
         end
     end
-})
+}, false)
 
 -- Three of a Kind
 SMODS.PokerHand:take_ownership ('Three of a Kind',{
@@ -423,10 +428,15 @@ SMODS.PokerHand:take_ownership ('Three of a Kind',{
         if not do_bejewelatro() then
             return parts._3
         else
-            return get_X_same_jewel(3, hand, true) or parts._3
+            local ret, pair_count = get_X_same_jewel(3, hand, true)
+            if ret and #ret > 1 then
+                return ret
+            else
+                return parts._3
+            end
         end
     end
-})
+}, false)
 
 -- Straight
 SMODS.PokerHand:take_ownership ('Straight',{
@@ -437,7 +447,7 @@ SMODS.PokerHand:take_ownership ('Straight',{
             return get_spectrum_jewels(hand) or parts._straight
         end
     end
-})
+}, false)
 
 -- Flush
 SMODS.PokerHand:take_ownership ('Flush',{
@@ -445,10 +455,15 @@ SMODS.PokerHand:take_ownership ('Flush',{
         if not do_bejewelatro() then
             return parts._flush
         else
-            return get_X_same_jewel(5, hand, true) or parts._flush
+            local ret, pair_count = get_X_same_jewel(5, hand, true)
+            if ret and #ret > 1 then
+                return ret
+            else
+                return parts._flush
+            end
         end
     end
-})
+}, false)
 
 -- Full House
 SMODS.PokerHand:take_ownership ('Full House',{
@@ -467,7 +482,7 @@ SMODS.PokerHand:take_ownership ('Full House',{
             end
         end
     end
-})
+}, false)
 
 -- Four of a Kind
 SMODS.PokerHand:take_ownership ('Four of a Kind',{
@@ -475,10 +490,15 @@ SMODS.PokerHand:take_ownership ('Four of a Kind',{
         if not do_bejewelatro() then
             return parts._4
         else
-            return get_X_same_jewel(4, hand, true) or parts._4
+            local ret, pair_count = get_X_same_jewel(4, hand, true)
+            if ret and #ret > 1 then
+                return ret
+            else
+                return parts._4
+            end
         end
     end
-})
+}, false)
 
 -- Straight Flush (wip)
 --[[SMODS.PokerHand:take_ownership ('Straight Flush',{
@@ -501,10 +521,15 @@ SMODS.PokerHand:take_ownership ('Five of a Kind',{
         if not do_bejewelatro() then
             return parts._5
         else
-            return get_X_same_jewel(5, hand, true) or parts._5
+            local ret, pair_count = get_X_same_jewel(5, hand, true)
+            if ret and #ret > 1 then
+                return ret
+            else
+                return parts._5
+            end
         end
     end
-})
+}, false)
 
 -- Flush House (wip)
 --[[SMODS.PokerHand:take_ownership ('Flush House',{
@@ -531,7 +556,7 @@ SMODS.PokerHand:take_ownership ('Five of a Kind',{
             return { SMODS.merge_lists(parts._5, parts._flush) }
         end
     end
-})
+}, false)
 
 -- Spectrum (Spectrum Framework)
 if SMODS.PokerHands['spectrum_Spectrum'] then
@@ -543,7 +568,7 @@ if SMODS.PokerHands['spectrum_Spectrum'] then
                 return get_spectrum_jewels(hand) or parts.spectrum_spectrum
             end
         end
-    })
+    }, false)
 end
 
 -- Spectrum (Paperback)
@@ -556,5 +581,5 @@ if SMODS.PokerHands['paperback_Spectrum'] then
                 return get_spectrum_jewels(hand) or parts.spectrum_spectrum
             end
         end
-    })
+    }, false)
 end

@@ -776,6 +776,7 @@ local banned_jokers = {
     'j_zero_despondent_joker',
     --'j_zero_star_sapphire',
     --'j_zero_konpeito',
+    'j_zero_e',
 }
 
 local brights_locked_jokers = {

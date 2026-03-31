@@ -10,10 +10,13 @@ target = "game.lua"
 position = "before"
 pattern = "if self.STATE == self.STATES.PLAY_TAROT then"
 payload = """
+if not do_bejewelatro() then
+    Bejewelatro.board_visible = false
+end
 if Bejewelatro.board_visible then
-  Bejewelatro.f.update_bg(dt)
+    Bejewelatro.f.update_bg(dt)
 else
-  if Bejewelatro.BG then Bejewelatro.BG:remove() end
+    if Bejewelatro.BG then Bejewelatro.BG:remove() end
 end
 """
 match_indent = true
@@ -237,7 +240,7 @@ G.FUNCS.draw_from_deck_to_hand = function(e)
 '''
 position = "after"
 payload = '''
-if Bejewelatro.BG then
+if do_bejewelatro() and Bejewelatro.BG then
     if not (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) then
         if #G.hand.cards < G.hand.config.card_limit and not e then -- 'not e' prevents additional drawing
             local jewelless_card = nil
@@ -302,7 +305,7 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 '''
 position = "after"
 payload = '''
-    if Bejewelatro.BG then
+    if do_bejewelatro() and Bejewelatro.BG then
         for i=1,64 do
             local x_pos1 = pseudorandom('jewelx1'..i, 1, 8)
             local y_pos1 = pseudorandom('jewely1'..i, 1, 8)
@@ -443,21 +446,43 @@ if self == G.deck then
         end
     end
     if not self.children.view_deck then 
-        self.children.view_deck = UIBox{
-            definition = 
-                {n=G.UIT.ROOT, config = {align = 'cm', padding = 0.1, r =0.1, colour = G.C.CLEAR}, nodes={
-                    {n=G.UIT.R, config={align = "cm", padding = 0.05, r =0.1, colour = adjust_alpha(G.C.BLACK, 0.5),func = 'set_button_pip', focus_args = {button = 'triggerright', orientation = 'bm', scale = 0.6}, button = 'deck_info'}, nodes={
-                        {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
-                            {n=G.UIT.T, config={text = localize('k_view'), scale = 0.48, colour = G.C.WHITE, shadow = true}}
-                        }},
-                        {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
-                            {n=G.UIT.T, config={text = localize('k_deck'), scale = 0.38, colour = G.C.WHITE, shadow = true}}
+        if do_bejewelatro() then
+            Bejewelatro.f.update_jewel_peek_table_values()
+            self.children.view_deck = UIBox{
+                definition = 
+                    {n=G.UIT.ROOT, config = {align = 'cm', padding = 0.1, r =0.1, colour = G.C.CLEAR}, nodes={
+                        Bejewelatro.f.suit_peek_table(),
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, r =0.1, colour = G.C.CLEAR}, nodes={
+                            {n=G.UIT.R, config={align = "cm", padding = 0.05, r =0.1, colour = adjust_alpha(G.C.BLACK, 0.5),func = 'set_button_pip', focus_args = {button = 'triggerright', orientation = 'bm', scale = 0.6}, button = 'deck_info'}, nodes={
+                                {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                                    {n=G.UIT.T, config={text = localize('k_view'), scale = 0.48, colour = G.C.WHITE, shadow = true}}
+                                }},
+                                {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                                    {n=G.UIT.T, config={text = localize('k_deck'), scale = 0.38, colour = G.C.WHITE, shadow = true}}
+                                }},
+                            }},
                         }},
                     }},
-                }},
-            config = { align = 'cm', offset = {x=0,y=0}, major = self.cards[1] or self, parent = self}
-        }
-        self.children.view_deck.states.collide.can = false
+                config = { align = 'cm', offset = {x=-1.75,y=0}, major = self.cards[1] or self, parent = self}
+            }
+            self.children.view_deck.states.collide.can = false
+        else
+            self.children.view_deck = UIBox{
+                definition = 
+                    {n=G.UIT.ROOT, config = {align = 'cm', padding = 0.1, r =0.1, colour = G.C.CLEAR}, nodes={
+                        {n=G.UIT.R, config={align = "cm", padding = 0.05, r =0.1, colour = adjust_alpha(G.C.BLACK, 0.5),func = 'set_button_pip', focus_args = {button = 'triggerright', orientation = 'bm', scale = 0.6}, button = 'deck_info'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                                {n=G.UIT.T, config={text = localize('k_view'), scale = 0.48, colour = G.C.WHITE, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                                {n=G.UIT.T, config={text = localize('k_deck'), scale = 0.38, colour = G.C.WHITE, shadow = true}}
+                            }},
+                        }},
+                    }},
+                config = { align = 'cm', offset = {x=0,y=0}, major = self.cards[1] or self, parent = self}
+            }
+            self.children.view_deck.states.collide.can = false
+        end
     end
 if G.deck_preview or self.states.collide.is or (G.buttons and G.buttons.states.collide.is and G.CONTROLLER.HID.controller) then self.children.view_deck:draw() end
     if not do_bejewelatro() and self.children.peek_deck then self.children.peek_deck:draw() end

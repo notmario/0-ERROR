@@ -221,3 +221,19 @@ SMODS.Consumable{
         badges[1] = create_badge("Planet?", get_type_colour(self or card.config, card), nil, 1.2)
     end
 }
+
+local undefaulted_planets = {
+    "neptune",
+    "mars",
+    "earth",
+    "jupiter",
+    "saturn",
+}
+
+for k,v in pairs(undefaulted_planets) do
+    SMODS.Consumable:take_ownership(v, {
+        in_pool = function(self, args)
+            return not do_bejewelatro() or G.GAME.hands[self.config.hand_type].played > 0
+        end,
+    }, false)
+end
