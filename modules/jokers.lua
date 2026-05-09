@@ -4687,6 +4687,177 @@ SMODS.Joker {
     end
 }
 
+SMODS.Joker {
+    key = "miriam",
+	atlas = "zero_jokers",
+    pos = { x = 3, y = 9 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 4,
+	unlocked = true,
+	discovered = true,
+    config = { extra = { mult = 0, mult_mod = 4} },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {set = "Other", key = 'zero_miriam_lola'}
+		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+		if context.discard and not context.blueprint then
+			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
+		end
+        if context.joker_main then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+			card.ability.extra.mult = 0
+		end
+    end,
+	add_to_deck = function(self, card, from_debuff)
+		if next(SMODS.find_card('j_zero_lola')) and not next(SMODS.find_card('j_zero_miriam')) then
+			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if not next(SMODS.find_card('j_zero_miriam')) then
+			G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+		end
+	end
+}
+
+SMODS.Joker {
+    key = "lola",
+	atlas = "zero_jokers",
+    pos = { x = 4, y = 9 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 4,
+	unlocked = true,
+	discovered = true,
+    config = { extra = { chips = 0, chips_mod = 10} },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {set = "Other", key = 'zero_miriam_lola'}
+		return { vars = { card.ability.extra.chips_mod, card.ability.extra.chips } }
+    end,
+    calculate = function(self, card, context)
+		if context.before and not context.blueprint then
+			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
+		end
+		if context.discard and card.ability.extra.chips ~= 0 and not context.blueprint then
+			card.ability.extra.chips = 0
+			return {
+                message = localize('k_reset')
+            }
+		end
+        if context.joker_main then
+            return {
+                chips = card.ability.extra.chips
+            }
+        end
+    end,
+	add_to_deck = function(self, card, from_debuff)
+		if next(SMODS.find_card('j_zero_miriam')) and not next(SMODS.find_card('j_zero_lola')) then
+			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if not next(SMODS.find_card('j_zero_lola')) then
+			G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+		end
+	end
+}
+
+SMODS.Joker {
+    key = "yixi",
+	atlas = "zero_jokers_2",
+    pos = { x = 0, y = 1 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+	unlocked = true,
+	discovered = true,
+    config = { extra = { xmult = 1, xmult_mod = 0.5} },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {set = "Other", key = 'zero_yixi_mai'}
+		return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
+    end,
+    calculate = function(self, card, context)
+		if context.before and not context.blueprint then
+			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+		end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+		if context.end_of_round and not context.individual and not context.repetition and not next(SMODS.find_card('j_zero_mai')) and not context.blueprint then
+			card.ability.extra.xmult = 1
+			return {
+                message = localize('k_reset')
+            }
+		end
+    end
+}
+
+SMODS.Joker {
+    key = "mai",
+	atlas = "zero_jokers_2",
+    pos = { x = 1, y = 1 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+	unlocked = true,
+	discovered = true,
+    config = { extra = { xmult = 3 } },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {set = "Other", key = 'zero_yixi_mai'}
+		return { vars = { card.ability.extra.xmult } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and G.GAME.current_round.hands_played == 0 then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "dandelion",
+	atlas = "zero_jokers_2",
+    pos = { x = 8, y = 1 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { suit = "Clubs" } },
+    calculate = function(self, card, context)
+        if G.GAME.current_round.hands_played == 0 then
+			if context.retrigger_joker_check and not context.retrigger_joker and context.other_card then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i] == context.other_card and ((G.jokers.cards[i - 1] and G.jokers.cards[i - 1] == card) or (G.jokers.cards[i + 1] and G.jokers.cards[i + 1] == card)) then
+						return {
+							message = localize("k_again_ex"),
+							repetitions = 1,
+							card = card
+						}
+					end
+				end
+			end
+			if context.after then
+				local randomcard = pseudorandom_element( G.play.cards, "dandelion" )
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() randomcard:flip(); play_sound('card1', 1); randomcard:juice_up(0.3, 0.3); card:juice_up(0.3, 0.3) return true end }))
+				delay(0.2)
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() SMODS.change_base(randomcard, card.ability.extra.suit, tostring(pseudorandom("dandelion", 1, 10)));return true end }))
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() randomcard:flip(); play_sound('card1', 1); randomcard:juice_up(0.3, 0.3); card:juice_up(0.3, 0.3) return true end }))
+				delay(3)
+			end
+		end
+    end
+}
+
 --spectrum-requiring jokers
 if next(SMODS.find_mod('SpectrumFramework')) then
 	SMODS.Joker {

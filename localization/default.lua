@@ -1053,6 +1053,47 @@ local loc_stuff = {
 			"smarter than it actually is"
         },
       },
+	  j_zero_miriam = {
+        name = "MIRIAM",
+        text = {
+			"{C:mult}+#1#{} Mult per {C:attention}discard",
+            "used this round",
+			"{C:inactive}(currently {C:mult}+#2#{C:inactive} Mult)"
+        },
+      },
+	  j_zero_lola = {
+        name = "LOLA",
+        text = {
+			"This Joker gains {C:chips}+#1#{} Chips",
+			"per {C:attention}consecutive{} hand played",
+            "without discarding cards",
+			"{C:inactive}(currently {C:chips}+#2#{C:inactive} Chips)"
+        },
+      },
+	  j_zero_yixi = {
+        name = "Yi Xi",
+        text = {
+			"{X:mult,C:white}X#1#{} Mult per {C:attention}hand",
+            "played this round",
+			"{C:inactive}(currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+        },
+      },
+	  j_zero_mai = {
+        name = "Mai",
+        text = {
+			"{X:mult,C:white}X#1#{} Mult on",
+            "{C:attention}first hand{} of round"
+        },
+      },
+	  j_zero_dandelion = {
+        name = "Dandelion",
+        text = {
+			"Retrigger {C:attention}adjacent{} Jokers on",
+            "{C:attention}first hand{} of round, a random ",
+			"card played in that hand becomes",
+			"a random {C:attention}non-Face {C:clubs}Club"
+        },
+      },
 	  j_zero_majesty_colors = {
         name = "Majesty of Colors",
         text = {
@@ -1865,6 +1906,20 @@ local loc_stuff = {
 		text = {
 			"{C:attention}2 {C:elemental}Basic Elements{} combine",
 			"into a {C:elemental}Greater Element"
+		},
+	  },
+	  zero_miriam_lola = {
+		name = "Synergy!",
+		text = {
+			"{C:dark_edition}+1{} Joker slot when {C:attention}MIRIAM",
+			"and {C:attention}LOLA{} are together"
+		},
+	  },
+	  zero_yixi_mai = {
+		name = "Synergy!",
+		text = {
+			"{C:attention}Yi Xi{} does not reset if",
+			"you also own {C:attention}Mai"
 		},
 	  },
     },
