@@ -10,6 +10,16 @@ local loc_stuff = {
           "{s:0.8}Win after Ante #3#",
         }
       },
+      b_zero_blue_bejeweled = {
+        name = "Blue Bejeweled Deck",
+        text = {
+          "Make poker hands",
+          "with {E:1,C:attention}match 3{C:inactive}..?",
+          "{s:0.8,C:red}#1#{s:0.8} hand size, {s:0.8}Win after Ante #2#{},",
+          "Start with 52 {C:attention,T:m_stone}Stone Cards{}",
+          "that give only {C:chips}+#3#{} Chips",
+        }
+      },
     },
     Blind = {
         bl_zero_redjewelblind = {
@@ -310,6 +320,21 @@ local loc_stuff = {
                 "Combines any number of",
                 "cards into a {C:attention}Joker",
                 "{C:inactive}(Creating {C:attention}#1#{C:inactive})",
+            },
+        },
+        c_zero_moonstone = {
+            name = "Moonstone",
+            text = {
+                {
+                    "Upgrade all {C:zero_raregem}Rare Gems{} by",
+                    "their corresponding {C:dark_edition}Scaler{} values",
+                },
+                {
+                    "All cards with {C:attention}any gem{}",
+                    "gain bonus {X:chips,C:white}XChips{} based on",
+                    "their corresponding {C:zero_raregem}Rare Gem{}'s",
+                    "level after upgrading",
+                }
             },
         },
     },
@@ -1894,6 +1919,27 @@ local loc_stuff = {
         },
       },
     },
+  zero_raregem = {
+      raregem = {
+          name = {
+              "#6#",
+          },
+          text = {
+            {  
+                "Select up to {C:attention}#2#{} cards and",
+                "replace its gem(s) with {V:1}#1#{}",
+                "",
+                "{C:dark_edition}Scaler{s:0.5,C:attention} {f:6,s:0.8}—{s:0.5,C:attention} {C:attention}#3#",
+            },
+            {  
+                "All cards with {V:1}#1#{}",
+                "give {X:chips,C:white}+X#4#{} Chips when scored",
+                "",
+                "{C:dark_edition}Scaler{s:0.5,C:attention} {f:6,s:0.8}—{s:0.5,C:attention} {C:attention}#5#",
+            },
+          },
+      },
+  },
 	Voucher = {
 	  v_zero_homeworld = {
 		name = "Homeworld",
@@ -2081,6 +2127,14 @@ local loc_stuff = {
           "strength by {C:attention}#2#"
         }
       },
+      scaler_explainer_raregems = {
+        name = "Scaler",
+        text = {
+          "When used, increases",
+          "all future {X:zero_raregem,C:white}#1#{}'s",
+          "strength by {C:attention}#2#{} and {C:attention}#3#{}",
+        }
+      },
       cooldown_explainer = {
         name = "Cooldown",
         text = {
@@ -2190,6 +2244,90 @@ local loc_stuff = {
 			"into a {C:elemental}Greater Element"
 		},
 	  },
+    zero_redjewel = {
+        name = "Red Gem",
+        text = {
+            "is Red",
+        },
+    },
+    zero_redjewel_xchips = {
+        name = "Red Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_orangejewel = {
+        name = "Orange Gem",
+        text = {
+            "is Orange",
+        },
+    },
+    zero_orangejewel_xchips = {
+        name = "Orange Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_yellowjewel = {
+        name = "Yellow Gem",
+        text = {
+            "is Yellow",
+        },
+    },
+    zero_yellowjewel_xchips = {
+        name = "Yellow Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_greenjewel = {
+        name = "Green Gem",
+        text = {
+            "is Green",
+        },
+    },
+    zero_greenjewel_xchips = {
+        name = "Green Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_bluejewel = {
+        name = "Blue Gem",
+        text = {
+            "is Blue",
+        },
+    },
+    zero_bluejewel_xchips = {
+        name = "Blue Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_violetjewel = {
+        name = "Violet Gem",
+        text = {
+            "is Violet",
+        },
+    },
+    zero_violetjewel_xchips = {
+        name = "Violet Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_whitejewel = {
+        name = "White Gem",
+        text = {
+            "is White",
+        },
+    },
+    zero_whitejewel_xchips = {
+        name = "White Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
     },
   },
   misc = {
@@ -2247,6 +2385,13 @@ local loc_stuff = {
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",
       xmult_extra = "Bonus XMult",
+      c_zero_heartstone_xchips = "Red Gem XChips",
+      c_zero_citrine_xchips = "Orange Gem XChips",
+      c_zero_risingstar_xchips = "Yellow Gem XChips",
+      c_zero_stemerald_xchips = "Green Gem XChips",
+      c_zero_bluethunder_xchips = "Blue Gem XChips",
+      c_zero_highroller_xchips = "Violet Gem XChips",
+      c_zero_royalflash_xchips = "White Gem XChips",
 
       k_no_cooldowns = "No cards are on cooldown",
       k_prestige_cooldowns = "Cards on Cooldown:",

@@ -797,7 +797,7 @@ end
 for k,v in pairs(brights_locked_jokers) do
     SMODS.Joker:take_ownership(v, {
         in_pool = function(self, args)
-            return not do_bejewelatro() or zero_brights_in_deck()
+            return (not do_bejewelatro() or zero_brights_in_deck()) and not do_bejewelatro(true)
         end,
     }, true)
 end

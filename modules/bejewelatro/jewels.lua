@@ -109,7 +109,7 @@ function Bejewelatro.f.create_row(row_num, empty)
             local jwl_list = next(SMODS.find_card('j_zero_prism')) and jewel_list_prism or jewel_list
             local card_jewel = SMODS.create_card({
                 set = 'jewel', 
-                --key = 'c_zero_redjewel',
+                area = G.jokers,
                 key = 'c_zero_'..pseudorandom_element(jwl_list),
                 skip_materialize = true,
             })
@@ -205,9 +205,25 @@ function Bejewelatro.f.draw_random_jewelless_card()
         end
     end
     random_card = pseudorandom_element(jewelless_cards, pseudoseed('in_deck'))
-    if random_card then
-        draw_card(G.deck, G.hand, 90,'up', nil, random_card)
+    local is_in_hand = false
+    for k,v in ipairs(G.hand.cards) do
+        if v == random_card then
+            is_in_hand = true
+            break
+        end
     end
+    if random_card and not random_card.jewel_drawing then
+        draw_card(G.deck, G.hand, 90,'up', nil, random_card)
+        random_card.jewel_drawing = true
+    end
+    G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        blocking = false,
+        func = function()
+            random_card.jewel_drawing = nil
+            return true
+        end
+    }))
 end
 
 -- card emplace 2 - allows for cards to swap positions
@@ -607,7 +623,7 @@ function Bejewelatro.f.jewel_refill(initial) -- drop jewels downward after other
                 local jwl_list = next(SMODS.find_card('j_zero_prism')) and jewel_list_prism or jewel_list
                 local card_jewel = SMODS.create_card({
                     set = 'jewel', 
-                    --key = 'c_zero_bluejewel',
+                    area = G.jokers,
                     key = 'c_zero_'..pseudorandom_element(jwl_list),
                     skip_materialize = true,
                 })

@@ -228,12 +228,15 @@ local undefaulted_planets = {
     "earth",
     "jupiter",
     "saturn",
+    "venus",
+    "uranus",
+    "mercury",
 }
 
 for k,v in pairs(undefaulted_planets) do
     SMODS.Consumable:take_ownership(v, {
         in_pool = function(self, args)
-            return not do_bejewelatro() or G.GAME.hands[self.config.hand_type].played > 0
+            return not do_bejewelatro() or G.GAME.hands[self.config.hand_type].visible == true
         end,
     }, false)
 end

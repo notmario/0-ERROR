@@ -9,14 +9,31 @@ Bejewelatro = {
     jewel_rows = {}, -- board rows
     jewel_list = {
         'redjewel', 'orangejewel', 'yellowjewel', 'greenjewel', 'bluejewel', 'violetjewel', 'whitejewel',
-    }
+    },
+    raregems_list = {
+        redjewel = 'heartstone', 
+        orangejewel = 'citrine', 
+        yellowjewel = 'risingstar', 
+        greenjewel = 'stemerald', 
+        bluejewel = 'bluethunder', 
+        violetjewel = 'highroller', 
+        whitejewel = 'royalflash'
+    },
 }
 
-function do_bejewelatro()
-    if G.GAME and G.GAME.selected_back and G.GAME.selected_back.name == 'b_zero_bejeweled' then
-        return true
+function do_bejewelatro(bluejeweled)
+    if bluejeweled then
+        if G.GAME and G.GAME.selected_back and G.GAME.selected_back.name == 'b_zero_blue_bejeweled' then
+            return true
+        else
+            return false
+        end
     else
-        return false
+        if G.GAME and G.GAME.selected_back and (G.GAME.selected_back.name == 'b_zero_bejeweled' or G.GAME.selected_back.name == 'b_zero_blue_bejeweled') then
+            return true
+        else
+            return false
+        end
     end
 end
 

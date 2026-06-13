@@ -18,21 +18,27 @@ local colour_list = {
 }
 
 for i = 1, #jewel_list do
-    local colour = string.sub(localized_jewel_list[i], 1, #localized_jewel_list[i] - 4)
     SMODS.Sticker {
         key = jewel_list[i],
-        loc_txt = {
-            name = localized_jewel_list[i],
-            text = {
-                "is "..colour,
-            },
-        },
         col_index = i,
         badge_colour = HEX(colour_list[i]),
         pos = { x = i-1, y = 0 },
         atlas = "zero_jewelsuits",
-        --display_size = { w = 95, h = 95 },
-        --pixel_size = { w = 50, h = 50 },
+        loc_vars = function(self, info_queue, card)
+            local _key = self.key
+            local prestige_key = _key and Bejewelatro.raregems_list[string.sub(_key, 6)]
+                and 'c_zero_'..Bejewelatro.raregems_list[string.sub(_key, 6)]..'_xchips' or nil
+            if prestige_key and G.GAME.Prestiges and G.GAME.PrestigeValues[prestige_key]
+            and G.GAME.PrestigeValues[prestige_key] ~= 1 then
+                _key = _key..'_xchips'
+            end
+            return {
+                key = _key,
+                vars = {
+                    G.GAME.Prestiges and G.GAME.PrestigeValues[prestige_key] or 1
+                }
+            }
+        end,
         draw = function(self, card, layer)
             local has_updated = false
             if G.GAME and card.ability then
@@ -51,6 +57,13 @@ for i = 1, #jewel_list do
             end
             G.shared_stickers[self.key].role.draw_major = card
             G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        end,
+        calculate = function(self, card, context)
+            if context.main_scoring and context.cardarea == G.play then
+                return {
+                    xchips = G.GAME.PrestigeValues['c_zero_'..Bejewelatro.raregems_list[string.sub(self.key, 6)]..'_xchips'],
+                }
+            end
         end,
     }
 end

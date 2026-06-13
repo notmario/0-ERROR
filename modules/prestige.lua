@@ -673,6 +673,14 @@ function create_UIBox_prestige_cooldown_row(key)
   or nil
 end
 
+local bejeweled_colour_list = {
+    'ec000a', 'ec5100', 'f4ad00', '04cb00', '005be9', 'de00ec', 'acacac'
+}
+
+local raregems_list = {
+    'heartstone', 'citrine', 'risingstar', 'stemerald', 'bluethunder', 'highroller', 'royalflash'
+}
+
 function create_UIBox_current_prestige(simple)
   local hands = {
     create_UIBox_current_prestige_row("mult_extra", "c_zero_plasmid", 1, darken(G.C.MULT, 0.1)),
@@ -681,6 +689,11 @@ function create_UIBox_current_prestige(simple)
 
     -- PATCH TARGET: PRESTIGE SCREEN
   }
+  --if do_bejewelatro() then
+    for i = 1,7 do 
+      hands[#hands+1] = do_bejewelatro() and create_UIBox_current_prestige_row("c_zero_"..raregems_list[i].."_xchips", "c_zero_"..raregems_list[i], 0.1, darken(HEX(bejeweled_colour_list[i]), 0.1)) or nil
+    end
+  --end
 
   local cooldown_nodes = {
     {n=G.UIT.T, config={text = ' '..localize("k_no_cooldowns"), minw = 2, scale = 0.45, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
