@@ -1834,6 +1834,7 @@ SMODS.Joker {
     pos = { x = 0, y = 4 },
     rarity = 1,
     blueprint_compat = true,
+	demicoloncompat = true,
     cost = 4,
 	unlocked = true,
 	discovered = true,
@@ -1855,7 +1856,7 @@ SMODS.Joker {
 				}
 			end
 		end
-		if context.joker_main and card.ability.extra.chips ~= 0 then
+		if (context.joker_main or context.forcetrigger) and card.ability.extra.chips ~= 0 then
             return {
                 chips = card.ability.extra.chips
             }
@@ -3555,7 +3556,7 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	config = {
-		extra = { xmult = 1, xmult_mod = 0.25}
+		extra = { xmult = 1, xmult_mod = 0.5}
 	},
 	loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
@@ -3572,6 +3573,20 @@ SMODS.Joker {
                 return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } } }
             end
         end
+		if context.playing_card_added and context.cards then
+			local glass = 0
+			for _, v in pairs(context.cards) do
+				if SMODS.has_enhancement(v, "m_glass") then glass = glass + 1 end
+			end
+			if glass > 0 then
+                card.ability.extra.xmult = card.ability.extra.xmult + glass * card.ability.extra.xmult_mod
+                return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } } }
+            end
+		end
+		if context.setting_ability and (G.P_CENTERS[context.new].key == "m_glass" or G.P_CENTERS[context.old].key == "m_glass") then
+			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+            return { message = localize { type = 'variable', key = 'a_xmult', vars = { card.ability.extra.xmult } } }
+		end
         if context.joker_main then
             return {
                 xmult = card.ability.extra.xmult
@@ -4039,85 +4054,6 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    key = "consortium",
-    blueprint_compat = true,
-    rarity = 1,
-    cost = 7,
-    pos = { x = 3, y = 0 },
-	unlocked = true,
-	discovered = true,
-	blueprint_compat = true,
-	demicoloncompat = true,
-	atlas = "zero_jokers_2",
-    config = { extra = { creates = 2 } },
-    loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.creates } }
-    end,
-    calculate = function(self, card, context)
-        if (context.setting_blind or context.forcetrigger) and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
-            local jokers_to_create = math.min(card.ability.extra.creates,
-                G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
-            G.GAME.joker_buffer = G.GAME.joker_buffer + jokers_to_create
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    for _ = 1, jokers_to_create do
-						local owned_mods = {}
-						local valid_jokers = {}
-						local stopped
-						for _, v in pairs(G.jokers.cards) do
-							if v ~= card and v.config.center.mod and v.config.center.mod.id then
-								stopped = false
-								for _, w in pairs(owned_mods) do
-									if w == v.config.center.mod.id then
-										stopped = true
-										break
-									end
-								end
-								if not stopped then
-									owned_mods[#owned_mods + 1] = v.config.center.mod.id
-								end
-							end
-						end
-						for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
-							if (v.rarity == 1 or v.rarity == "Common") and v.mod and v.mod.id then
-								stopped = false
-								for _, w in pairs(owned_mods) do
-									if w == v.mod.id then
-										stopped = true
-										break
-									end
-								end
-								if not stopped then
-									valid_jokers[#valid_jokers + 1] = v.key
-								end
-							end
-						end
-						if #valid_jokers > 0 then
-							SMODS.add_card {
-								set = 'Joker',
-								key = pseudorandom_element(valid_jokers, pseudoseed('zero_consortium'))
-							}
-						else
-							SMODS.add_card {
-								set = 'Joker',
-								rarity = 'Common',
-								key_append = 'zero_consortium'
-							}
-						end
-                        G.GAME.joker_buffer = 0
-                    end
-                    return true
-                end
-            }))
-            return {
-                message = localize('k_plus_joker'),
-                colour = G.C.BLUE,
-            }
-        end
-    end,
-}
-
-SMODS.Joker {
 	key = "paragon_rod",
 	pos = {x = 5, y = 0},
 	atlas = "zero_jokers_2",
@@ -4473,7 +4409,7 @@ SMODS.Joker {
 	unlocked = true,
 	discovered = true,
 	blueprint_compat = false,
-	eternal_compat = false,
+	eternal_compat = true,
 	demicoloncompat = false,
 	zero_usable = true,
 	config = { extra = { active = true } },
@@ -4518,6 +4454,473 @@ SMODS.Joker {
 		draw_card(G.play, G.jokers, nil, 'up', nil, card)
 	end,
 }
+
+SMODS.Joker {
+    key = "consortium",
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 7,
+    pos = { x = 3, y = 0 },
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	atlas = "zero_jokers_2",
+    config = { extra = { creates = 2 } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.creates } }
+    end,
+    calculate = function(self, card, context)
+        if (context.setting_blind or context.forcetrigger) and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+            local jokers_to_create = math.min(card.ability.extra.creates,
+                G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
+            G.GAME.joker_buffer = G.GAME.joker_buffer + jokers_to_create
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    for _ = 1, jokers_to_create do
+						local owned_mods = {}
+						local valid_jokers = {}
+						local stopped
+						for _, v in pairs(G.jokers.cards) do
+							if v ~= card and v.config.center.mod and v.config.center.mod.id then
+								stopped = false
+								for _, w in pairs(owned_mods) do
+									if w == v.config.center.mod.id then
+										stopped = true
+										break
+									end
+								end
+								if not stopped then
+									owned_mods[#owned_mods + 1] = v.config.center.mod.id
+								end
+							end
+						end
+						for _, v in pairs(G.P_CENTER_POOLS["Joker"]) do
+							if (v.rarity == 1 or v.rarity == "Common") and v.mod and v.mod.id then
+								stopped = false
+								for _, w in pairs(owned_mods) do
+									if w == v.mod.id then
+										stopped = true
+										break
+									end
+								end
+								if not stopped then
+									valid_jokers[#valid_jokers + 1] = v.key
+								end
+							end
+						end
+						if #valid_jokers > 0 then
+							SMODS.add_card {
+								set = 'Joker',
+								key = pseudorandom_element(valid_jokers, pseudoseed('zero_consortium'))
+							}
+						else
+							SMODS.add_card {
+								set = 'Joker',
+								rarity = 'Common',
+								key_append = 'zero_consortium'
+							}
+						end
+                        G.GAME.joker_buffer = 0
+                    end
+                    return true
+                end
+            }))
+            return {
+                message = localize('k_plus_joker'),
+                colour = G.C.BLUE,
+            }
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = "fucking_nothing",
+    unlocked = true,
+	discovered = true,
+    blueprint_compat = false,
+	atlas = "zero_jokers_2",
+    rarity = 2,
+    cost = 3,
+    pos = { x = 2, y = 1 },
+    calculate = function(self, card, context)
+        if context.mod_probability and not context.blueprint then
+            return {
+                numerator = 0
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+	key = "kill_this_man",
+	pos = {x = 6, y = 9},
+	atlas = "zero_jokers",
+	rarity = 1,
+	cost = 4,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = true,
+	eternal_compat = false,
+	demicoloncompat = true,
+	config = { extra = { payout = {-1,0,1,2}, killed = 10 } },
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.payout[1], card.ability.extra.payout[4], card.ability.extra.killed } }
+    end,
+	calculate = function(self, card, context)
+		if context.joker_main or context.forcetrigger then
+            return {
+                dollars = pseudorandom_element(card.ability.extra.payout, pseudoseed('kill_this_man'))
+            }
+        end
+		if context.joker_type_destroyed and context.card == card and not context.blueprint then
+			return {
+                dollars = card.ability.extra.killed
+            }
+		end
+	end
+}
+
+SMODS.Joker {
+    key = "wall",
+    pos = {x = 5, y = 1},
+    atlas = "zero_jokers_2",
+    rarity = 3,
+    cost = 7,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    demicoloncompat = true,
+    config = { extra = { slots = 1 } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.slots } }
+    end,
+    add_to_deck = function(self, card, from_debuff)
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.slots
+        if not from_debuff and G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_states then
+            if not G.GAME.round_resets.blind_choices.Extra_Boss then
+                G.GAME.round_resets.blind_choices.Extra_Boss = 'bl_wall'
+                G.GAME.last_extra_blind = G.GAME.round_resets.blind_choices.Extra_Boss
+            end
+            local current_state = G.GAME.round_resets.blind_states.Extra_Boss
+            if not current_state or current_state == 'Hide' then
+                G.GAME.round_resets.blind_states.Extra_Boss = 'Upcoming'
+                if G.GAME.blind_on_deck == 'Boss' then
+                    G.GAME.blind_on_deck = 'Extra_Boss'
+                    G.GAME.round_resets.blind_states.Boss = 'Upcoming'
+                    G.GAME.round_resets.blind_states.Extra_Boss = 'Current'
+                end
+            end
+            if G.blind_select then        
+                G.blind_select:remove()
+                G.blind_prompt_box:remove()
+                G.STATE_COMPLETE = false
+            end
+        end
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.extra.slots
+		if not from_debuff and G.GAME and G.GAME.round_resets and G.GAME.round_resets.blind_states then
+            local count = 0
+            if G.jokers and G.jokers.cards then
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i].config.center.key == "j_zero_wall" then
+                        count = count + 1
+                    end
+                end
+            end
+            if count <= 0 then
+                local current_state = G.GAME.round_resets.blind_states.Extra_Boss
+                if current_state and current_state ~= 'Hide' and current_state ~= 'Defeated' then
+                    if G.GAME.blind_on_deck == 'Extra_Boss' then
+                        G.GAME.blind_on_deck = 'Boss'
+                        G.GAME.round_resets.blind_states.Extra_Boss = 'Upcoming'
+                        G.GAME.round_resets.blind_states.Boss = 'Current'
+                    end
+                    G.GAME.round_resets.blind_states.Extra_Boss = 'Hide'
+                end
+                if G.blind_select then        
+                    G.blind_select:remove()
+                    G.blind_prompt_box:remove()
+                    G.STATE_COMPLETE = false
+                end
+            end
+        end
+    end,
+	calculate = function(self, card, context)
+		if ((context.before and G.GAME.blind.config.blind.key == "bl_wall") or context.forcetrigger) and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+			G.E_MANAGER:add_event(Event({
+				func = (function()
+					SMODS.add_card {
+						set = 'Cups',
+						key_append = 'zero_wall'
+					}
+					G.GAME.consumeable_buffer = 0
+					return true
+				end)
+			}))
+			return {
+				message = localize('k_plus_cups'),
+			}
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = "witness",
+	atlas = "zero_jokers",
+    pos = { x = 3, y = 4 },
+    rarity = 1,
+    blueprint_compat = true,
+	demicoloncompat = true,
+    cost = 4,
+	unlocked = true,
+	discovered = true,
+    calculate = function(self, card, context)
+		if context.joker_main or context.forcetrigger then
+            return {
+                chips = zero_needlesslycomplexrandomchips(pseudorandom("witness"))
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "miriam",
+	atlas = "zero_jokers",
+    pos = { x = 3, y = 9 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 4,
+	unlocked = true,
+	discovered = true,
+    config = { extra = { mult = 0, mult_mod = 4} },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {set = "Other", key = 'zero_miriam_lola'}
+		return { vars = { card.ability.extra.mult_mod, card.ability.extra.mult } }
+    end,
+    calculate = function(self, card, context)
+		if context.discard and not context.blueprint then
+			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
+		end
+        if context.joker_main then
+            return {
+                mult = card.ability.extra.mult
+            }
+        end
+		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+			card.ability.extra.mult = 0
+		end
+    end,
+	add_to_deck = function(self, card, from_debuff)
+		if next(SMODS.find_card('j_zero_lola')) and not next(SMODS.find_card('j_zero_miriam')) then
+			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if not next(SMODS.find_card('j_zero_miriam')) then
+			G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+		end
+	end
+}
+
+SMODS.Joker {
+    key = "lola",
+	atlas = "zero_jokers",
+    pos = { x = 4, y = 9 },
+    rarity = 1,
+    blueprint_compat = true,
+    cost = 4,
+	unlocked = true,
+	discovered = true,
+    config = { extra = { chips = 0, chips_mod = 10} },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {set = "Other", key = 'zero_miriam_lola'}
+		return { vars = { card.ability.extra.chips_mod, card.ability.extra.chips } }
+    end,
+    calculate = function(self, card, context)
+		if context.before and not context.blueprint then
+			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
+		end
+		if context.discard and card.ability.extra.chips ~= 0 and not context.blueprint then
+			card.ability.extra.chips = 0
+			return {
+                message = localize('k_reset')
+            }
+		end
+        if context.joker_main then
+            return {
+                chips = card.ability.extra.chips
+            }
+        end
+    end,
+	add_to_deck = function(self, card, from_debuff)
+		if next(SMODS.find_card('j_zero_miriam')) and not next(SMODS.find_card('j_zero_lola')) then
+			G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+		end
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		if not next(SMODS.find_card('j_zero_lola')) then
+			G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+		end
+	end
+}
+
+SMODS.Joker {
+    key = "yixi",
+	atlas = "zero_jokers_2",
+    pos = { x = 0, y = 1 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 7,
+	unlocked = true,
+	discovered = true,
+    config = { extra = { xmult = 1, xmult_mod = 0.5} },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {set = "Other", key = 'zero_yixi_mai'}
+		return { vars = { card.ability.extra.xmult_mod, card.ability.extra.xmult } }
+    end,
+    calculate = function(self, card, context)
+		if context.before and not context.blueprint then
+			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+		end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+		if context.end_of_round and not context.individual and not context.repetition and not next(SMODS.find_card('j_zero_mai')) and not context.blueprint then
+			card.ability.extra.xmult = 1
+			return {
+                message = localize('k_reset')
+            }
+		end
+    end
+}
+
+SMODS.Joker {
+    key = "mai",
+	atlas = "zero_jokers_2",
+    pos = { x = 1, y = 1 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+	unlocked = true,
+	discovered = true,
+    config = { extra = { xmult = 3 } },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {set = "Other", key = 'zero_yixi_mai'}
+		return { vars = { card.ability.extra.xmult } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and G.GAME.current_round.hands_played == 0 then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "dandelion",
+	atlas = "zero_jokers_2",
+    pos = { x = 8, y = 1 },
+    rarity = 2,
+    blueprint_compat = true,
+    cost = 6,
+	unlocked = true,
+	discovered = true,
+	config = { extra = { suit = "Clubs" } },
+    calculate = function(self, card, context)
+        if G.GAME.current_round.hands_played == 0 then
+			if context.retrigger_joker_check and not context.retrigger_joker and context.other_card then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i] == context.other_card and ((G.jokers.cards[i - 1] and G.jokers.cards[i - 1] == card) or (G.jokers.cards[i + 1] and G.jokers.cards[i + 1] == card)) then
+						return {
+							message = localize("k_again_ex"),
+							repetitions = 1,
+							card = card
+						}
+					end
+				end
+			end
+			if context.after then
+				local randomcard = pseudorandom_element( G.play.cards, "dandelion" )
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() randomcard:flip(); play_sound('card1', 1); randomcard:juice_up(0.3, 0.3); card:juice_up(0.3, 0.3) return true end }))
+				delay(0.2)
+				G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() SMODS.change_base(randomcard, card.ability.extra.suit, tostring(pseudorandom("dandelion", 1, 10)));return true end }))
+				G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.1, func = function() randomcard:flip(); play_sound('card1', 1); randomcard:juice_up(0.3, 0.3); card:juice_up(0.3, 0.3) return true end }))
+				delay(3)
+			end
+		end
+    end
+}
+
+--spectrum-requiring jokers
+if next(SMODS.find_mod('SpectrumFramework')) then
+	SMODS.Joker {
+		key = "majesty_colors",
+		atlas = "zero_jokers",
+		pos = { x = 0, y = 9 },
+		rarity = 2,
+		blueprint_compat = true,
+		demicoloncompat = true,
+		cost = 5,
+		unlocked = true,
+		discovered = true,
+		config = { extra = { odds = 2 } },
+		loc_vars = function(self, info_queue, card)
+			return { vars = { card.ability.extra.odds, G.GAME.probabilities.normal } }
+		end,
+		calculate = function(self, card, context)
+			if ((context.before and next(context.poker_hands["spectrum_Spectrum"])) or context.forcetrigger) and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit and pseudorandom('majesty_colors') < G.GAME.probabilities.normal / card.ability.extra.odds then
+				G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+				G.E_MANAGER:add_event(Event({
+					func = (function()
+						SMODS.add_card({ set = 'Consumeables', area = G.consumeables, key_append = 'majesty_colors' })
+						G.GAME.consumeable_buffer = 0
+						return true
+					end)
+				}))
+				return {
+					message = localize('k_plus_consumeable'),
+				}
+			end
+		end,
+		in_pool = function()
+			return SPECF.spectrum_played()
+		end
+	}
+	
+	SMODS.Joker {
+		key = "group_photo",
+		atlas = "zero_jokers_2",
+		pos = { x = 7, y = 1 },
+		rarity = 2,
+		blueprint_compat = true,
+		demicoloncompat = false,
+		cost = 7,
+		pixel_size = { h = 95 / 1.2 },
+		unlocked = true,
+		discovered = true,
+		config = { extra = { xmult = 2 } },
+		loc_vars = function(self, info_queue, card)
+			return { vars = { card.ability.extra.xmult } }
+		end,
+		calculate = function(self, card, context)
+			if context.individual and context.cardarea == G.play and not context.end_of_round and context.other_card:is_face() and next(context.poker_hands["spectrum_Spectrum"]) then
+				return {
+					xmult = card.ability.extra.xmult
+				}
+			end
+		end,
+		in_pool = function()
+			return SPECF.spectrum_played()
+		end
+	}
+end
 
 --keep legendary jokers last
 SMODS.Joker {

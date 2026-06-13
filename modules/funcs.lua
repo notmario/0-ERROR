@@ -121,3 +121,28 @@ zero_value_compatible = function(ability, config)
     end
 	return false
 end
+
+--behold: stupid random function for witness
+local bit = require("bit")
+function zero_needlesslycomplexrandomchips(seed)
+    local t = os.clock() * 10000
+    local s = tostring({}):sub(8)
+    local why = tonumber(s, 16) or 1
+    local x = (seed or math.random())
+    x = x * t + why
+    x = bit.bxor(x, bit.lshift(x, 1))
+    x = bit.bxor(x, bit.rshift(x, 1))
+    local y = math.sin(x * 0.000123)
+            + math.cos(x * 0.000987)
+            + math.tan((x % 314) / 1000)
+    local str = tostring(y):reverse() .. tostring(x):sub(1, 6)
+    local hash = 0
+    for i = 1, #str do
+        local b = str:byte(i)
+        hash = bit.bxor(hash, b * i * 7919)
+        hash = hash % 100000
+    end
+    local final = ((hash * 37) % 149) + 1
+    return final
+end
+

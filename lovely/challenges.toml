@@ -1,0 +1,13 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+#no shop modifier
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''G.STATE = G.STATES.SHOP'''
+position = "after"
+payload = '''if (G.GAME.modifiers.zero_no_shop) then G.STATE = G.STATES.BLIND_SELECT end'''
+match_indent = true

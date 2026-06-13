@@ -1,0 +1,175 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.blind_states = G.GAME.round_resets.blind_states or {Small = 'Select', Big = 'Upcoming', Boss = 'Upcoming'}"
+position = "after"
+match_indent = true
+payload = "G.GAME.round_resets.blind_states.Extra_Boss = G.GAME.round_resets.blind_states.Extra_Boss or (next(SMODS.find_card('j_zero_wall')) and 'Upcoming' or 'Hide')"
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.blind_states.Boss = 'Upcoming'"
+position = "after"
+match_indent = true
+payload = """
+G.GAME.round_resets.blind_states.Extra_Boss = next(SMODS.find_card('j_zero_wall')) and 'Upcoming' or 'Hide'
+G.GAME.round_resets.blind_choices.Extra_Boss = 'bl_wall'
+G.GAME.last_extra_blind = G.GAME.round_resets.blind_choices.Extra_Boss
+"""
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "not (G.GAME.round_resets.blind_states.Big == 'Defeated' or G.GAME.round_resets.blind_states.Big == 'Skipped'or G.GAME.round_resets.blind_states.Big == 'Hide') and 'Big' or "
+position = "after"
+match_indent = true
+payload = "not (not G.GAME.round_resets.blind_states.Extra_Boss or G.GAME.round_resets.blind_states.Extra_Boss == 'Defeated' or G.GAME.round_resets.blind_states.Extra_Boss == 'Skipped'or G.GAME.round_resets.blind_states.Extra_Boss == 'Hide') and 'Extra_Boss' or "
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={"
+position = "before"
+match_indent = true
+payload = '''
+if next(SMODS.find_card('j_zero_wall')) then
+    if G.GAME.round_resets.blind_choices.Extra_Boss == nil then
+        G.GAME.round_resets.blind_choices.Extra_Boss = 'bl_wall'
+        G.GAME.last_extra_blind = G.GAME.round_resets.blind_choices.Extra_Boss
+    end
+    local extra_state = G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states["Extra_Boss"] or "Hide"
+    G.blind_select_opts.extra_boss = extra_state ~= "Hide" and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice("Extra_Boss")},false,get_blind_main_colour("Extra_Boss"), mix_colours(G.C.BLACK, get_blind_main_colour("Extra_Boss"), 0.8))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil 
+else
+    G.blind_select_opts.extra_boss = nil
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "create_UIBox_blind_choice('Big', true)"
+position = "after"
+match_indent = true
+payload = """
+}} or nil,
+(G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states['Extra_Boss'] and G.GAME.round_resets.blind_states['Extra_Boss'] ~= 'Hide') and {n=G.UIT.C, config={align = 'tm', padding = 0.1, outline = 2, r = 0.1, line_emboss = 0.2, outline_colour = G.C.BLACK}, nodes={
+    create_UIBox_blind_choice('Extra_Boss', true)
+"""
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '{n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={'
+position = "at"
+match_indent = true
+payload = """{n=G.UIT.R, config={align = 'cm', padding = next(SMODS.find_card('j_zero_wall')) and 0.2 or 0.5}, nodes= next(SMODS.find_card('j_zero_wall')) and {
+    G.GAME.round_resets.blind_states['Small'] ~= 'Hide' and {n=G.UIT.O, config={align = 'cm', object = G.blind_select_opts.small}} or nil,
+    G.GAME.round_resets.blind_states['Big'] ~= 'Hide' and {n=G.UIT.O, config={align = 'cm', object = G.blind_select_opts.big}} or nil,
+    G.GAME.round_resets.blind_states['Extra_Boss'] ~= 'Hide' and {n=G.UIT.O, config={align = 'cm', object = G.blind_select_opts.extra_boss}} or nil,
+    G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and {n=G.UIT.O, config={align = 'cm', object = G.blind_select_opts.boss}} or nil,
+} or {"""
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "elseif type == 'Big' then"
+position = "before"
+match_indent = true
+payload = "elseif type == 'Extra_Boss' then\n"
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "G.GAME.blind_on_deck == 'Small' and 'Big' or G.GAME.blind_on_deck == 'Big' and 'Boss' or 'Boss'"
+position = "at"
+match_indent = true
+payload = "G.GAME.blind_on_deck == 'Small' and 'Big' or (G.GAME.blind_on_deck == 'Big' and next(SMODS.find_card('j_zero_wall'))) and 'Extra_Boss' or G.GAME.blind_on_deck == 'Big' and 'Boss' or 'Boss'"
+
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "if blind == 'Boss' or blind == 'Small' or blind == 'Big' then"
+position = "at"
+match_indent = true
+payload = "if blind == 'Boss' or blind == 'Small' or blind == 'Big' or blind == 'Extra_Boss' then"
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.blind:get_type() == 'Boss' then"
+position = "at"
+match_indent = true
+payload = "if G.GAME.blind:get_type() == 'Boss' and G.GAME.round_resets.blind ~= G.P_BLINDS[G.GAME.last_extra_blind] then"
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.round_resets.blind_states.Boss = 'Defeated'"
+position = "at"
+match_indent = true
+payload = """
+if G.GAME.round_resets.blind and G.GAME.round_resets.blind.key == G.GAME.last_extra_blind and G.GAME.round_resets.blind_states.Extra_Boss ~= 'Hide' then
+    G.GAME.round_resets.blind_states.Extra_Boss = 'Defeated'
+else
+    G.GAME.round_resets.blind_states.Boss = 'Defeated'
+end
+"""
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.round_resets.blind_states.Boss = 'Current'"
+position = "at"
+match_indent = true
+payload = """
+if G.GAME.round_resets.blind and G.GAME.round_resets.blind.key == G.GAME.last_extra_blind and G.GAME.round_resets.blind_states.Extra_Boss ~= 'Hide' then
+    G.GAME.round_resets.blind_states.Extra_Boss = 'Current'
+else
+    G.GAME.round_resets.blind_states.Boss = 'Current'
+end
+"""
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = "self.boss = blind and not not blind.boss"
+position = "after"
+match_indent = true
+payload = """
+if blind and type(blind) == 'table' and blind.key == G.GAME.last_extra_blind and G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Extra_Boss ~= 'Hide' then
+    self.boss = false
+end
+"""
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = "elseif self.name and self.name ~= '' then"
+position = "before"
+match_indent = true
+payload = """
+elseif self.config and type(self.config.blind) == 'table' and self.config.blind.key == G.GAME.last_extra_blind and G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Extra_Boss ~= 'Hide' then
+    return 'Extra_Boss'
+"""
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "G.prev_large_state = G.GAME.round_resets.blind_states.Big"
+position = "after"
+match_indent = true
+payload = "G.prev_extra_state = G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Extra_Boss or 'Hide'"
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "G.GAME.round_resets.loc_blind_states.Big = localize(G.GAME.round_resets.blind_states.Big,'blind_states')"
+position = "after"
+match_indent = true
+payload = "G.GAME.round_resets.loc_blind_states.Extra_Boss = localize(G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Extra_Boss or 'Hide', 'blind_states')"

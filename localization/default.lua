@@ -185,6 +185,14 @@ local loc_stuff = {
           "becomes {C:dark_edition}Gala",
 		},
 	  },
+	  tag_zero_occult = {
+	    name = "Occult Tag",
+		text = {
+          "Next base edition shop",
+          "Joker is free and",
+          "becomes {C:dark_edition}Occult",
+		},
+	  },
 	},
     Tarot = {
 	  c_zero_light = {
@@ -989,8 +997,8 @@ local loc_stuff = {
         name = "Sharps Bin",
         text = {
             "This Joker gains {X:mult,C:white} X#1# {} Mult",
-            "when a {C:attention}Glass{} card",
-            "is destroyed",
+            "when a {C:attention}Glass{} card is added,",
+            "destroyed or enhanced",
             "{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
         },
       },
@@ -1385,6 +1393,98 @@ local loc_stuff = {
             "to fill {C:attention}Joker{} and {C:attention}consumable{} slots",
             "with random {C:attention}consumables"
         }
+      },
+	  j_zero_fucking_nothing = {
+        name = "Wow! It's Fucking Nothing",
+        text = {
+            "Sets all {C:attention}listed{}",
+            "{C:green}probabilities{} to {C:green}0{}"
+        }
+      },
+	  j_zero_kill_this_man = {
+        name = "mods, kill this man",
+        text = {
+            "Gain between {C:money}$#1#{} and {C:money}$#2#",
+            "every hand, Gain {C:money}$#3#",
+			"when destroyed"
+        }
+      },
+	  j_zero_wall = {
+        name = "The Wall",
+        text = {
+			"{C:attention}+#1#{} consumable slot,",
+			"face {C:cups}The Wall{} as an {C:attention}Additional",
+			"{C:attention}Blind{} every ante, create a",
+            "{C:cups}Cups{} card every time you",
+            "play a hand against it",
+        },
+      },
+	  j_zero_witness = {
+        name = "Witness",
+        text = {
+			"Gives {C:green}random {C:chips}Chips{}, but does",
+            "so with a bunch of needlessly",
+			"complex {C:dark_edition}calculations{} to appear",
+			"smarter than it actually is"
+        },
+      },
+	  j_zero_miriam = {
+        name = "MIRIAM",
+        text = {
+			"{C:mult}+#1#{} Mult per {C:attention}discard",
+            "used this round",
+			"{C:inactive}(currently {C:mult}+#2#{C:inactive} Mult)"
+        },
+      },
+	  j_zero_lola = {
+        name = "LOLA",
+        text = {
+			"This Joker gains {C:chips}+#1#{} Chips",
+			"per {C:attention}consecutive{} hand played",
+            "without discarding cards",
+			"{C:inactive}(currently {C:chips}+#2#{C:inactive} Chips)"
+        },
+      },
+	  j_zero_yixi = {
+        name = "Yi Xi",
+        text = {
+			"{X:mult,C:white}X#1#{} Mult per {C:attention}hand",
+            "played this round",
+			"{C:inactive}(currently {X:mult,C:white}X#2#{C:inactive} Mult)"
+        },
+      },
+	  j_zero_mai = {
+        name = "Mai",
+        text = {
+			"{X:mult,C:white}X#1#{} Mult on",
+            "{C:attention}first hand{} of round"
+        },
+      },
+	  j_zero_dandelion = {
+        name = "Dandelion",
+        text = {
+			"Retrigger {C:attention}adjacent{} Jokers on",
+            "{C:attention}first hand{} of round, a random ",
+			"card played in that hand becomes",
+			"a random {C:attention}non-Face {C:clubs}Club"
+        },
+      },
+	  j_zero_majesty_colors = {
+        name = "Majesty of Colors",
+        text = {
+			"{C:green}#2# in #1#{} chances to create",
+            "a random {C:attention}Consumable",
+			"if played hand contains",
+			"a {C:attention}Spectrum"
+        },
+      },
+	  j_zero_group_photo = {
+        name = "Group Photo",
+        text = {
+			"{C:attention}Face{} cards give {C:white,X:mult}X#1#{} Mult",
+            "if played hand contains",
+			"a {C:attention}Spectrum"
+        },
       },
 	  j_zero_vonllery = {
         name = {"Zhorie von Llery",
@@ -2328,6 +2428,20 @@ local loc_stuff = {
             "{C:white,X:chips}X#1#{} Chips",
         },
     },
+	  zero_miriam_lola = {
+		name = "Synergy!",
+		text = {
+			"{C:dark_edition}+1{} Joker slot when {C:attention}MIRIAM",
+			"and {C:attention}LOLA{} are together"
+		},
+	  },
+	  zero_yixi_mai = {
+		name = "Synergy!",
+		text = {
+			"{C:attention}Yi Xi{} does not reset if",
+			"you also own {C:attention}Mai"
+		},
+	  },
     },
   },
   misc = {
@@ -2345,6 +2459,7 @@ local loc_stuff = {
       k_plus_prestige = "+1 Prestige",
 	  k_plus_cups = "+1 Cups",
 	  k_plus_elemental = "+1 Element",
+	  k_plus_consumeable = "+1 Consumable",
 	  k_plus_suit_yourself = "+1 Suit Yourself",
 	  k_plus_sunsteel_pow = "+Sunsteel Power",
       k_poisoned_ex = "Poisoned!",
@@ -2405,12 +2520,11 @@ local loc_stuff = {
 	  
 	  ph_zero_sacred_pyre = "Saved by Sacred Pyre",
 	  ph_zero_soshi = "Saved by Soshi",
-	  ph_zero_retreat = "Retreated",
 	  
 	  zero_sc_hint_soshi = "A cat might\nhelp you",
 	  zero_sc_hint_jericho = "Seek the fabled\nflora 6",
 	  zero_sc_hint_oulala = "Infinity is\nsuch a fragile\nthing",
-	  zero_sc_hint_ =       "The password\nis found where\nAncient Magic\nmeets its end",
+	  zero_sc_hint_ = "The password\nis found where\nAncient Magic\nmeets its end",
     },
 	v_dictionary = {
 	  zero_alpine_lily_mult = "+#1# Mult",
@@ -2420,6 +2534,9 @@ local loc_stuff = {
 	  zero_alpine_lily_dollars = "+$#1#",
     zero_a_discards = "+#1# Discards",
 	},
+	v_text = {
+	  ch_c_zero_no_shop = {"No {C:attention}shops"}
+	},
 	suits_singular = {
 	  zero_Brights = "Bright",
 	},
@@ -2428,6 +2545,7 @@ local loc_stuff = {
 	},
 	challenge_names = {
 		c_zero_alpine_garden = "Alpine Garden",
+		c_zero_self_made_fortune = "Self-Made Fortune",
 	},
 	labels = {
 		zero_gala = "Gala",
