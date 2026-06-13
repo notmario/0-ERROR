@@ -1328,6 +1328,14 @@ local loc_stuff = {
           "appear on the board",
         },
       },
+    j_zero_zxspectrum = {
+        name = "ZX Spectrum",
+        text = {
+            "Earn {C:money}$#1#{} when",
+            "a card with {C:attention}2 or more{}",
+            "{C:attention}Gems{} is scored",
+        },
+      },
 	  j_zero_rewards_card = {
         name = "Joker Rewards Card",
         text = {

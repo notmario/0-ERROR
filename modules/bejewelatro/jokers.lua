@@ -750,6 +750,41 @@ SMODS.Joker {
     end,]]
 }
 
+-- ZX Spectrum
+SMODS.Joker {
+    key = "zxspectrum",
+    atlas = "zero_jokersBejeweled",
+    pos = { x = 7, y = 1 },
+    rarity = 2,
+    blueprint_compat = false,
+    cost = 6,
+    discovered = true,
+    config = { extra = { money = 4 } },
+    in_pool = function(self, args)
+        return do_bejewelatro()
+    end,
+    loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.money } }
+	end,
+    calculate = function(self, card, context)
+		if context.individual and context.cardarea == G.play then
+            local count = 0
+            for i = 1, #Bejewelatro.jewel_list do
+                if context.other_card.ability['zero_'..Bejewelatro.jewel_list[i]] then
+                    count = count + 1
+                end
+            end
+            if count >= 2 then
+                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
+                G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+                return {
+                    dollars = card.ability.extra.money,
+                }
+            end
+        end
+    end
+}
+
 local banned_jokers = {
     'j_jimbo',
     'j_greedy_joker',
