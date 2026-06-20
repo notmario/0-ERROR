@@ -1,5 +1,91 @@
 local loc_stuff = {
   descriptions = {
+    Back = {
+      b_zero_bejeweled = {
+        name = "Bejeweled Deck",
+        text = {
+          "Make poker hands",
+          "with {E:1,C:attention}match 3{C:inactive}..?",
+          "{s:0.8,C:red}#1#{s:0.8} hand size, {s:0.8,C:red}+#2#{s:0.8} Discards",
+          "{s:0.8}Win after Ante #3#",
+        }
+      },
+      b_zero_blue_bejeweled = {
+        name = "Blue Bejeweled Deck",
+        text = {
+          "Make poker hands",
+          "with {E:1,C:attention}match 3{C:inactive}..?",
+          "{s:0.8,C:red}#1#{s:0.8} hand size, {s:0.8}Win after Ante #2#{},",
+          "Start with 52 {C:attention,T:m_stone}Stone Cards{}",
+          "that give only {C:chips}+#3#{} Chips",
+        }
+      },
+    },
+    Blind = {
+        bl_zero_redjewelblind = {
+            name = "The Clover",
+            text = {
+                "All Red Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_orangejewelblind = {
+            name = "The Wave",
+            text = {
+                "All Orange Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_yellowjewelblind = {
+            name = "The Royalty",
+            text = {
+                "All Yellow Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_greenjewelblind = {
+            name = "The Cleave",
+            text = {
+                "All Green Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_bluejewelblind = {
+            name = "The Radiance",
+            text = {
+                "All Blue Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_violetjewelblind = {
+            name = "The Cost",
+            text = {
+                "All Violet Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_whitejewelblind = {
+            name = "The Ink",
+            text = {
+                "All White Gem cards",
+                "are debuffed",
+            },
+        },
+        bl_zero_thepanel = {
+            name = "The Panel",
+            text = {
+                "Gems on Board cannot",
+                "be moved vertically",
+            },
+        },
+        bl_zero_thedescent = {
+            name = "The Descent",
+            text = {
+                "Gems on Board cannot",
+                "be moved horizontally",
+            },
+        },
+    },
     Edition = {
       e_zero_gala = {
         name = "Gala",
@@ -171,6 +257,69 @@ local loc_stuff = {
            "{C:chips}+#4#{} chips",
         },
 	  },
+    c_zero_gemfall = {
+	    name = "Gem Fall",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_spectrum = {
+	    name = "Spectrum",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_coalmine = {
+	    name = "Coal Mine",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_chainreaction = {
+	    name = "Chain Reaction",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_arsenal = {
+	    name = "Arsenal",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_firestorm = {
+	    name = "Firestorm",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
+    c_zero_preserver = {
+	    name = "Preserver",
+	    text = {
+	    	"({V:1}lvl.#1#{}) Level up",
+	    	"{C:attention}#2#",
+	    	"{C:mult}+#3#{} Mult and",
+	    	"{C:chips}+#4#{} chips",
+	    },
+	  },
 	},
 	Spectral = {
         c_zero_philosopher_stone = {
@@ -179,6 +328,21 @@ local loc_stuff = {
                 "Combines any number of",
                 "cards into a {C:attention}Joker",
                 "{C:inactive}(Creating {C:attention}#1#{C:inactive})",
+            },
+        },
+        c_zero_moonstone = {
+            name = "Moonstone",
+            text = {
+                {
+                    "Upgrade all {C:zero_raregem}Rare Gems{} by",
+                    "their corresponding {C:dark_edition}Scaler{} values",
+                },
+                {
+                    "All cards with {C:attention}any gem{}",
+                    "gain bonus {X:chips,C:white}XChips{} based on",
+                    "their corresponding {C:zero_raregem}Rare Gem{}'s",
+                    "level after upgrading",
+                }
             },
         },
     },
@@ -950,7 +1114,226 @@ local loc_stuff = {
 			"all {C:attention}Jokers{} give {C:white,X:chips}X#1#{} Chips,",
 			"{E:2,C:red}self destructs{} in {C:attention}#2#{} rounds",
 			"{C:inactive}(#3#ctive!)"
-			
+        }
+      },
+    j_zero_gemjimbo = {
+        name = "Joker",
+        text = {
+            "{C:mult}+#1#{} Mult",
+        },
+      },
+    j_zero_gemred = {
+        name = "Angry Joker",
+        text = {
+            "Played cards with",
+            "a {C:red}Red Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_gemorange = {
+        name = "Hungry Joker",
+        text = {
+            "Played cards with",
+            "an {C:attention}Orange Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_gemyellow = {
+        name = "Frugal Joker",
+        text = {
+            "Played cards with",
+            "a {C:gold}Yellow Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_gemgreen = {
+        name = "Jealous Joker",
+        text = {
+            "Played cards with",
+            "a {C:green}Green Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_gemblue = {
+        name = "Vain Joker",
+        text = {
+            "Played cards with",
+            "a {C:blue}Blue Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_gemviolet = {
+        name = "Affectionate Joker",
+        text = {
+            "Played cards with",
+            "a {C:tarot}Violet Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_gemwhite = {
+        name = "Sleepy Joker",
+        text = {
+            "Played cards with",
+            "a {C:inactive}White Gem{} give",
+            "{C:mult}+#1#{} Mult when scored",
+        },
+      },
+    j_zero_gempair = {
+        name = "Ambivalent Joker",
+        text = {
+            "{C:red}+#1#{} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#",
+        },
+      },
+    j_zero_gemspectrum = {
+        name = "Downtrodden Joker",
+        text = {
+            "{C:red}+#1#{} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#",
+        },
+      },
+    j_zero_gemtwopair = {
+        name = "Helpless Joker",
+        text = {
+            "{C:red}+#1#{} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#",
+        },
+      },
+    j_zero_gemthree = {
+        name = "Blithe Joker",
+        text = {
+            "{C:red}+#1#{} Mult if played",
+            "hand contains",
+            "a {C:attention}#2#",
+        },
+      },
+    j_zero_gemhouse = {
+        name = "Wishy-Washy Joker",
+        text = {
+            "{C:red}+#1#{} Mult and {C:chips}+#2#{} Chips",
+            "if played hand contains",
+            "a {C:attention}#3#",
+        },
+      },
+    j_zero_gemfour = {
+        name = "Apathetic Joker",
+        text = {
+            "{C:red}+#1#{} Mult and {C:chips}+#2#{} Chips",
+            "if played hand contains",
+            "a {C:attention}#3#",
+        },
+      },
+    j_zero_gemflush = {
+        name = "Unfeeling Joker",
+        text = {
+            "{C:red}+#1#{} Mult and {C:chips}+#2#{} Chips",
+            "if played hand contains",
+            "a {C:attention}#3#",
+        },
+      },
+    j_zero_scarletfire = {
+        name = "Scarlet Fire",
+        text = {
+            "Played cards with",
+            "a {C:red}Red Gem{} give",
+            "{X:mult,C:white} X#1# {} Mult when scored",
+        },
+      },
+    j_zero_amberstar = {
+        name = "Amber Star",
+        text = {
+            "{C:attention}+#1#{} hand size for",
+            "each played card with an ",
+            "{C:attention}Orange Gem{} scored {C:attention}this round{}",
+            "{C:inactive}(Currently {}{C:attention}+#2#{}{C:inactive} hand size)",
+        },
+      },
+    j_zero_goldentwilight = {
+        name = "Golden Twilight",
+        text = {
+            "{C:green}#1# in #2#{} chance for",  
+            "played cards with",
+            "a {C:gold}Yellow Gem{} to",
+            "give {C:money}$#3#{} when scored",
+        },
+      },
+    j_zero_chartreusespring = {
+        name = "Chartreuse Spring",
+        text = {
+            "{C:green}#1# in #2#{} chance for",  
+            "played cards with",
+            "a {C:green}Green Gem{} to give",
+            "{C:white,X:chips}X#3#{} Chips when scored",
+        },
+      },
+    j_zero_azurewave = {
+        name = "Azure Wave",
+        text = {
+            "Played cards with",
+            "a {C:blue}Blue Gem{} give",
+            "{C:chips}+#1#{} Chips when scored",
+        },
+      },
+    j_zero_fuschiarose = {
+        name = "Fuschia Rose",
+        text = {
+            "{C:green}#1# in #2#{} chance for",  
+            "played cards with",
+            "a {C:tarot}Violet Gem{} to create",
+            "a {C:cups}Cups{} card when scored",
+            "{C:inactive}(Must have room)"
+        },
+      },
+    j_zero_ivorybloom = {
+        name = "Ivory Bloom",
+        text = {
+            "{C:green}#1# in #2#{} chance for",  
+            "played cards with",
+            "a {C:inactive}White Gem{} to create a",
+            "{X:prestige,C:white}Prestige{} card when scored",
+            "{C:inactive}(Must have room)"
+        },
+      },
+    j_zero_hypotenusejoker = {
+        name = "Hypotenuse",
+        text = {
+          "Gems on the board",
+          "can be moved {C:attention}diagonally{}",
+        },
+      },
+    j_zero_badtrip = {
+       name = "Bad Trip",
+       text = {
+          "Gain {C:red}+#1#{} Discards for",
+          "this round if played hand",
+          "contains a {C:attention}Spectrum{}", -- this should include non-gem Spectrums
+       },
+      },
+    j_zero_deuteranopia = {
+        name = "Deuteranopia",
+        text = {
+          "{C:red}Red Gems{} and {C:green}Green Gems{}",
+          "count as the same gem,",
+          "{C:blue}Blue Gems{} and {C:tarot}Violet Gems{} ",
+          "count as the same gem",
+        },
+      },
+    j_zero_prism = {
+        name = "Prism",
+        text = {
+          "{C:inactive}White Gems{} no longer",
+          "appear on the board",
+        },
+      },
+    j_zero_zxspectrum = {
+        name = "ZX Spectrum",
+        text = {
+            "Earn {C:money}$#1#{} when",
+            "a card with {C:attention}2 or more{}",
+            "{C:attention}Gems{} is scored",
         },
       },
 	  j_zero_rewards_card = {
@@ -1644,6 +2027,27 @@ local loc_stuff = {
         },
       },
     },
+  zero_raregem = {
+      raregem = {
+          name = {
+              "#6#",
+          },
+          text = {
+            {  
+                "Select up to {C:attention}#2#{} cards and",
+                "replace its gem(s) with {V:1}#1#{}",
+                "",
+                "{C:dark_edition}Scaler{s:0.5,C:attention} {f:6,s:0.8}—{s:0.5,C:attention} {C:attention}#3#",
+            },
+            {  
+                "All cards with {V:1}#1#{}",
+                "give {X:chips,C:white}+X#4#{} Chips when scored",
+                "",
+                "{C:dark_edition}Scaler{s:0.5,C:attention} {f:6,s:0.8}—{s:0.5,C:attention} {C:attention}#5#",
+            },
+          },
+      },
+  },
 	Voucher = {
 	  v_zero_homeworld = {
 		name = "Homeworld",
@@ -1791,12 +2195,52 @@ local loc_stuff = {
 		  "add to your consumables"
         }
       },
+      p_zero_raregems_normal_1 = {
+        name = "Rare Gem Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:spectral} Rare Gem{} cards to",
+		      "be used immediately"
+        }
+      },
+      p_zero_raregems_normal_2 = {
+        name = "Rare Gem Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:spectral} Rare Gem{} cards to",
+		      "be used immediately"
+        }
+      },
+      p_zero_raregems_jumbo_1 = {
+        name = "Jumbo Rare Gem Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:spectral} Rare Gem{} cards to",
+		      "be used immediately"
+        }
+      },
+      p_zero_raregems_mega_1 = {
+        name = "Mega Rare Gem Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{C:spectral} Rare Gem{} cards to",
+		      "be used immediately"
+        }
+      },
       scaler_explainer = {
         name = "Scaler",
         text = {
           "When used, increases",
           "all future {X:prestige,C:white}#1#{}'s",
           "strength by {C:attention}#2#"
+        }
+      },
+      scaler_explainer_raregems = {
+        name = "Scaler",
+        text = {
+          "When used, increases",
+          "all future {X:zero_raregem,C:white}#1#{}'s",
+          "strength by {C:attention}#2#{} and {C:attention}#3#{}",
         }
       },
       cooldown_explainer = {
@@ -1908,6 +2352,90 @@ local loc_stuff = {
 			"into a {C:elemental}Greater Element"
 		},
 	  },
+    zero_redjewel = {
+        name = "Red Gem",
+        text = {
+            "is Red",
+        },
+    },
+    zero_redjewel_xchips = {
+        name = "Red Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_orangejewel = {
+        name = "Orange Gem",
+        text = {
+            "is Orange",
+        },
+    },
+    zero_orangejewel_xchips = {
+        name = "Orange Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_yellowjewel = {
+        name = "Yellow Gem",
+        text = {
+            "is Yellow",
+        },
+    },
+    zero_yellowjewel_xchips = {
+        name = "Yellow Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_greenjewel = {
+        name = "Green Gem",
+        text = {
+            "is Green",
+        },
+    },
+    zero_greenjewel_xchips = {
+        name = "Green Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_bluejewel = {
+        name = "Blue Gem",
+        text = {
+            "is Blue",
+        },
+    },
+    zero_bluejewel_xchips = {
+        name = "Blue Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_violetjewel = {
+        name = "Violet Gem",
+        text = {
+            "is Violet",
+        },
+    },
+    zero_violetjewel_xchips = {
+        name = "Violet Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
+    zero_whitejewel = {
+        name = "White Gem",
+        text = {
+            "is White",
+        },
+    },
+    zero_whitejewel_xchips = {
+        name = "White Gem",
+        text = {
+            "{C:white,X:chips}X#1#{} Chips",
+        },
+    },
 	  zero_miriam_lola = {
 		name = "Synergy!",
 		text = {
@@ -1935,6 +2463,7 @@ local loc_stuff = {
 	  k_elemental_mix = "Greater Element",
 	  k_elemental_chaotic = "Chaotic Element",
       k_elemental_pack = "Element Pack",
+    k_zero_raregem_pack = "Rare Gems Pack",
       k_plus_prestige = "+1 Prestige",
 	  k_plus_cups = "+1 Cups",
 	  k_plus_elemental = "+1 Element",
@@ -1979,6 +2508,13 @@ local loc_stuff = {
       mult_extra = "Bonus +Mult",
       chips_extra = "Bonus +Chips",
       xmult_extra = "Bonus XMult",
+      c_zero_heartstone_xchips = "Red Gem XChips",
+      c_zero_citrine_xchips = "Orange Gem XChips",
+      c_zero_risingstar_xchips = "Yellow Gem XChips",
+      c_zero_stemerald_xchips = "Green Gem XChips",
+      c_zero_bluethunder_xchips = "Blue Gem XChips",
+      c_zero_highroller_xchips = "Violet Gem XChips",
+      c_zero_royalflash_xchips = "White Gem XChips",
 
       k_no_cooldowns = "No cards are on cooldown",
       k_prestige_cooldowns = "Cards on Cooldown:",
@@ -2004,6 +2540,7 @@ local loc_stuff = {
 	  zero_alpine_lily_xmult = "X#1# Mult",
 	  zero_alpine_lily_xchips = "X#1# Chips",
 	  zero_alpine_lily_dollars = "+$#1#",
+    zero_a_discards = "+#1# Discards",
 	},
 	v_text = {
 	  ch_c_zero_no_shop = {"No {C:attention}shops"}
@@ -2021,7 +2558,23 @@ local loc_stuff = {
 	labels = {
 		zero_gala = "Gala",
 		zero_occult = "Occult",
+    zero_redjewel = 'Red Gem',
+    zero_orangejewel = 'Orange Gem',
+    zero_yellowjewel = 'Yellow Gem',
+    zero_greenjewel = 'Green Gem',
+    zero_bluejewel = 'Blue Gem',
+    zero_violetjewel = 'Violet Gem',
+    zero_whitejewel = 'White Gem',
 	},
+  poker_hands = {
+      zero_jewel_flush = "Gem Flush",
+      zero_jewel_four = "Gem Four",
+      zero_jewel_house = "Gem House",
+      zero_jewel_three = "Gem Three",
+      zero_jewel_twopair = "Gem Two Pair",
+      zero_jewel_spectrum = "Gem Spectrum",
+      zero_jewel_pair = "Gem Pair",
+  },
   }
 }
 

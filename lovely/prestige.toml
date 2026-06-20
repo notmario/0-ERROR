@@ -15,6 +15,13 @@ PrestigeValues = {
   mult_extra = 0,
   chips_extra = 0,
   xmult_extra = 0,
+  c_zero_heartstone_xchips = 1,
+  c_zero_citrine_xchips = 1,
+  c_zero_risingstar_xchips = 1,
+  c_zero_stemerald_xchips = 1,
+  c_zero_bluethunder_xchips = 1,
+  c_zero_highroller_xchips = 1,
+  c_zero_royalflash_xchips = 1,
 },"""
 match_indent = true
 

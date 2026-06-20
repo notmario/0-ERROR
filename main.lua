@@ -35,4 +35,6 @@ end
 assert(SMODS.load_file("./modules/challenges.lua"))()
 
 assert(SMODS.load_file("./modules/ui.lua"))()
+
+assert(SMODS.load_file("./modules/bejewelatro/bejewelatro.lua"))()
 print("0 ERROR")

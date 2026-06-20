@@ -1,0 +1,619 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# do stuff with the main update function to move board bg
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+position = "before"
+pattern = "if self.STATE == self.STATES.PLAY_TAROT then"
+payload = """
+if not do_bejewelatro() then
+    Bejewelatro.board_visible = false
+end
+if Bejewelatro.board_visible then
+    Bejewelatro.f.update_bg(dt)
+else
+    if Bejewelatro.BG then Bejewelatro.BG:remove() end
+end
+"""
+match_indent = true
+overwrite = false
+
+# adjust hand box
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+position = "at"
+pattern = "config = { align = 'cm', offset = {x=0,y=0}, major = self, parent = self}"
+payload = """
+config = { align = 'cm', offset = {x= (Bejewelatro.board_visible and self == G.hand) and 8.85 or 0,y= (Bejewelatro.board_visible and self == G.hand) and -3.5 or 0}, major = self , parent = self}
+"""
+match_indent = true
+overwrite = false
+
+# adjust hand box's fraction
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+position = "at"
+pattern = "local card_count = self ~= G.shop_vouchers and {n=G.UIT.R, config={align = self == G.jokers and 'cl' or self == G.hand and 'cm' or 'cr', padding = 0.03, no_fill = true}, nodes={"
+payload = """
+local card_count = self ~= G.shop_vouchers and {n=G.UIT.R, config={align = self == G.jokers and 'cl' or (Bejewelatro.board_visible and self == G.hand) and 'cl' or self == G.hand and 'cm' or 'cr', padding = 0.03, no_fill = true}, nodes={
+"""
+match_indent = true
+overwrite = false
+
+
+# adjust hand cards (x)
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+position = "at"
+pattern = "card.T.x = self.T.x + (self.T.w-self.card_w)*((k-1)/math.max(max_cards-1, 1) - 0.5*(#self.cards-max_cards)/math.max(max_cards-1, 1)) + 0.5*(self.card_w - card.T.w)"
+payload = """
+if Bejewelatro.board_visible and self == G.hand and not (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) then
+    card.T.x = 8.85 + self.T.x + 0.5*(self.T.w-self.card_w)*((k-1)/math.max(max_cards-1, 1) - 0.25*(#self.cards-max_cards)/math.max(max_cards-1, 1)) + 0.5*(self.card_w - card.T.w)
+else
+    card.T.x = self.T.x + (self.T.w-self.card_w)*((k-1)/math.max(max_cards-1, 1) - 0.5*(#self.cards-max_cards)/math.max(max_cards-1, 1)) + 0.5*(self.card_w - card.T.w)
+end
+"""
+match_indent = true
+overwrite = false
+
+# adjust hand cards (y)
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+position = "after"
+pattern = "card.T.y = self.T.y + self.T.h/2 - card.T.h/2 - highlight_height + (G.SETTINGS.reduced_motion and 0 or 1)*0.03*math.sin(0.666*G.TIMERS.REAL+card.T.x) + math.abs(0.5*(-#self.cards/2 + k-0.5)/(#self.cards))-0.2"
+payload = """
+if Bejewelatro.board_visible then
+    card.T.y = card.T.y - 3.5
+end
+"""
+match_indent = true
+overwrite = false
+
+# allow the jewels to dynamically move
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+position = "at"
+pattern = '''
+card.T.y = self.T.y + self.T.h/2 - card.T.h/2 - highlight_height+ (G.SETTINGS.reduced_motion and 0 or 1)*0.03*math.sin(0.666*G.TIMERS.REAL+card.T.x)
+'''
+payload = """
+if card and card.ability and card.ability.set == 'jewel' then
+    card.T.y = Bejewelatro.board_pos.y - 2.5 + self.T.y + self.T.h/2 - card.T.h/2 - highlight_height+ (G.SETTINGS.reduced_motion and 0 or 1)*0.03*math.sin(0.666*G.TIMERS.REAL+card.T.x)
+else
+    card.T.y = self.T.y + self.T.h/2 - card.T.h/2 - highlight_height+ (G.SETTINGS.reduced_motion and 0 or 1)*0.03*math.sin(0.666*G.TIMERS.REAL+card.T.x)
+end
+"""
+match_indent = true
+overwrite = false
+
+# move play & discard buttons
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+position = "at"
+pattern = '''config = {align="bm", offset = {x=0,y=0.3},major = G.hand, bond = 'Weak'}'''
+payload = """
+config = {align="bm", offset = {x=Bejewelatro.board_visible and 6.35 or 0,y=Bejewelatro.board_visible and -3.2 or 0.3},major = G.hand, bond = 'Weak'}
+"""
+match_indent = true
+overwrite = false
+
+# move play & discard buttons 2
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+position = "at"
+pattern = '''config = {align="bm", offset = {x=0,y=0.3},major = G.hand, bond = 'Weak'}'''
+payload = """
+config = {align="bm", offset = {x=Bejewelatro.board_visible and 6.35 or 0,y=Bejewelatro.board_visible and -3.2 or 0.3},major = G.hand, bond = 'Weak'}
+"""
+match_indent = true
+overwrite = false
+
+# raise the board after blind is selected
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+SMODS.calculate_context({setting_blind = true, blind = G.GAME.round_resets.blind})
+'''
+position = "after"
+payload = '''
+if do_bejewelatro() then
+    Bejewelatro.f.board_raise()
+    Bejewelatro.show = true
+end
+'''
+match_indent = true
+
+# drop the board after blind is finished
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+G.STATE = G.STATES.ROUND_EVAL
+'''
+position = "after"
+payload = '''
+if do_bejewelatro() then
+    Bejewelatro.f.board_drop()
+    Bejewelatro.show = false
+end
+'''
+match_indent = true
+
+# remove the bg when going to main menu
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''
+G.FUNCS.go_to_menu = function(e)
+'''
+position = "after"
+payload = '''
+  Bejewelatro.board_visible = false
+'''
+match_indent = true
+
+# adds blue backgrounds to jewel-based poker hands
+[[patches]] 
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+{n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
+'''
+position = "at"
+payload = '''
+{n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(string.find(handname, 'jewel') and G.C.HAND_LEVELS[2] or G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
+'''
+match_indent = true
+
+# adds blue backgrounds to jewel-based poker hands
+[[patches]] 
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+or {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), force_focus = true, emboss = 0.05, hover = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}, focus_args = {snap_to = (simple and handname == 'Straight Flush')}}, nodes={
+'''
+position = "at"
+payload = '''
+    or {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(string.find(handname, 'jewel') and G.C.HAND_LEVELS[2] or G.C.JOKER_GREY, 0.1), force_focus = true, emboss = 0.05, hover = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}, focus_args = {snap_to = (simple and handname == 'Straight Flush')}}, nodes={
+'''
+match_indent = true
+
+# adds jewel stickers to appropriate cards
+[[patches]] 
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+if v.seal then card:set_seal(v.seal, true, true) end
+'''
+position = "after"
+payload = '''
+if v.jewel then
+    --[[for k,v in pairs(v.jewel) do
+        card.ability[k] = true
+    end]]
+    if v.jewel.zero_redjewel then card.ability.zero_redjewel = true end
+    if v.jewel.zero_orangejewel then card.ability.zero_orangejewel = true end
+    if v.jewel.zero_whitejewel then card.ability.zero_whitejewel = true end
+    if v.jewel.zero_yellowjewel then card.ability.zero_yellowjewel = true end
+    if v.jewel.zero_greenjewel then card.ability.zero_greenjewel = true end
+    if v.jewel.zero_bluejewel then card.ability.zero_bluejewel = true end
+    if v.jewel.zero_violetjewel then card.ability.zero_violetjewel = true end
+end
+'''
+match_indent = true
+
+# track drawn card in a non-self-destructive manner (depreciated)
+[[patches]] 
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+card = to:draw_card_from(from, stay_flipped, discarded_only)
+'''
+position = "after"
+payload = '''
+--[[if card and card.playing_card and Bejewelatro.new_colour_list and G.STATE ~= G.STATES.ROUND_EVAL then
+    for k,v in pairs(Bejewelatro.new_colour_list) do
+        card.ability[k] = true
+    end
+end]]
+'''
+match_indent = true
+
+# draw 1 card at the start of round in bejewelatro
+[[patches]] 
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+G.FUNCS.draw_from_deck_to_hand = function(e)
+'''
+position = "after"
+payload = '''
+if do_bejewelatro() and Bejewelatro.BG then
+    if not (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) then
+        if #G.hand.cards < G.hand.config.card_limit and not e then -- 'not e' prevents additional drawing
+            local jewelless_card = nil
+            for k,v in ipairs(G.hand.cards) do
+                local is_jewelless = true
+                for i=1,#Bejewelatro.jewel_list do
+                    if v.ability['zero_'..Bejewelatro.jewel_list[i]] then
+                        is_jewelless = false
+                        break
+                    end
+                end
+                if is_jewelless then
+                    jewelless_card = true
+                    break
+                end
+            end
+            if not jewelless_card then
+                Bejewelatro.f.draw_random_jewelless_card()
+            end
+        end
+        return false
+    end
+end
+'''
+match_indent = true
+
+# remove jewel stickers at end of round from all playing cards (depreciated)
+[[patches]] 
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
+'''
+position = "after"
+payload = '''
+    --[[G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        func = function()
+            if to == G.deck or to == G.discard then
+                for _, card in ipairs(to.cards) do
+                    if card.ability.zero_redjewel then card.ability.zero_redjewel = nil end
+                    if card.ability.zero_orangejewel then card.ability.zero_orangejewel = nil end
+                    if card.ability.zero_whitejewel then card.ability.zero_whitejewel = nil end
+                    if card.ability.zero_yellowjewel then card.ability.zero_yellowjewel = nil end
+                    if card.ability.zero_greenjewel then card.ability.zero_greenjewel = nil end
+                    if card.ability.zero_bluejewel then card.ability.zero_bluejewel = nil end
+                    if card.ability.zero_violetjewel then card.ability.zero_violetjewel = nil end
+                end
+            end
+            return true
+        end
+    }))]]
+'''
+match_indent = true
+
+# shuffle the board on discard
+[[patches]] 
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+G.FUNCS.discard_cards_from_highlighted = function(e, hook)
+'''
+position = "after"
+payload = '''
+    if do_bejewelatro() and Bejewelatro.BG then
+        for i=1,64 do
+            local x_pos1 = pseudorandom('jewelx1'..i, 1, 8)
+            local y_pos1 = pseudorandom('jewely1'..i, 1, 8)
+            local x_pos2 = pseudorandom('jewelx2'..i, 1, 8)
+            local y_pos2 = pseudorandom('jewely2'..i, 1, 8)
+            if not (x_pos1 == x_pos2 and y_pos1 == y_pos2) then
+                Bejewelatro.f.jewel_swap(
+                    Bejewelatro.jewel_rows[y_pos1].cards[x_pos1],
+                    Bejewelatro.jewel_rows[y_pos2].cards[x_pos2]
+                )
+            end
+        end
+        Bejewelatro.f.jewel_refill(true)
+    end
+'''
+match_indent = true
+
+# loads board with jewels if there is a save
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+self.HUD:recalculate()
+
+G.E_MANAGER:add_event(Event({
+    trigger = 'immediate',
+    func = (function()
+        unlock_notify()
+        return true
+    end)
+  }))
+'''
+position = "after"
+payload = '''
+if G.STATE == G.STATES.SELECTING_HAND and do_bejewelatro() then
+    Bejewelatro.f.board_raise(true) -- creates an empty board
+    Bejewelatro.show = true
+    Bejewelatro.board_visible = true
+    --Bejewelatro.f.destroy_jewels_board(true)
+    if G.GAME.Bejewelatro_jewels then
+        for row = 1,8 do
+            for jwl = 1,8 do
+                if G.GAME.Bejewelatro_jewels[row] then
+                    local card_jewel = SMODS.create_card({
+                        set = 'jewel', 
+                        key = G.GAME.Bejewelatro_jewels[row][jwl],
+                        skip_materialize = true,
+                    })
+                    Bejewelatro.jewel_rows[row]:emplace(card_jewel)
+                    card_jewel.position = {x = jwl, y = row}
+                end
+            end
+        end
+    end
+    G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        blockable = false,
+        delay =  1,
+        func = (function() 
+            Bejewelatro.f.jewel_refill()
+            return true 
+        end)
+    }))
+end
+'''
+match_indent = true
+
+# hide deck peek (1/2)
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+position = "at"
+pattern = '''
+if self == G.deck then
+    if G.CONTROLLER.HID.controller and G.STATE == G.STATES.SELECTING_HAND and not self.children.peek_deck then
+        self.children.peek_deck = UIBox{
+            definition = 
+                {n=G.UIT.ROOT, config = {align = 'cm', padding = 0.1, r =0.1, colour = G.C.CLEAR}, nodes={
+                    {n=G.UIT.R, config={align = "cm", r =0.1, colour = adjust_alpha(G.C.L_BLACK, 0.5),func = 'set_button_pip', focus_args = {button = 'triggerleft', orientation = 'bm', scale = 0.6, type = 'none'}}, nodes={
+                        {n=G.UIT.R, config={align = "cm"}, nodes={
+                            {n=G.UIT.T, config={text = 'PEEK', scale = 0.48, colour = G.C.WHITE, shadow = true}}
+                        }},
+                        {n=G.UIT.R, config={align = "cm"}, nodes={
+                            {n=G.UIT.T, config={text = 'DECK', scale = 0.38, colour = G.C.WHITE, shadow = true}}
+                        }},
+                    }},
+                }},
+            config = { align = 'cl', offset = {x=-0.5,y=0.1}, major = self, parent = self}
+        }
+        self.children.peek_deck.states.collide.can = false
+    elseif (not G.CONTROLLER.HID.controller or G.STATE ~= G.STATES.SELECTING_HAND) and self.children.peek_deck then
+        self.children.peek_deck:remove()
+        self.children.peek_deck = nil
+    end
+    if not self.children.view_deck then 
+        self.children.view_deck = UIBox{
+            definition = 
+                {n=G.UIT.ROOT, config = {align = 'cm', padding = 0.1, r =0.1, colour = G.C.CLEAR}, nodes={
+                    {n=G.UIT.R, config={align = "cm", padding = 0.05, r =0.1, colour = adjust_alpha(G.C.BLACK, 0.5),func = 'set_button_pip', focus_args = {button = 'triggerright', orientation = 'bm', scale = 0.6}, button = 'deck_info'}, nodes={
+                        {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                            {n=G.UIT.T, config={text = localize('k_view'), scale = 0.48, colour = G.C.WHITE, shadow = true}}
+                        }},
+                        {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                            {n=G.UIT.T, config={text = localize('k_deck'), scale = 0.38, colour = G.C.WHITE, shadow = true}}
+                        }},
+                    }},
+                }},
+            config = { align = 'cm', offset = {x=0,y=0}, major = self.cards[1] or self, parent = self}
+        }
+        self.children.view_deck.states.collide.can = false
+    end
+if G.deck_preview or self.states.collide.is or (G.buttons and G.buttons.states.collide.is and G.CONTROLLER.HID.controller) then self.children.view_deck:draw() end
+    if self.children.peek_deck then self.children.peek_deck:draw() end
+end
+'''
+payload = """
+if self == G.deck then
+    if not do_bejewelatro() then
+        if G.CONTROLLER.HID.controller and G.STATE == G.STATES.SELECTING_HAND and not self.children.peek_deck then
+            self.children.peek_deck = UIBox{
+                definition = 
+                    {n=G.UIT.ROOT, config = {align = 'cm', padding = 0.1, r =0.1, colour = G.C.CLEAR}, nodes={
+                        {n=G.UIT.R, config={align = "cm", r =0.1, colour = adjust_alpha(G.C.L_BLACK, 0.5),func = 'set_button_pip', focus_args = {button = 'triggerleft', orientation = 'bm', scale = 0.6, type = 'none'}}, nodes={
+                            {n=G.UIT.R, config={align = "cm"}, nodes={
+                                {n=G.UIT.T, config={text = 'PEEK', scale = 0.48, colour = G.C.WHITE, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={align = "cm"}, nodes={
+                                {n=G.UIT.T, config={text = 'DECK', scale = 0.38, colour = G.C.WHITE, shadow = true}}
+                            }},
+                        }},
+                    }},
+                config = { align = 'cl', offset = {x=-0.5,y=0.1}, major = self, parent = self}
+            }
+            self.children.peek_deck.states.collide.can = false
+        elseif (not G.CONTROLLER.HID.controller or G.STATE ~= G.STATES.SELECTING_HAND) and self.children.peek_deck then
+            self.children.peek_deck:remove()
+            self.children.peek_deck = nil
+        end
+    end
+    if not self.children.view_deck then 
+        if do_bejewelatro() then
+            Bejewelatro.f.update_jewel_peek_table_values()
+            self.children.view_deck = UIBox{
+                definition = 
+                    {n=G.UIT.ROOT, config = {align = 'cm', padding = 0.1, r =0.1, colour = G.C.CLEAR}, nodes={
+                        Bejewelatro.f.suit_peek_table(),
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, r =0.1, colour = G.C.CLEAR}, nodes={
+                            {n=G.UIT.R, config={align = "cm", padding = 0.05, r =0.1, colour = adjust_alpha(G.C.BLACK, 0.5),func = 'set_button_pip', focus_args = {button = 'triggerright', orientation = 'bm', scale = 0.6}, button = 'deck_info'}, nodes={
+                                {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                                    {n=G.UIT.T, config={text = localize('k_view'), scale = 0.48, colour = G.C.WHITE, shadow = true}}
+                                }},
+                                {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                                    {n=G.UIT.T, config={text = localize('k_deck'), scale = 0.38, colour = G.C.WHITE, shadow = true}}
+                                }},
+                            }},
+                        }},
+                    }},
+                config = { align = 'cm', offset = {x=-1.75,y=0}, major = self.cards[1] or self, parent = self}
+            }
+            self.children.view_deck.states.collide.can = false
+        else
+            self.children.view_deck = UIBox{
+                definition = 
+                    {n=G.UIT.ROOT, config = {align = 'cm', padding = 0.1, r =0.1, colour = G.C.CLEAR}, nodes={
+                        {n=G.UIT.R, config={align = "cm", padding = 0.05, r =0.1, colour = adjust_alpha(G.C.BLACK, 0.5),func = 'set_button_pip', focus_args = {button = 'triggerright', orientation = 'bm', scale = 0.6}, button = 'deck_info'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                                {n=G.UIT.T, config={text = localize('k_view'), scale = 0.48, colour = G.C.WHITE, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 2}, nodes={
+                                {n=G.UIT.T, config={text = localize('k_deck'), scale = 0.38, colour = G.C.WHITE, shadow = true}}
+                            }},
+                        }},
+                    }},
+                config = { align = 'cm', offset = {x=0,y=0}, major = self.cards[1] or self, parent = self}
+            }
+            self.children.view_deck.states.collide.can = false
+        end
+    end
+if G.deck_preview or self.states.collide.is or (G.buttons and G.buttons.states.collide.is and G.CONTROLLER.HID.controller) then self.children.view_deck:draw() end
+    if not do_bejewelatro() and self.children.peek_deck then self.children.peek_deck:draw() end
+end
+"""
+match_indent = true
+overwrite = false
+
+# hide deck peek (2/2)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+position = "at"
+pattern = '''
+    if not self.deck_preview and not G.OVERLAY_MENU and (
+        (self.deck and self.deck.cards[1] and self.deck.cards[1].states.collide.is and ((not self.deck.cards[1].states.drag.is) or self.CONTROLLER.HID.touch) and (not self.CONTROLLER.HID.controller)) or 
+        G.CONTROLLER.held_buttons.triggerleft) then
+        if self.buttons then
+            self.buttons.states.visible = false
+        end
+        self.deck_preview = UIBox{
+            definition = self.UIDEF.deck_preview(),
+            config = {align='tm', offset = {x=0,y=-0.8},major = self.hand, bond = 'Weak'}
+        }
+        self.E_MANAGER:add_event(Event({
+            blocking = false,
+            blockable = false,
+            func = function()
+                if self.deck_preview and not (((self.deck and self.deck.cards[1] and self.deck.cards[1].states.collide.is and not self.CONTROLLER.HID.controller)) or G.CONTROLLER.held_buttons.triggerleft) then 
+                    self.deck_preview:remove()
+                    self.deck_preview = nil
+                    local _card = G.CONTROLLER.focused.target
+                    local start = G.TIMERS.REAL
+                    self.E_MANAGER:add_event(Event({
+                        func = function()
+                            if _card and _card.area and _card.area == G.hand then
+                                local _x, _y = _card:put_focused_cursor()
+                                G.CONTROLLER:update_cursor({x=_x/(G.TILESCALE*G.TILESIZE),y=_y/(G.TILESCALE*G.TILESIZE)})
+                            end
+                            if start + 0.4 < G.TIMERS.REAL then
+                                return true
+                            end
+                        end
+                    }))
+                    return true
+                end
+            end
+        }))
+    end
+'''
+payload = """
+    if not do_bejewelatro() then
+        if not self.deck_preview and not G.OVERLAY_MENU and (
+            (self.deck and self.deck.cards[1] and self.deck.cards[1].states.collide.is and ((not self.deck.cards[1].states.drag.is) or self.CONTROLLER.HID.touch) and (not self.CONTROLLER.HID.controller)) or 
+            G.CONTROLLER.held_buttons.triggerleft) then
+            if self.buttons then
+                self.buttons.states.visible = false
+            end
+            self.deck_preview = UIBox{
+                definition = self.UIDEF.deck_preview(),
+                config = {align='tm', offset = {x=0,y=-0.8},major = self.hand, bond = 'Weak'}
+            }
+            self.E_MANAGER:add_event(Event({
+                blocking = false,
+                blockable = false,
+                func = function()
+                    if self.deck_preview and not (((self.deck and self.deck.cards[1] and self.deck.cards[1].states.collide.is and not self.CONTROLLER.HID.controller)) or G.CONTROLLER.held_buttons.triggerleft) then 
+                        self.deck_preview:remove()
+                        self.deck_preview = nil
+                        local _card = G.CONTROLLER.focused.target
+                        local start = G.TIMERS.REAL
+                        self.E_MANAGER:add_event(Event({
+                            func = function()
+                                if _card and _card.area and _card.area == G.hand then
+                                    local _x, _y = _card:put_focused_cursor()
+                                    G.CONTROLLER:update_cursor({x=_x/(G.TILESCALE*G.TILESIZE),y=_y/(G.TILESCALE*G.TILESIZE)})
+                                end
+                                if start + 0.4 < G.TIMERS.REAL then
+                                    return true
+                                end
+                            end
+                        }))
+                        return true
+                    end
+                end
+            }))
+        end
+    end
+"""
+match_indent = true
+overwrite = false
+
+# properly copy cards with jewels on them (jewels on the original card aren't retained)
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+new_card:set_ability(other.config.center)
+'''
+position = "after"
+payload = '''
+if do_bejewelatro() then
+    for i=1,#Bejewelatro.jewel_list do
+        if new_card.ability['zero_'..Bejewelatro.jewel_list[i]] then
+            new_card.ability['zero_'..Bejewelatro.jewel_list[i]] = nil
+        end
+        if other.ability['zero_'..Bejewelatro.jewel_list[i]] then
+            new_card.ability['zero_'..Bejewelatro.jewel_list[i]] = true
+        end
+    end
+end
+'''
+match_indent = true
+
+# gem colour blinds functionality
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''
+if self.debuff.is_face =='face' and card:is_face(true) then
+    card:set_debuff(true)
+    if card.debuff then card.debuffed_by_blind = true end
+    return
+end
+'''
+position = "after"
+payload = '''
+if self.debuff.jewel and is_jewel_colour(card, self.debuff.jewel, 'card') then
+    card:set_debuff(true)
+    if card.debuff then card.debuffed_by_blind = true end
+    return
+end
+'''
+match_indent = true
