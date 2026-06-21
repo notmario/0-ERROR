@@ -102,19 +102,11 @@ payload = "if blind == 'Boss' or blind == 'Small' or blind == 'Big' or blind == 
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = "if G.GAME.blind:get_type() == 'Boss' then"
-position = "at"
-match_indent = true
-payload = "if G.GAME.blind:get_type() == 'Boss' and G.GAME.round_resets.blind ~= G.P_BLINDS[G.GAME.last_extra_blind] then"
-
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
 pattern = "G.GAME.round_resets.blind_states.Boss = 'Defeated'"
 position = "at"
 match_indent = true
 payload = """
-if G.GAME.round_resets.blind and G.GAME.round_resets.blind.key == G.GAME.last_extra_blind and G.GAME.round_resets.blind_states.Extra_Boss ~= 'Hide' then
+if G.GAME.round_resets.blind_states.Extra_Boss == 'Current' then
     G.GAME.round_resets.blind_states.Extra_Boss = 'Defeated'
 else
     G.GAME.round_resets.blind_states.Boss = 'Defeated'
@@ -128,7 +120,7 @@ pattern = "G.GAME.round_resets.blind_states.Boss = 'Current'"
 position = "at"
 match_indent = true
 payload = """
-if G.GAME.round_resets.blind and G.GAME.round_resets.blind.key == G.GAME.last_extra_blind and G.GAME.round_resets.blind_states.Extra_Boss ~= 'Hide' then
+if G.GAME.blind_on_deck == 'Extra_Boss' then
     G.GAME.round_resets.blind_states.Extra_Boss = 'Current'
 else
     G.GAME.round_resets.blind_states.Boss = 'Current'
@@ -142,7 +134,7 @@ pattern = "self.boss = blind and not not blind.boss"
 position = "after"
 match_indent = true
 payload = """
-if blind and type(blind) == 'table' and blind.key == G.GAME.last_extra_blind and G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Extra_Boss ~= 'Hide' then
+if G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Extra_Boss == 'Current' then
     self.boss = false
 end
 """
@@ -154,7 +146,7 @@ pattern = "elseif self.name and self.name ~= '' then"
 position = "before"
 match_indent = true
 payload = """
-elseif self.config and type(self.config.blind) == 'table' and self.config.blind.key == G.GAME.last_extra_blind and G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Extra_Boss ~= 'Hide' then
+elseif G.GAME.round_resets.blind_states and G.GAME.round_resets.blind_states.Extra_Boss == 'Current' then
     return 'Extra_Boss'
 """
 
