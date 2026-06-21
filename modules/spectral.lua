@@ -8,21 +8,25 @@ SMODS.Atlas {
 local bit = require("bit")
 
 local zero_card_masks_ref = {}
-local next_bit = 1
+local zero_next_bit = 1
 
---dynamically assign bitmasks to all suits
-for _, suit_name in ipairs(SMODS.Suit.obj_buffer) do
-    zero_card_masks_ref[suit_name] = next_bit
-    next_bit = next_bit * 2
+function zero_get_suit_mask(suit_name)
+	if not suit_name then return 0 end
+    if not zero_card_masks_ref[suit_name] then
+        zero_card_masks_ref[suit_name] = zero_next_bit
+        zero_next_bit = zero_next_bit * 2
+    end
+    return zero_card_masks_ref[suit_name] or 0
 end
 
 local zero_MAX_RECIPE_LEN = 5
 
-local function zero_card_to_mask(card)
+function zero_card_to_mask(card)
     local mask = 0
+	if not SMODS or not SMODS.Suit or not SMODS.Suit.obj_buffer then return 0 end
     for _, _suit in ipairs(SMODS.Suit.obj_buffer) do
         if card:is_suit(_suit) then
-            mask = mask + zero_card_masks_ref[_suit]
+            mask = mask + (zero_get_suit_mask(_suit) or 0)
         end
     end
     return mask
@@ -126,7 +130,7 @@ local function build_fixed_recipes()
         for _, req in ipairs(entry.recipe) do
             local suit_str = "ANY"
             if req.suit and req.suit ~= "ANY" then
-                suit_str = tostring(zero_card_masks_ref[req.suit] or "ANY")
+                suit_str = tostring(zero_get_suit_mask(req.suit))
             end
             local enh_str = req.enh or "ANY"
             local edition_str = req.edition or "ANY"
