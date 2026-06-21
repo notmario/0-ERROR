@@ -1,6 +1,14 @@
 local loc_stuff = {
   descriptions = {
     Back = {
+	  b_zero_draft = {
+        name = "Draft Deck",
+        text = {
+            "Start run by choosing",
+            "{C:attention}1{} of {C:attention}6 Eternal",
+			"starting Jokers"
+        }
+      },
       b_zero_bejeweled = {
         name = "Bejeweled Deck",
         text = {
