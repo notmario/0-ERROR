@@ -97,7 +97,7 @@ end
 -- update deck peek values when deck is hovered
 local card_hover_ref = Card.hover
 function Card:hover()
-    if do_bejewelatro() and self.area.config.type == 'deck' then
+    if do_bejewelatro() and self.area and self.area.config.type == 'deck' then
         if G.deck.children and G.deck.children.view_deck then
             G.deck.children.view_deck:remove()
             G.deck.children.view_deck = nil
